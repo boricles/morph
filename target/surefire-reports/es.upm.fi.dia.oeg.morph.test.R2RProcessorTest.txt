@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: es.upm.fi.dia.oeg.morph.test.R2RProcessorTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.171 sec

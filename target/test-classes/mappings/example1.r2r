@@ -1,0 +1,17 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix xyz: <http://example.com/ns#> .
+@prefix dept: <http://www.example.com/dept#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix : <http://es.upm.fi.dia.oeg/R2RMapping#> .
+:TriplesMap1
+    a rr:TriplesMap;
+    rr:logicalTable "Select CONCAT('_:Department',deptno) AS deptId, deptno, dname, loc from dept";
+    rr:class xyz:dept;
+    rr:tableGraphIRI xyz:DeptGraph;
+    rr:subjectMap [ a rr:BlankNodeMap; rr:column "deptId";
+                    rr:inverseExpression "{alias.}deptno = substr({alias.}deptId,length('_:Department')+1)"];
+    rr:propertyObjectMap [ rr:property dept:deptno; rr:column "deptno"; rr:datatype xsd:positiveInteger ];
+    rr:propertyObjectMap [ rr:property dept:name; rr:column "dname" ];
+    rr:propertyObjectMap [ rr:property dept:location; rr:column "loc" ];
+    rr:propertyObjectMap [ rr:property dept:COMPANY; rr:constantValue "XYZ Corporation" ];
+.
