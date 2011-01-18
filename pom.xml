@@ -30,12 +30,6 @@
 		<!--<scope>test</scope>-->
 	</dependency>
 	<dependency>
-			<groupId>es.upm.fi.dia.oeg.integrator</groupId>
-			<artifactId>stream-translator</artifactId>
-			<version>0.0.2</version>
-		<!--<scope>test</scope>-->
-		</dependency>
-	<dependency>
 		<groupId>org.slf4j</groupId>
 		<artifactId>slf4j-log4j12</artifactId>
 		<version>1.6.1</version>

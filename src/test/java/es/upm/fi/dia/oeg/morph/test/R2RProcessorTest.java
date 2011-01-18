@@ -9,7 +9,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import es.upm.fi.dia.oeg.common.ParameterUtils;
+import es.upm.fi.dia.oeg.morph.ParameterUtils;
 import es.upm.fi.dia.oeg.morph.R2RProcessor;
 import es.upm.fi.dia.oeg.morph.R2RProcessorConfigurationException;
 import es.upm.fi.dia.oeg.morph.r2rml.InvalidPropertyMapException;
@@ -21,7 +21,7 @@ public class R2RProcessorTest
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception
-	{
+	{		
 		PropertyConfigurator.configure(R2RProcessorTest.class.getClassLoader().getResource("log4j.properties"));
 		props = ParameterUtils.load(R2RProcessorTest.class.getClassLoader().getResourceAsStream("config.properties"));
 		r2r = new R2RProcessor();
