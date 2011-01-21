@@ -1,14 +1,22 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#> .
-@prefix xyz: <http://example.com/ns#> .
+@prefix exa: <http://example.com/ns#> .
 @prefix dept: <http://www.example.com/dept#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix : <http://es.upm.fi.dia.oeg/R2RMapping#> . 
 :TriplesMap3
-    a rr:TriplesMap;
-    rr:logicalTable "Select CONCAT('<xyz.com/emp/',id,'>') AS empId , CONCAT('<xyz.com/emp/likes/',likeType,'>') AS empLikes  , likedObj  from likes ";
-    rr:tableGraphIRI xyz:LikesGraph;
-    rr:subjectMap [ a rr:IRIMap; rr:column "empId"];
-    rr:propertyObjectMap [ rr:propertyColumn "empLikes"; rr:column "likedObj"];
-.
+ a rr:TriplesMapClass;
+    rr:SQLQuery """
+      Select CONCAT('example.com/emp/', id) AS "empId"
+           , CONCAT('example.com/emp/likes/', likeType) AS "empLikes"
+           , likedObj
+        from test.LIKES
+      """;
 
-    
+    rr:subjectMap [ rr:column "empId"; rr:graph exa:LikesGraph ];
+
+    rr:predicateObjectMap 
+    [ 
+      rr:predicateMap [ rr:column "empLikes" ];
+      rr:objectMap    [ rr:column "likedObj" ]
+    ]
+    .

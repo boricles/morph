@@ -24,7 +24,7 @@ import com.hp.hpl.jena.vocabulary.RDF;
 
 import es.upm.fi.dia.oeg.morph.r2rml.InvalidPropertyMapException;
 import es.upm.fi.dia.oeg.morph.r2rml.R2RModel;
-import es.upm.fi.dia.oeg.morph.r2rml.RDFTermMap;
+import es.upm.fi.dia.oeg.morph.r2rml.PredicateObjectMap;
 import es.upm.fi.dia.oeg.morph.r2rml.TriplesMap;
 import es.upm.fi.dia.oeg.morph.relational.RelationalModel;
 
@@ -172,7 +172,7 @@ public class R2RProcessor extends Observable
 	{
 		try
 		{
-			String query = tMap.getLogicalTable();
+			String query = tMap.getSqlQuery();
 			logger.debug("Query to execute: "+query);
 			ResultSet rs = relational.query(query);
 			while (rs.next())
@@ -188,23 +188,23 @@ public class R2RProcessor extends Observable
 					tMapModel.add(subj,RDF.type,tIns.getGeneratedRdfType());
 								
 				
-				for (RDFTermMap prop:tMap.getPropertyObjectMaps())
+				for (PredicateObjectMap prop:tMap.getPropertyObjectMaps())
 				{
-					RDFTermMapInstance propIns = new RDFTermMapInstance(prop,tIns);
+					PredicateObjectMapInstance propIns = new PredicateObjectMapInstance(prop,tIns);
 					propIns.setResultSet(rs); //TODO this is awful
 					
 					Model pModel = getModel(d,propIns.getGeneratedGraphUri());
 							
-					String column = prop.getColumn();
-					RDFDatatype datatype = prop.getDatatype();
-					
+					String column = prop.getObjectMap().getColumn();
+					RDFDatatype datatype = prop.getObjectMap().getDatatype();
+					logger.info("bigbig"+propIns.getGeneratedProperty());
 					if (column!=null)
 					{
 						pModel.add(subj,propIns.getGeneratedProperty(),rs.getString(column),datatype);
 					
 					}
 					else				
-						pModel.add(subj,propIns.getGeneratedProperty(),prop.getConstantValue());
+						pModel.add(subj,propIns.getGeneratedProperty(),prop.getObjectMap().getObject());
 				}
 			}
 			rs.close();

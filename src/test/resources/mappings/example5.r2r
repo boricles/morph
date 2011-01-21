@@ -1,0 +1,61 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix ssg: <http://semsorgrid4env.eu/ns#> .
+@prefix dept: <http://www.example.com/dept#> .
+@prefix emp: <http://www.example.com/emp#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix : <http://es.upm.fi.dia.oeg/R2RMapping#> . 
+:ObsMilfordWaveheight
+    a rr:TriplesMap;
+    rr:logicalTable """
+       Select * 
+       from envdata_milford
+       """;
+    rr:class ssg:Observation;
+    rr:subjectMap [ rr:column "DateTime" ];
+		
+    rr:rowGraph "graphURI";
+		
+    rr:propertyObjectMap [ rr:property ssg:observedProperty; rr:constantValue ssg:WaveHeight ];
+    rr:propertyObjectMap [ rr:property ssg:featureOfInterest; rr:constantValue ssg:Sea ];
+    		
+    rr:propertyObjectMap [ rr:property emp:measuredBy; rr:constantValue ssg:SensorMilford ];
+    rr:propertyObjectMap [ rr:property emp:observationResult; rr:column "Hs" ];
+    rr:propertyObjectMap [ rr:property emp:observationResultTime; rr:column "timestamp" ];
+    rr:foreignKeyMap [
+      rr:key emp:c_ref_deptno;
+      rr:parentTriplesMap xyz:dept;
+      rr:joinCondition "{child.}deptno = {parent.}deptno";
+    ];
+    .
+:ObsHernebayTideheight
+    a rr:TriplesMap;
+    rr:logicalTable """
+       Select * 
+       from envdata_hernebay_tide
+       """;
+    rr:class ssg:Observation;
+    rr:subjectMap [ rr:column "DateTime" ];
+		
+    rr:rowGraph "graphURI";
+		
+    rr:propertyObjectMap [ rr:property ssg:observedProperty; rr:constantValue ssg:TideHeight ];
+    rr:propertyObjectMap [ rr:property ssg:featureOfInterest; rr:constantValue ssg:Sea ];
+    		
+    rr:propertyObjectMap [ rr:property emp:measuredBy; rr:constantValue ssg:SensorHernebay ];
+    rr:propertyObjectMap [ rr:property emp:observationResult; rr:column "Observed" ];
+    rr:propertyObjectMap [ rr:property emp:observationResultTime; rr:column "timestamp" ];
+.
+:SensorMilford
+	a rr:TriplesMap;
+    rr:logicalTable """
+       Select * 
+       from constants
+       """;
+    rr:class ssg:Sensor;
+    rr:subjectMap [ rr:column "sensormilforduri" ];
+		
+    rr:rowGraph "graphURI";
+		
+    rr:propertyObjectMap [ rr:property ssg:locatedIn; rr:constantValue ssg:CCOSouthEastEngland ];
+ .	
+

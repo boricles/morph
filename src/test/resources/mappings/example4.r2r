@@ -1,71 +1,93 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#> .
-@prefix xyz: <http://example.com/ns#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix exa: <http://example.com/ns#> .
 @prefix dept: <http://www.example.com/dept#> .
 @prefix emp: <http://www.example.com/emp#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix : <http://es.upm.fi.dia.oeg/R2RMapping#> . 
 :TriplesMap1
-    a rr:TriplesMap;
-    rr:logicalTable """
-    	Select CONCAT('_:Department',deptno) AS deptId, 
-    		deptno, 
-    		dname, 
-    		loc 
-    	from dept
-    	""";
-    rr:class xyz:dept;
-    rr:tableGraphIRI xyz:DeptGraph;
-    rr:subjectMap [ a rr:BlankNodeMap; rr:column "deptId";
-                    rr:inverseExpression "{alias.}deptno = substr({alias.}deptId,length('_:Department')+1)"];
-    rr:propertyObjectMap [ rr:property dept:deptno; rr:column "deptno"; rr:datatype xsd:positiveInteger ];
-    rr:propertyObjectMap [ rr:property dept:name; rr:column "dname" ];
-    rr:propertyObjectMap [ rr:property dept:location; rr:column "loc" ];
-    rr:propertyObjectMap [ rr:property dept:COMPANY; rr:constantValue "XYZ Corporation" ];
+    a rr:TriplesMapClass;
+    rr:SQLQuery """
+       Select CONCAT('Department', deptno) AS "deptId", deptno , dname , loc
+         from test.DEPT
+       """;
+
+    rr:subjectMap [ rr:column "deptId"; rr:termtype "BlankNode"; rr:class exa:dept; 
+                    rr:graph exa:DeptGraph;
+                    rr:inverseExpression "{deptno} = substr({deptId},length('Department')+1)"];
+
+    rr:predicateObjectMap [ rr:predicateMap [ rr:predicate dept:deptno ]; 
+      rr:objectMap    [ rr:column "deptno"; rr:datatype xsd:positiveInteger ] ];
+      
+    rr:predicateObjectMap [ rr:predicateMap [ rr:predicate dept:name ]; 
+      rr:objectMap    [ rr:column "dname" ] ];
+
+    rr:predicateObjectMap  [ rr:predicateMap [ rr:predicate dept:location ]; 
+      rr:objectMap    [ rr:column "loc" ]];
+
+    rr:predicateObjectMap     [ rr:predicateMap [ rr:predicate dept:COMPANY ]; 
+      rr:objectMap    [ rr:object "EXAMPLE Corporation" ]]
 .
-:TriplesMap2
-    a rr:TriplesMap;
-    rr:logicalTable """
-       Select CONCAT('<xyz.com/emp/', empno,'>') AS empURI
+:TriplesMap3
+ a rr:TriplesMapClass;
+    rr:SQLQuery """
+      Select CONCAT('example.com/emp/', id) AS "empId"
+           , CONCAT('example.com/emp/likes/', likeType) AS "empLikes"
+           , likedObj
+        from test.LIKES
+      """;
+
+    rr:subjectMap [ rr:column "empId"; rr:graph exa:LikesGraph ];
+
+    rr:predicateObjectMap [ rr:predicateMap [ rr:column "empLikes" ];
+      rr:objectMap    [ rr:column "likedObj" ] ]
+ .
+ :TriplesMap2
+    a rr:TriplesMapClass;
+    rr:SQLQuery """
+       Select CONCAT('example.com/emp/', empno) AS "empURI"
             , empno
             , ename
-            , CONCAT('<xyz.com/emp/job/', job,'>') AS jobTypeURI
+            , CONCAT('example.com/emp/job/', job) AS "jobTypeURI"
             , job
             , deptno
-            , CONCAT('<xyz.com/emp/etype/', etype,'>') AS empTypeURI
+            , CONCAT('example.com/emp/etype/', etype) AS "empTypeURI"
             , etype
-            , CONCAT('<xyz.com/graph/', job , '/' , etype,'>') AS graphURI
-       from emp
+            , CONCAT('example.com/graph/', job ,'/' , etype) AS "graphURI"
+       from test.EMP
        """;
-    rr:class xyz:emp;
-    rr:subjectMap [ rr:column "empURI" ];
-		
-    rr:rowGraph "graphURI";
-		
-    rr:propertyObjectMap [ rr:RDFTypeProperty emp:jobtype; rr:column "jobTypeURI" ];
-    rr:propertyObjectMap [ rr:RDFTypeProperty emp:emptype; rr:column "empTypeURI" ];
-		
-    rr:propertyObjectMap [ rr:property emp:empno; rr:column "empno" ];
-    rr:propertyObjectMap [ rr:property emp:name; rr:column "ename"; rr:columnGraphIRI emp:empNameGraph ];
-    rr:propertyObjectMap [ rr:property emp:job; rr:column "job" ];
-    rr:propertyObjectMap [ rr:property emp:deptNum; rr:column "deptno" ];
-    rr:propertyObjectMap [ rr:property emp:etype; rr:column "etype" ];
-    rr:foreignKeyMap [
-      rr:key emp:c_ref_deptno;
-      rr:parentTriplesMap xyz:dept;
-      rr:joinCondition "{child.}deptno = {parent.}deptno";
-    ];
-    .
-:TriplesMap3
-    a rr:TriplesMap;
-    rr:logicalTable """
-    	Select CONCAT('<xyz.com/emp/',id,'>') AS empId , 
-    		CONCAT('<xyz.com/emp/likes/',likeType,'>') AS empLikes  , 
-    		likedObj  
-    	from likes 
-    	""";
-    rr:tableGraphIRI xyz:LikesGraph;
-    rr:subjectMap [ a rr:IRIMap; rr:column "empId"];
-    rr:propertyObjectMap [ rr:propertyColumn "empLikes"; rr:column "likedObj"];
-.
 
-    
+    rr:subjectMap [ rr:column "empURI";  rr:class exa:emp;  rr:graphColumn "graphURI" ];
+
+    rr:predicateObjectMap [ rr:predicateMap [ rr:predicate emp:jobtype ]; 
+                            rr:objectMap    [ rr:column "jobTypeURI" ]];
+
+    rr:predicateObjectMap [ rr:predicateMap [ rr:predicate rdf:type ]; 
+        					rr:objectMap    [ rr:column "jobTypeURI" ]];
+
+    rr:predicateObjectMap     [ rr:predicateMap [ rr:predicate emp:emptype ]; 
+      rr:objectMap    [ rr:column "empTypeURI" ]];
+
+    rr:predicateObjectMap     [ rr:predicateMap [rr:predicate rdf:type ]; 
+      rr:objectMap    [ rr:column "empTypeURI" ]];
+
+    rr:predicateObjectMap [ rr:predicateMap [ rr:predicate emp:empno ]; 
+      rr:objectMap    [ rr:column "empno" ]];
+
+    rr:predicateObjectMap [ rr:predicateMap [ rr:predicate emp:name ]; 
+     rr:objectMap    [ rr:column "ename" ]; 
+      rr:graph emp:empNameGraph];
+
+    rr:predicateObjectMap  [ rr:predicateMap [ rr:predicate emp:job ]; 
+     rr:objectMap    [ rr:column "job" ]];
+
+    rr:predicateObjectMap    [ rr:predicateMap [ rr:predicate emp:deptNum ]; 
+      rr:objectMap    [ rr:column "deptno" ]];
+
+    rr:predicateObjectMap [  rr:predicateMap [ rr:predicate emp:etype ]; 
+      rr:objectMap    [ rr:column "etype" ]];
+
+    rr:refPredicateObjectMap [  rr:refPredicateMap [ rr:predicate emp:c_ref_deptno ];
+      rr:refObjectMap    [ rr:parentTriplesMap <#TriplesMap1>; rr:joinCondition "child.{deptno} = parent.{deptno}" ]]
+      .
+

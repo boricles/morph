@@ -11,11 +11,11 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
 
 import es.upm.fi.dia.oeg.morph.r2rml.R2RModel;
-import es.upm.fi.dia.oeg.morph.r2rml.RDFTermMap;
+import es.upm.fi.dia.oeg.morph.r2rml.PredicateObjectMap;
 
-public class RDFTermMapInstance
+public class PredicateObjectMapInstance
 {
-	private RDFTermMap termMap;
+	private PredicateObjectMap termMap;
 	
 	private Property generatedProperty;
 	private String generatedGraphUri;
@@ -24,9 +24,9 @@ public class RDFTermMapInstance
 	
 	private ResultSet rs;
 
-	private static Logger logger = Logger.getLogger(RDFTermMapInstance.class.getName());
+	private static Logger logger = Logger.getLogger(PredicateObjectMapInstance.class.getName());
 
-	public RDFTermMapInstance(RDFTermMap propMap, TriplesMapInstance tIns)
+	public PredicateObjectMapInstance(PredicateObjectMap propMap, TriplesMapInstance tIns)
 	{
 		this.termMap = propMap;
 		this.parent = tIns;
@@ -42,13 +42,13 @@ public class RDFTermMapInstance
 	private void generateGraphUri() 
 	{
 		String uri = null;
-		if (termMap.getColumnGraphIRI()!=null)
-			uri = termMap.getColumnGraphIRI();
-		else if (termMap.getColumnGraph()!=null)
+		if (termMap.getGraph()!=null)
+			uri = termMap.getGraph();
+		else if (termMap.getGraphColumn()!=null)
 		{
 			try
 			{
-				uri = rs.getString(termMap.getColumnGraph());
+				uri = rs.getString(termMap.getGraphColumn());
 			} catch (SQLException e)
 			{			
 				e.printStackTrace();//TODO exception handling
@@ -72,26 +72,22 @@ public class RDFTermMapInstance
 	private void generateProperty()
 	{
 		Property property = null;
-		if (termMap.getProperty()!=null)
+		if (termMap.getPredicateMap().getPredicate()!=null)
 		{
-			property = termMap.getProperty();
+			property = termMap.getPredicateMap().getPredicate();
 		}
-		else if (termMap.getPropertyColumn()!=null)
+		else if (termMap.getPredicateMap().getColumn()!=null)
 		{
 			String propUri;
 			try
 			{
-				propUri = rs.getString(termMap.getPropertyColumn());
+				propUri = rs.getString(termMap.getPredicateMap().getColumn());
 				property= getModel().createProperty(propUri);
 			} catch (SQLException e)
 			{
 				logger.error("Can't create property: "+e.getMessage());
 				e.printStackTrace();
 			}
-		}
-		else if (termMap.getRdfTypeProperty()!=null)
-		{
-			property = termMap.getRdfTypeProperty();
 		}
 		
 		this.generatedProperty = property;

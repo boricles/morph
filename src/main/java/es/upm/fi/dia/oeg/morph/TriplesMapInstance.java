@@ -41,13 +41,13 @@ public class TriplesMapInstance
 	private void generateGraphUri()
 	{
 		String uri = null;
-		if (tMap.getTableGraphIRI()!=null)
-			uri = tMap.getTableGraphIRI();
-		else if (tMap.getRowGraph()!=null)
+		if (tMap.getSubjectMap().getGraph()!=null)
+			uri = tMap.getSubjectMap().getGraph();
+		else if (tMap.getSubjectMap().getGraphColumn()!=null)
 		{
 			try
 			{
-				uri = rs.getString(tMap.getRowGraph());
+				uri = rs.getString(tMap.getSubjectMap().getGraphColumn());
 			} catch (SQLException e)
 			{
 				logger.error("Unable to generate Uri: "+e.getMessage());
@@ -67,8 +67,8 @@ public class TriplesMapInstance
 	}
 	private void generateRdfType()
 	{
-		if (tMap.getRdfsClass()!=null)
-			this.generatedRdfType=tMap.getRdfsClass();
+		if (tMap.getSubjectMap().getRdfsClass()!=null)
+			this.generatedRdfType=tMap.getSubjectMap().getRdfsClass();
 		
 	}
 	public Resource getGeneratedSubject()
