@@ -11,54 +11,46 @@ public class TriplesMap
 {
 
 	private String uri;
-	private Resource rdfsClass;
-	private String logicalTable;
-	private IRIorBlankNodeMap subjectMap;
-	private Collection<RDFTermMap> propertyObjectMap;
-	private String rowGraph;
-	private String tableGraphIRI; //TODO this should be a set of graph IRIs
-	private ForeignKey foreignKeyMap;
+	private String tableOwner;
+	private String tableName;
+	private String sqlQuery;
+	private SubjectMap subjectMap;
+	private Collection<PredicateObjectMap> predicateObjectMap;
+	private Collection<RefPredicateObjectMap> refPredicateObjectMap;
+	//private String rowGraph;
+	//private String tableGraphIRI; //TODO this should be a set of graph IRIs
 	
 	public TriplesMap(String uri)
 	{
 		this.setUri(uri);
-		propertyObjectMap = new ArrayList<RDFTermMap>();
+		predicateObjectMap = new ArrayList<PredicateObjectMap>();
 	}
-	public void addPropertyObjectMap(RDFTermMap propertyObjectMap)
+	public void addPropertyObjectMap(PredicateObjectMap propertyObjectMap)
 	{
-		this.propertyObjectMap.add(propertyObjectMap);
+		this.predicateObjectMap.add(propertyObjectMap);
 	}
 	
-	public Collection<RDFTermMap> getPropertyObjectMaps()
+	public Collection<PredicateObjectMap> getPropertyObjectMaps()
 	{
-		return this.propertyObjectMap;
-	}
-	
-	public void setRdfsClass(Resource rdfsClass)
-	{
-		this.rdfsClass = rdfsClass;
-	}
-	public Resource getRdfsClass()
-	{
-		return this.rdfsClass;
+		return this.predicateObjectMap;
 	}
 
-	public void setLogicalTable(String logicalTable)
+	public void setSqlQuery(String sqlQuery)
 	{
-		this.logicalTable = logicalTable;
+		this.sqlQuery = sqlQuery;
 	}
 
-	public String getLogicalTable()
+	public String getSqlQuery()
 	{
-		return logicalTable;
+		return sqlQuery;
 	}
 
-	public void setSubjectMap(IRIorBlankNodeMap subjectMap)
+	public void setSubjectMap(SubjectMap subjectMap)
 	{
 		this.subjectMap = subjectMap;
 	}
 
-	public IRIorBlankNodeMap getSubjectMap()
+	public SubjectMap getSubjectMap()
 	{
 		return subjectMap;
 	}
@@ -72,33 +64,20 @@ public class TriplesMap
 	{
 		return uri;
 	}
-
-	public void setForeignKeyMap(ForeignKey foreignKeyMap)
+	public void setTableOwner(String tableOwner)
 	{
-		this.foreignKeyMap = foreignKeyMap;
+		this.tableOwner = tableOwner;
 	}
-
-	public ForeignKey getForeignKeyMap()
+	public String getTableOwner()
 	{
-		return foreignKeyMap;
+		return tableOwner;
 	}
-
-	public void setRowGraph(String rowGraph)
+	public void setTableName(String tableName)
 	{
-		this.rowGraph = rowGraph;
+		this.tableName = tableName;
 	}
-
-	public String getRowGraph()
+	public String getTableName()
 	{
-		return rowGraph;
+		return tableName;
 	}
-	public void setTableGraphIRI(String tableGraphIRI)
-	{
-		this.tableGraphIRI = tableGraphIRI;
-	}
-	public String getTableGraphIRI()
-	{
-		return tableGraphIRI;
-	}
-
 }

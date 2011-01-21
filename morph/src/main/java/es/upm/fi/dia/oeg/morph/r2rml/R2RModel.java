@@ -37,47 +37,55 @@ public class R2RModel
 	private static String r2rml = "rr";
 	private Model model;
 	
-	private Property rrLogicalTable = null;
+	private Property rrSqlQuery = null;
     private Property rrClass = null;
     private Property rrColumn = null;
     private Property rrSubjectMap = null;
-    private Property rrPropertyObjectMap = null;
-    private Property rrProperty = null;
+    private Property rrPredicateObjectMap = null;
+    private Property rrPredicateMap = null;
+    private Property rrObjectMap = null;
+    private Property rrPredicate = null;
     private Property rrPropertyColumn = null;
     private Property rrRDFTypeProperty = null;
     private Property rrDatatype = null;
-    private Property rrConstantValue = null;
+    private Property rrObject = null;
     private Property rrTableGraphIRI = null;
     private Property rrRowGraph = null;
     private Property rrInverseExpression = null;
-    private Property rrColumnGraph = null;
+    private Property rrGraphColumn = null;
     private Property rrColumnGraphIRI = null;
     
 	private Resource rrTriplesMap = null;
 
 	private Collection<TriplesMap> triplesMap;
+	private Property rrTermType;
+	private Property rrGraph;
 	
 	public R2RModel()
 	{
 		
 		model = ModelFactory.createDefaultModel();
-		rrLogicalTable = model.createProperty(r2rmlNS+"logicalTable");
+		rrSqlQuery = model.createProperty(r2rmlNS+"SQLQuery");
         rrClass = model.createProperty(r2rmlNS+"class");
         rrColumn = model.createProperty(r2rmlNS+"column");
         rrSubjectMap = model.createProperty(r2rmlNS+"subjectMap");
-        rrPropertyObjectMap = model.createProperty(r2rmlNS+"propertyObjectMap");
-        rrProperty = model.createProperty(r2rmlNS+"property");
+        rrPredicateObjectMap = model.createProperty(r2rmlNS+"predicateObjectMap");
+        rrPredicateMap = model.createProperty(r2rmlNS+"predicateMap");
+        rrObjectMap = model.createProperty(r2rmlNS+"objectMap");
+        rrPredicate = model.createProperty(r2rmlNS+"predicate");
         rrPropertyColumn = model.createProperty(r2rmlNS+"propertyColumn");
         rrRDFTypeProperty = model.createProperty(r2rmlNS+"RDFTypeProperty");
         rrDatatype = model.createProperty(r2rmlNS+"datatype");
-        rrConstantValue = model.createProperty(r2rmlNS+"constantValue");
+        rrObject = model.createProperty(r2rmlNS+"object");
         rrTableGraphIRI = model.createProperty(r2rmlNS+"tableGraphIRI");
         rrRowGraph = model.createProperty(r2rmlNS+"rowGraph");
         rrInverseExpression = model.createProperty(r2rmlNS+"inverseExpression"); 
-        rrColumnGraph = model.createProperty(r2rmlNS,"columnGraph");
         rrColumnGraphIRI = model.createProperty(r2rmlNS,"columnGraphIRI");
-        
-    	rrTriplesMap = model.createResource(r2rmlNS+"TriplesMap");
+
+        rrTermType = model.createProperty(r2rmlNS,"termtype");
+        rrGraph = model.createProperty(r2rmlNS,"graph");
+        rrGraphColumn = model.createProperty(r2rmlNS,"graphColumn");
+    	rrTriplesMap = model.createResource(r2rmlNS+"TriplesMapClass");
 
 		
 	}
@@ -110,15 +118,16 @@ public class R2RModel
 	{
 		Collection<TriplesMap> maps = new ArrayList<TriplesMap>();
 		String queryString = "PREFIX "+r2rml+": <"+r2rmlNS+"> \n"+
-				"SELECT ?tMap ?class ?table ?subCol ?inverse ?tableGraph ?rowGraph WHERE { \n" +
+				"SELECT ?tMap ?query ?subjCol ?subjType ?subjClass ?subjGraph ?subjGraphCol ?subjInverse WHERE { \n" +
 				"?tMap a <"+rrTriplesMap.getURI()+"> ; \n" +
-				r2rml+":"+rrLogicalTable.getLocalName()+ " ?table ; \n"+
-				r2rml+":"+rrSubjectMap.getLocalName()+ " ?subMap . \n" +
-				"OPTIONAL { ?tMap "+r2rml+":"+rrTableGraphIRI.getLocalName()+ " ?tableGraph . } \n" +
-				"OPTIONAL { ?tMap "+r2rml+":"+rrRowGraph.getLocalName()+ " ?rowGraph . } \n" +
-				"OPTIONAL { ?tMap "+r2rml+":"+rrClass.getLocalName()+ " ?class . } \n"+
-				"?subMap "+r2rml+":"+rrColumn.getLocalName() + " ?subCol . \n"+				
-				"OPTIONAL { ?subMap "+r2rml+":"+rrInverseExpression.getLocalName() + " ?inverse . } "+				
+				r2rml+":"+rrSqlQuery.getLocalName()+ " ?query ; \n"+
+				r2rml+":"+rrSubjectMap.getLocalName()+ " ?subjMap . \n" +
+				"?subjMap "+r2rml+":"+rrColumn.getLocalName() + " ?subjCol . \n"+				
+				"OPTIONAL { ?subjMap "+r2rml+":"+rrTermType.getLocalName() + " ?subjType . } \n"+				
+				"OPTIONAL { ?subjMap "+r2rml+":"+rrClass.getLocalName() + " ?subjClass . } \n"+				
+				"OPTIONAL { ?subjMap "+r2rml+":"+rrGraph.getLocalName() + " ?subjGraph . } \n"+				
+				"OPTIONAL { ?subjMap "+r2rml+":"+rrGraphColumn.getLocalName() + " ?subjGraphCol . } \n"+				
+				"OPTIONAL { ?subjMap "+r2rml+":"+rrInverseExpression.getLocalName() + " ?subjInverse . } "+				
 				"}";
 		
 		logger.debug("Query tripleMap: "+queryString);
@@ -133,21 +142,22 @@ public class R2RModel
 		      
 		      logger.debug("Triples map found: "+uri);
 		      
-		      Resource classRes = soln.getResource("class"); 
-		      Literal tableLit = soln.get("table").asLiteral();
-		      Resource tableGraph = soln.getResource("tableGraph");
-		      Literal rowGraph = soln.getLiteral("rowGraph");
-		      Literal inverse = soln.getLiteral("inverse");
-		      Literal column = soln.getLiteral("subCol");
+		      Resource subjClass = soln.getResource("subjClass"); 
+		      Literal sqlQuery = soln.get("query").asLiteral();
+		      Resource subjGraph = soln.getResource("subjGraph");
+		      Literal subjGraphCol = soln.getLiteral("subjGraphCol");
+		      Literal inverse = soln.getLiteral("subjInverse");
+		      Literal column = soln.getLiteral("subjCol");
+		      Literal termType = soln.getLiteral("subjType");
 		      
-		      TriplesMap tMap = new TriplesMap(uri);		      
-		      tMap.setRdfsClass(classRes);
-		      tMap.setLogicalTable(tableLit.getString());
-		      if (tableGraph!=null)
-		    	  tMap.setTableGraphIRI(tableGraph.getURI());
-		      else if (rowGraph!= null)
-		    	  tMap.setRowGraph(rowGraph.getString());
-		      IRIorBlankNodeMap subjectMap = new IRIorBlankNodeMap();
+		      TriplesMap tMap = new TriplesMap(uri);
+		      SubjectMap subjectMap = new SubjectMap();
+		      subjectMap.setRdfsClass(subjClass);
+		      tMap.setSqlQuery(sqlQuery.getString());
+		      if (subjGraph!=null)
+		    	  subjectMap.setGraph(subjGraph.getURI());
+		      else if (subjGraphCol!= null)
+		    	  subjectMap.setGraphColumn(subjGraphCol.getString());
 		      subjectMap.setColumn(column.getString());
 		      if (inverse != null)
 		    	  subjectMap.setInverseExpression(inverse.getString());
@@ -167,18 +177,19 @@ public class R2RModel
 	private void readPropertyObjectMap(TriplesMap tMap)
 	{
 		String queryString = "PREFIX "+r2rml+": <"+r2rmlNS+"> \n" +
-					"SELECT ?property ?propertyColumn ?typeProperty ?column ?datatype " +
-					"?constant ?columnGraph ?columnGraphIRI WHERE { \n" +
+					"SELECT ?predicate ?predicateColumn ?object ?column ?datatype " +
+					"?graphColumn ?graph WHERE { \n" +
 					"<"+tMap.getUri()+ "> a <"+rrTriplesMap.getURI()+"> ; \n" +
-					r2rml+":"+rrPropertyObjectMap.getLocalName()+ " ?pMap . \n" +
-					"OPTIONAL { ?pMap "+r2rml+":"+rrProperty.getLocalName() + " ?property . } \n"+				
-					"OPTIONAL { ?pMap "+r2rml+":"+rrPropertyColumn.getLocalName() + " ?propertyColumn . } \n"+				
-					"OPTIONAL { ?pMap "+r2rml+":"+rrRDFTypeProperty.getLocalName() + " ?typeProperty . } \n"+				
-					"OPTIONAL { ?pMap "+r2rml+":"+rrColumnGraph.getLocalName() + " ?columnGraph . } \n"+				
-					"OPTIONAL { ?pMap "+r2rml+":"+rrColumnGraphIRI.getLocalName() + " ?columnGraphIRI . } \n"+				
-					"OPTIONAL { ?pMap "+r2rml+":"+rrColumn.getLocalName() + " ?column . } \n"+				
-					"OPTIONAL { ?pMap "+r2rml+":"+rrDatatype.getLocalName() + " ?datatype . } \n"+				
-					"OPTIONAL { ?pMap "+r2rml+":"+rrConstantValue.getLocalName() + " ?constant . } \n"+				
+					r2rml+":"+rrPredicateObjectMap.getLocalName()+ " ?poMap . \n" +
+					"?poMap "+r2rml+":"+rrPredicateMap.getLocalName()+ " ?pMap . \n" +
+					"?poMap "+r2rml+":"+rrObjectMap.getLocalName()+ " ?oMap . \n" +
+					"OPTIONAL { ?pMap "+r2rml+":"+rrPredicate.getLocalName() + " ?predicate . } \n"+				
+					"OPTIONAL { ?pMap "+r2rml+":"+rrColumn.getLocalName() + " ?predicateColumn . } \n"+												
+					"OPTIONAL { ?poMap "+r2rml+":"+rrGraphColumn.getLocalName() + " ?graphColumn . } \n"+				
+					"OPTIONAL { ?poMap "+r2rml+":"+rrGraph.getLocalName() + " ?graph . } \n"+				
+					"OPTIONAL { ?oMap "+r2rml+":"+rrColumn.getLocalName() + " ?column . } \n"+				
+					"OPTIONAL { ?oMap "+r2rml+":"+rrDatatype.getLocalName() + " ?datatype . } \n"+				
+					"OPTIONAL { ?oMap "+r2rml+":"+rrObject.getLocalName() + " ?object . } \n"+				
 					"}";
 		logger.debug("Query propertyObjectMap: "+queryString);
 		Query query = QueryFactory.create(queryString ) ;
@@ -188,35 +199,38 @@ public class R2RModel
 		    for ( ; results.hasNext() ; )
 		    {
 		      QuerySolution soln = results.nextSolution() ;
-		      Resource property = soln.getResource("property");
+		      Resource predicate = soln.getResource("predicate");
 		      Resource typeProperty = soln.getResource("typeProperty");
 		      Literal column = soln.getLiteral("column"); 
 		      Resource datatype = soln.getResource("datatype");		      
-		      RDFNode constant = soln.get("constant");		     		  
-		      Literal propColumn = soln.getLiteral("propertyColumn");
-		      Literal columnGraph = soln.getLiteral("columnGraph");
-		      Resource columnGraphIRI = soln.getResource("columnGraphIRI");
+		      RDFNode object = soln.get("object");		     		  
+		      Literal propColumn = soln.getLiteral("predicateColumn");
+		      Literal graphColumn = soln.getLiteral("graphColumn");
+		      Resource graph = soln.getResource("graph");
 		      
-		      RDFTermMap propertyMap = new RDFTermMap();
-		      if (property!=null)
-		    	  propertyMap.setProperty(model.createProperty(property.getURI()));
-		      if (typeProperty!=null)
-		    	  propertyMap.setRdfTypeProperty(model.createProperty(typeProperty.getURI()));
+		      PredicateObjectMap poMap = new PredicateObjectMap();
+		      PredicateMap pMap = new PredicateMap();
+		      ObjectMap oMap = new ObjectMap();
+		      if (predicate!=null)
+		    	  pMap.setPredicate(model.createProperty(predicate.getURI()));
 		      if (propColumn!=null)
-		    	  propertyMap.setPropertyColumn(propColumn.getString());
-		      if (column!=null)
-		    	  propertyMap.setColumn(column.getString());
-		      if (datatype!=null)		    		    
-		    	  propertyMap.setDatatype(getDatatype(datatype.getURI()));
-		      if (constant != null)
-		    	  propertyMap.setConstantValue(constant);
-		      if (columnGraph!=null)
-		    	  propertyMap.setColumnGraph(columnGraph.getString());
-		      if (columnGraphIRI!=null)
-		    	  propertyMap.setColumnGraphIRI(columnGraphIRI.getURI());
+		    	  pMap.setColumn(propColumn.getString());
 		      
-		      logger.debug(propertyMap.getColumn()+"-"+propertyMap.getProperty()+"-"+propertyMap.getDatatype());
-		      tMap.addPropertyObjectMap(propertyMap);
+		      if (column!=null)
+		    	  oMap.setColumn(column.getString());
+		      if (datatype!=null)		    		    
+		    	  oMap.setDatatype(getDatatype(datatype.getURI()));
+		      if (object != null)
+		    	  oMap.setObject(object);
+		      if (graphColumn!=null)
+		    	  poMap.setGraphColumn(graphColumn.getString());
+		      if (graph!=null)
+		    	  poMap.setGraph(graph.getURI());
+		      
+		      logger.debug(oMap.getColumn()+"-"+pMap.getPredicate()+"-"+oMap.getDatatype());
+		      poMap.setPredicateMap(pMap);
+		      poMap.setObjectMap(oMap);
+		      tMap.addPropertyObjectMap(poMap);
 		    }
 		  } finally { qexec.close() ; }
 		
