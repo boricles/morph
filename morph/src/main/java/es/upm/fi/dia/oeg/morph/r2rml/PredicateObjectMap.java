@@ -6,7 +6,7 @@ import com.hp.hpl.jena.datatypes.RDFDatatype;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 
-public class PredicateObjectMap
+public class PredicateObjectMap extends NodeMap
 {
 	private PredicateMap predicateMap;
 	private ObjectMap objectMap;
@@ -87,6 +87,22 @@ public class PredicateObjectMap
 	public ObjectMap getObjectMap()
 	{
 		return objectMap;
+	}
+
+
+
+	@Override
+	public String getColumn()
+	{
+		return getObjectMap().getColumn();
+	}
+
+
+
+	@Override
+	public RDFNode getConstant()
+	{
+		return getObjectMap().getObject();
 	}
 	
 }

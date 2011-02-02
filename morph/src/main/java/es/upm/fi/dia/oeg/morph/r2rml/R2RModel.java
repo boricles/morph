@@ -2,9 +2,12 @@ package es.upm.fi.dia.oeg.morph.r2rml;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -25,6 +28,7 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.RDFReader;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.reasoner.rulesys.impl.RDFSCMPPreprocessHook;
 
 public class R2RModel 
 {
@@ -40,6 +44,7 @@ public class R2RModel
 	private Property rrSqlQuery = null;
     private Property rrClass = null;
     private Property rrColumn = null;
+    private Property rrSubject = null;
     private Property rrSubjectMap = null;
     private Property rrPredicateObjectMap = null;
     private Property rrPredicateMap = null;
@@ -48,6 +53,7 @@ public class R2RModel
     private Property rrPropertyColumn = null;
     private Property rrRDFTypeProperty = null;
     private Property rrDatatype = null;
+    private Property rrTableName = null;
     private Property rrObject = null;
     private Property rrTableGraphIRI = null;
     private Property rrRowGraph = null;
@@ -68,6 +74,7 @@ public class R2RModel
 		rrSqlQuery = model.createProperty(r2rmlNS+"SQLQuery");
         rrClass = model.createProperty(r2rmlNS+"class");
         rrColumn = model.createProperty(r2rmlNS+"column");
+        rrSubject = model.createProperty(r2rmlNS+"subject");
         rrSubjectMap = model.createProperty(r2rmlNS+"subjectMap");
         rrPredicateObjectMap = model.createProperty(r2rmlNS+"predicateObjectMap");
         rrPredicateMap = model.createProperty(r2rmlNS+"predicateMap");
@@ -76,6 +83,8 @@ public class R2RModel
         rrPropertyColumn = model.createProperty(r2rmlNS+"propertyColumn");
         rrRDFTypeProperty = model.createProperty(r2rmlNS+"RDFTypeProperty");
         rrDatatype = model.createProperty(r2rmlNS+"datatype");
+        rrTableName = model.createProperty(r2rmlNS+"tableName");
+        
         rrObject = model.createProperty(r2rmlNS+"object");
         rrTableGraphIRI = model.createProperty(r2rmlNS+"tableGraphIRI");
         rrRowGraph = model.createProperty(r2rmlNS+"rowGraph");
@@ -97,9 +106,24 @@ public class R2RModel
 	
 	public void read(URI mappingUrl) throws IOException
 	{
+		if (mappingUrl.isAbsolute())
+		{
 		InputStream in = new FileInputStream(new File(mappingUrl));
 		this.read(in);
 		in.close();
+		}
+		else
+		{
+			URL url = R2RModel.class.getClassLoader().getResource(mappingUrl.toString());
+			try
+			{
+				this.read(url.toURI());
+			} catch (URISyntaxException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void read(InputStream in)
@@ -107,6 +131,15 @@ public class R2RModel
 		RDFReader arp = model.getReader(TURTLE_FORMAT);
 		arp.read(model,in,"");
 		readTriplesMap();
+		
+	}
+	
+	public void write(URI uri) throws IOException
+	{
+		FileWriter fw = new FileWriter(new File(uri));
+		model.write(fw, TURTLE_FORMAT);
+		model.close();
+		
 	}
 
 	public Collection<TriplesMap> getTriplesMap()
@@ -118,12 +151,15 @@ public class R2RModel
 	{
 		Collection<TriplesMap> maps = new ArrayList<TriplesMap>();
 		String queryString = "PREFIX "+r2rml+": <"+r2rmlNS+"> \n"+
-				"SELECT ?tMap ?query ?subjCol ?subjType ?subjClass ?subjGraph ?subjGraphCol ?subjInverse WHERE { \n" +
+				"SELECT ?tMap ?query ?table ?subjCol ?subjType ?subject ?subjClass " +
+				"?subjGraph ?subjGraphCol ?subjInverse WHERE { \n" +
 				"?tMap a <"+rrTriplesMap.getURI()+"> ; \n" +
 				r2rml+":"+rrSqlQuery.getLocalName()+ " ?query ; \n"+
 				r2rml+":"+rrSubjectMap.getLocalName()+ " ?subjMap . \n" +
-				"?subjMap "+r2rml+":"+rrColumn.getLocalName() + " ?subjCol . \n"+				
+				"OPTIONAL { ?tMap "+r2rml+":"+rrTableName.getLocalName() + " ?table . } \n"+				
+				"OPTIONAL { ?subjMap "+r2rml+":"+rrColumn.getLocalName() + " ?subjCol . } \n"+				
 				"OPTIONAL { ?subjMap "+r2rml+":"+rrTermType.getLocalName() + " ?subjType . } \n"+				
+				"OPTIONAL { ?subjMap "+r2rml+":"+rrSubject.getLocalName() + " ?subject . } \n"+				
 				"OPTIONAL { ?subjMap "+r2rml+":"+rrClass.getLocalName() + " ?subjClass . } \n"+				
 				"OPTIONAL { ?subjMap "+r2rml+":"+rrGraph.getLocalName() + " ?subjGraph . } \n"+				
 				"OPTIONAL { ?subjMap "+r2rml+":"+rrGraphColumn.getLocalName() + " ?subjGraphCol . } \n"+				
@@ -149,18 +185,26 @@ public class R2RModel
 		      Literal inverse = soln.getLiteral("subjInverse");
 		      Literal column = soln.getLiteral("subjCol");
 		      Literal termType = soln.getLiteral("subjType");
+		      RDFNode subject = soln.getResource("subject");
+		      Literal table = soln.getLiteral("table");
 		      
 		      TriplesMap tMap = new TriplesMap(uri);
 		      SubjectMap subjectMap = new SubjectMap();
 		      subjectMap.setRdfsClass(subjClass);
 		      tMap.setSqlQuery(sqlQuery.getString());
+		      if (table!=null)
+		    	  tMap.setTableName(table.getString());
 		      if (subjGraph!=null)
 		    	  subjectMap.setGraph(subjGraph.getURI());
 		      else if (subjGraphCol!= null)
 		    	  subjectMap.setGraphColumn(subjGraphCol.getString());
-		      subjectMap.setColumn(column.getString());
+		      if (column!=null)
+		    	  subjectMap.setColumn(column.getString());
 		      if (inverse != null)
 		    	  subjectMap.setInverseExpression(inverse.getString());
+		      if (subject != null)
+		    	  subjectMap.setSubject(subject);
+		      subjectMap.setTriplesMap(tMap);
 		      tMap.setSubjectMap(subjectMap );
 		      
 		      readPropertyObjectMap(tMap);
@@ -230,6 +274,7 @@ public class R2RModel
 		      logger.debug(oMap.getColumn()+"-"+pMap.getPredicate()+"-"+oMap.getDatatype());
 		      poMap.setPredicateMap(pMap);
 		      poMap.setObjectMap(oMap);
+		      poMap.setTriplesMap(tMap);
 		      tMap.addPropertyObjectMap(poMap);
 		    }
 		  } finally { qexec.close() ; }
@@ -253,6 +298,34 @@ public class R2RModel
 			return XSDDatatype.XSDdateTime;
 		
 		return XSDDatatype.XSDanyURI;
+	}
+
+	public Collection<TriplesMap> getTriplesMapForUri(String uri)
+	{
+		Collection<TriplesMap> col = new ArrayList<TriplesMap>();
+		for (TriplesMap t : this.getTriplesMap())
+		{
+			Resource rdfclass = t.getSubjectMap().getRdfsClass();
+			logger.info(uri+"--"+rdfclass.getURI());
+			if (rdfclass!=null && rdfclass.getURI().equals(uri))
+				col.add(t);
+		}
+		return col;
+	}
+
+	public Collection<PredicateObjectMap> getPredicateObjectMapForUri(String uri)
+	{
+		Collection<PredicateObjectMap> col = new ArrayList<PredicateObjectMap>();
+		
+		for (TriplesMap t :this.getTriplesMap())
+		{
+			for (PredicateObjectMap moMap:t.getPropertyObjectMaps())
+			{
+				if (moMap.getPredicateMap().getPredicate().getURI().equals(uri))
+					col.add(moMap);
+			}
+		}
+		return col;
 	}
 	
 	
