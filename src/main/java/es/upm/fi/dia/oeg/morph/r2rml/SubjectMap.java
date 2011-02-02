@@ -1,10 +1,10 @@
 package es.upm.fi.dia.oeg.morph.r2rml;
 
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 
-public class SubjectMap
+public class SubjectMap extends NodeMap
 {
-	// rr:subject -> i dont get the point of this set
 	private String column;
 	private String template;
 	private String termType;
@@ -13,14 +13,14 @@ public class SubjectMap
 	private String graphColumn;
 	private String graphTemplate;
 	private String inverseExpression;
-	public String getColumn()
+	private RDFNode subject;
+	
+	@Override
+	public RDFNode getConstant()
 	{
-		return column;
+		return getSubject();
 	}
-	public void setColumn(String column)
-	{
-		this.column = column;
-	}
+	
 	public String getTemplate()
 	{
 		return template;
@@ -76,6 +76,25 @@ public class SubjectMap
 	public void setInverseExpression(String inverseExpression)
 	{
 		this.inverseExpression = inverseExpression;
+	}
+	public void setSubject(RDFNode subject)
+	{
+		this.subject = subject;
+	}
+	public RDFNode getSubject()
+	{
+		return subject;
+	}
+
+	public void setColumn(String column)
+	{
+		this.column = column;
+	}
+
+	@Override
+	public String getColumn()
+	{
+		return column;
 	}
 	
 }

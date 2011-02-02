@@ -27,6 +27,7 @@ import es.upm.fi.dia.oeg.morph.r2rml.R2RModel;
 import es.upm.fi.dia.oeg.morph.r2rml.PredicateObjectMap;
 import es.upm.fi.dia.oeg.morph.r2rml.TriplesMap;
 import es.upm.fi.dia.oeg.morph.relational.RelationalModel;
+import es.upm.fi.dia.oeg.morph.relational.RelationalModelException;
 
 
 public class R2RProcessor extends Observable
@@ -35,7 +36,7 @@ public class R2RProcessor extends Observable
 	public static final String R2R_RELATIONAL_MODEL_CLASS = "r2r.relationalmodel.class";
 	private static Logger logger = Logger.getLogger(R2RProcessor.class.getName());
 
-	boolean configured = false;
+	private boolean configured = false;
 	private R2RModel model;
 	private RelationalModel relational;
 	
@@ -49,7 +50,7 @@ public class R2RProcessor extends Observable
 	}
 
 	
-	public void configure(Properties props) throws IOException, URISyntaxException, R2RProcessorConfigurationException 
+	public void configure(Properties props) throws R2RProcessorConfigurationException 
 	{
 		Class<?> relationalClass;
 		try
@@ -108,12 +109,31 @@ public class R2RProcessor extends Observable
 		catch (IllegalArgumentException e)
 		{
 			URL in = R2RProcessor.class.getClassLoader().getResource(mapping);
-			model.read(in.toURI());
+			try
+			{
+				model.read(in.toURI());
+			} catch (IOException e1)
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (URISyntaxException e1)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}	
 		configured = true;
 	}
 	
-	public Dataset transform() throws InvalidPropertyMapException, R2RProcessorConfigurationException
+	public Dataset transform() throws InvalidPropertyMapException, R2RProcessorConfigurationException, RelationalModelException
 	{
 		if (!isConfigured())
 			throw new R2RProcessorConfigurationException("Processor not configured.");
@@ -164,11 +184,11 @@ public class R2RProcessor extends Observable
 		}	
 	}
 	
-	public void generate() throws InvalidPropertyMapException, R2RProcessorConfigurationException
+	public void generate() throws InvalidPropertyMapException, R2RProcessorConfigurationException, RelationalModelException
 	{
 		serialize(transform());
 	}
-	private DataSource execute(DataSource d,TriplesMap tMap) throws InvalidPropertyMapException
+	private DataSource execute(DataSource d,TriplesMap tMap) throws InvalidPropertyMapException, RelationalModelException
 	{
 		try
 		{
@@ -211,8 +231,9 @@ public class R2RProcessor extends Observable
 			
 		} catch (SQLException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			String msg = "Exception accessing relational model: "+e.getMessage();
+			logger.error(msg);
+			throw new RelationalModelException(msg);			
 		}
 		
 		return d;

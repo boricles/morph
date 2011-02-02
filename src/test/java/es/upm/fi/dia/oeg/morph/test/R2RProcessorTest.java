@@ -13,6 +13,7 @@ import es.upm.fi.dia.oeg.morph.ParameterUtils;
 import es.upm.fi.dia.oeg.morph.R2RProcessor;
 import es.upm.fi.dia.oeg.morph.R2RProcessorConfigurationException;
 import es.upm.fi.dia.oeg.morph.r2rml.InvalidPropertyMapException;
+import es.upm.fi.dia.oeg.morph.relational.RelationalModelException;
 
 public class R2RProcessorTest
 {
@@ -36,7 +37,7 @@ public class R2RProcessorTest
 	}
 
 	@Test //@Ignore
-	public void testGenerateEx1() throws InvalidPropertyMapException, R2RProcessorConfigurationException, IOException, URISyntaxException
+	public void testGenerateEx1() throws InvalidPropertyMapException, R2RProcessorConfigurationException, IOException, URISyntaxException, RelationalModelException
 	{
 		props.setProperty(R2RProcessor.R2R_MAPPING_URL, "mappings/example1.r2r");
 		r2r.configure(props);
@@ -44,7 +45,7 @@ public class R2RProcessorTest
 	}
 	
 	@Test
-	public void testGenerateEx2() throws IOException, URISyntaxException, InvalidPropertyMapException, R2RProcessorConfigurationException
+	public void testGenerateEx2() throws IOException, URISyntaxException, InvalidPropertyMapException, R2RProcessorConfigurationException, RelationalModelException
 	{
 		props.setProperty(R2RProcessor.R2R_MAPPING_URL, "mappings/example2.r2r");
 		r2r.configure(props);
@@ -52,7 +53,7 @@ public class R2RProcessorTest
 	}
 
 	@Test
-	public void testGenerateEx3() throws IOException, URISyntaxException, InvalidPropertyMapException, R2RProcessorConfigurationException
+	public void testGenerateEx3() throws IOException, URISyntaxException, InvalidPropertyMapException, R2RProcessorConfigurationException, RelationalModelException
 	{
 		props.setProperty(R2RProcessor.R2R_MAPPING_URL, "mappings/example3.r2r");
 		r2r.configure(props);
@@ -60,11 +61,18 @@ public class R2RProcessorTest
 	}
 
 	@Test
-	public void testGenerateEx4() throws IOException, URISyntaxException, InvalidPropertyMapException, R2RProcessorConfigurationException
+	public void testGenerateEx4() throws IOException, URISyntaxException, InvalidPropertyMapException, R2RProcessorConfigurationException, RelationalModelException
 	{
 		props.setProperty(R2RProcessor.R2R_MAPPING_URL, "mappings/example4.r2r");
 		r2r.configure(props);
 		r2r.generate();
 	}
 	
+	@Test
+	public void testGenerateEx5() throws  InvalidPropertyMapException, R2RProcessorConfigurationException, RelationalModelException
+	{
+		props.setProperty(R2RProcessor.R2R_MAPPING_URL, "mappings/example5.r2r");
+		r2r.configure(props);
+		r2r.generate();
+	}
 }
