@@ -1,0 +1,267 @@
+2011-01-19 00:27:43,423 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example1.r2r
+2011-01-19 00:27:43,951 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+SELECT ?tMap ?class ?table ?subCol ?inverse ?tableGraph ?rowGraph WHERE { 
+?tMap a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:logicalTable ?table ; 
+rr:subjectMap ?subMap . 
+OPTIONAL { ?tMap rr:tableGraphIRI ?tableGraph . } 
+OPTIONAL { ?tMap rr:rowGraph ?rowGraph . } 
+OPTIONAL { ?tMap rr:class ?class . } 
+?subMap rr:column ?subCol . 
+OPTIONAL { ?subMap rr:inverseExpression ?inverse . } }
+2011-01-19 00:27:44,011 [main] DEBUG com.hp.hpl.jena.sparql.mgt.ARQMgt - Register MBean: com.hp.hpl.jena.sparql.system:type=Context
+2011-01-19 00:27:44,012 [main] DEBUG com.hp.hpl.jena.sparql.mgt.ARQMgt - Register MBean: com.hp.hpl.jena.sparql.system:type=Engine
+2011-01-19 00:27:44,013 [main] DEBUG com.hp.hpl.jena.sparql.mgt.ARQMgt - Register MBean: com.hp.hpl.jena.sparql.system:type=SystemInfo
+2011-01-19 00:27:44,014 [main] DEBUG com.hp.hpl.jena.sparql.mgt.ARQMgt - Register MBean: com.hp.hpl.jena.sparql.system:type=SystemInfo
+2011-01-19 00:27:44,015 [main] DEBUG com.hp.hpl.jena.sparql.mgt.ARQMgt - Register MBean: org.openjena.riot.system:type=SystemInfo
+2011-01-19 00:27:44,080 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-01-19 00:27:44,091 [main] DEBUG com.hp.hpl.jena.util.FileManager - Add location: LocatorFile
+2011-01-19 00:27:44,091 [main] DEBUG com.hp.hpl.jena.util.FileManager - Add location: ClassLoaderLocator
+2011-01-19 00:27:44,092 [main] DEBUG com.hp.hpl.jena.util.LocationMapper - Failed to find configuration: file:location-mapping.rdf;file:location-mapping.n3;file:location-mapping.ttl;file:etc/location-mapping.rdf;file:etc/location-mapping.n3;file:etc/location-mapping.ttl
+2011-01-19 00:27:44,092 [main] DEBUG com.hp.hpl.jena.util.FileManager - Add location: LocatorFile
+2011-01-19 00:27:44,093 [main] DEBUG com.hp.hpl.jena.util.FileManager - Add location: LocatorURL
+2011-01-19 00:27:44,093 [main] DEBUG com.hp.hpl.jena.util.FileManager - Add location: ClassLoaderLocator
+2011-01-19 00:27:44,194 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1
+2011-01-19 00:27:44,195 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+SELECT ?property ?propertyColumn ?typeProperty ?column ?datatype ?constant ?columnGraph ?columnGraphIRI WHERE { 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:propertyObjectMap ?pMap . 
+OPTIONAL { ?pMap rr:property ?property . } 
+OPTIONAL { ?pMap rr:propertyColumn ?propertyColumn . } 
+OPTIONAL { ?pMap rr:RDFTypeProperty ?typeProperty . } 
+OPTIONAL { ?pMap rr:columnGraph ?columnGraph . } 
+OPTIONAL { ?pMap rr:columnGraphIRI ?columnGraphIRI . } 
+OPTIONAL { ?pMap rr:column ?column . } 
+OPTIONAL { ?pMap rr:datatype ?datatype . } 
+OPTIONAL { ?pMap rr:constantValue ?constant . } 
+}
+2011-01-19 00:27:44,198 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-01-19 00:27:44,201 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/dept#COMPANY-null
+2011-01-19 00:27:44,202 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - loc-http://www.example.com/dept#location-null
+2011-01-19 00:27:44,202 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - dname-http://www.example.com/dept#name-null
+2011-01-19 00:27:44,203 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - deptno-http://www.example.com/dept#deptno-Datatype[http://www.w3.org/2001/XMLSchema#positiveInteger]
+2011-01-19 00:27:44,206 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example1.r2r
+2011-01-19 00:27:44,248 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+SELECT ?tMap ?class ?table ?subCol ?inverse ?tableGraph ?rowGraph WHERE { 
+?tMap a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:logicalTable ?table ; 
+rr:subjectMap ?subMap . 
+OPTIONAL { ?tMap rr:tableGraphIRI ?tableGraph . } 
+OPTIONAL { ?tMap rr:rowGraph ?rowGraph . } 
+OPTIONAL { ?tMap rr:class ?class . } 
+?subMap rr:column ?subCol . 
+OPTIONAL { ?subMap rr:inverseExpression ?inverse . } }
+2011-01-19 00:27:44,249 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-01-19 00:27:44,251 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1
+2011-01-19 00:27:44,251 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+SELECT ?property ?propertyColumn ?typeProperty ?column ?datatype ?constant ?columnGraph ?columnGraphIRI WHERE { 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:propertyObjectMap ?pMap . 
+OPTIONAL { ?pMap rr:property ?property . } 
+OPTIONAL { ?pMap rr:propertyColumn ?propertyColumn . } 
+OPTIONAL { ?pMap rr:RDFTypeProperty ?typeProperty . } 
+OPTIONAL { ?pMap rr:columnGraph ?columnGraph . } 
+OPTIONAL { ?pMap rr:columnGraphIRI ?columnGraphIRI . } 
+OPTIONAL { ?pMap rr:column ?column . } 
+OPTIONAL { ?pMap rr:datatype ?datatype . } 
+OPTIONAL { ?pMap rr:constantValue ?constant . } 
+}
+2011-01-19 00:27:44,253 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-01-19 00:27:44,255 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/dept#COMPANY-null
+2011-01-19 00:27:44,256 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - loc-http://www.example.com/dept#location-null
+2011-01-19 00:27:44,257 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - dname-http://www.example.com/dept#name-null
+2011-01-19 00:27:44,258 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - deptno-http://www.example.com/dept#deptno-Datatype[http://www.w3.org/2001/XMLSchema#positiveInteger]
+2011-01-19 00:27:44,259 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-01-19 00:27:44,259 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: Select CONCAT('_:Department',deptno) AS deptId, deptno, dname, loc from dept
+2011-01-19 00:27:44,359 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: _:Department10
+2011-01-19 00:27:44,371 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write default graph
+2011-01-19 00:27:44,385 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://example.com/ns#DeptGraph
+2011-01-19 00:27:44,390 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example2.r2r
+2011-01-19 00:27:44,393 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+SELECT ?tMap ?class ?table ?subCol ?inverse ?tableGraph ?rowGraph WHERE { 
+?tMap a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:logicalTable ?table ; 
+rr:subjectMap ?subMap . 
+OPTIONAL { ?tMap rr:tableGraphIRI ?tableGraph . } 
+OPTIONAL { ?tMap rr:rowGraph ?rowGraph . } 
+OPTIONAL { ?tMap rr:class ?class . } 
+?subMap rr:column ?subCol . 
+OPTIONAL { ?subMap rr:inverseExpression ?inverse . } }
+2011-01-19 00:27:44,395 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-01-19 00:27:44,397 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap3
+2011-01-19 00:27:44,397 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+SELECT ?property ?propertyColumn ?typeProperty ?column ?datatype ?constant ?columnGraph ?columnGraphIRI WHERE { 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap3> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:propertyObjectMap ?pMap . 
+OPTIONAL { ?pMap rr:property ?property . } 
+OPTIONAL { ?pMap rr:propertyColumn ?propertyColumn . } 
+OPTIONAL { ?pMap rr:RDFTypeProperty ?typeProperty . } 
+OPTIONAL { ?pMap rr:columnGraph ?columnGraph . } 
+OPTIONAL { ?pMap rr:columnGraphIRI ?columnGraphIRI . } 
+OPTIONAL { ?pMap rr:column ?column . } 
+OPTIONAL { ?pMap rr:datatype ?datatype . } 
+OPTIONAL { ?pMap rr:constantValue ?constant . } 
+}
+2011-01-19 00:27:44,399 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-01-19 00:27:44,401 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - likedObj-null-null
+2011-01-19 00:27:44,401 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-01-19 00:27:44,401 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: Select CONCAT('<xyz.com/emp/',id,'>') AS empId , CONCAT('<xyz.com/emp/likes/',likeType,'>') AS empLikes  , likedObj  from likes 
+2011-01-19 00:27:44,402 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: <xyz.com/emp/7369>
+2011-01-19 00:27:44,402 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: <xyz.com/emp/7369>
+2011-01-19 00:27:44,403 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write default graph
+2011-01-19 00:27:44,403 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://example.com/ns#LikesGraph
+2011-01-19 00:27:44,404 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example3.r2r
+2011-01-19 00:27:44,411 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+SELECT ?tMap ?class ?table ?subCol ?inverse ?tableGraph ?rowGraph WHERE { 
+?tMap a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:logicalTable ?table ; 
+rr:subjectMap ?subMap . 
+OPTIONAL { ?tMap rr:tableGraphIRI ?tableGraph . } 
+OPTIONAL { ?tMap rr:rowGraph ?rowGraph . } 
+OPTIONAL { ?tMap rr:class ?class . } 
+?subMap rr:column ?subCol . 
+OPTIONAL { ?subMap rr:inverseExpression ?inverse . } }
+2011-01-19 00:27:44,412 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-01-19 00:27:44,414 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap2
+2011-01-19 00:27:44,415 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+SELECT ?property ?propertyColumn ?typeProperty ?column ?datatype ?constant ?columnGraph ?columnGraphIRI WHERE { 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap2> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:propertyObjectMap ?pMap . 
+OPTIONAL { ?pMap rr:property ?property . } 
+OPTIONAL { ?pMap rr:propertyColumn ?propertyColumn . } 
+OPTIONAL { ?pMap rr:RDFTypeProperty ?typeProperty . } 
+OPTIONAL { ?pMap rr:columnGraph ?columnGraph . } 
+OPTIONAL { ?pMap rr:columnGraphIRI ?columnGraphIRI . } 
+OPTIONAL { ?pMap rr:column ?column . } 
+OPTIONAL { ?pMap rr:datatype ?datatype . } 
+OPTIONAL { ?pMap rr:constantValue ?constant . } 
+}
+2011-01-19 00:27:44,416 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-01-19 00:27:44,418 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - deptno-http://www.example.com/emp#deptNum-null
+2011-01-19 00:27:44,419 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - empTypeURI-null-null
+2011-01-19 00:27:44,420 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - job-http://www.example.com/emp#job-null
+2011-01-19 00:27:44,421 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - empno-http://www.example.com/emp#empno-null
+2011-01-19 00:27:44,421 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - ename-http://www.example.com/emp#name-null
+2011-01-19 00:27:44,422 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - jobTypeURI-null-null
+2011-01-19 00:27:44,423 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - etype-http://www.example.com/emp#etype-null
+2011-01-19 00:27:44,423 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-01-19 00:27:44,423 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: 
+       Select CONCAT('<xyz.com/emp/', empno,'>') AS empURI
+            , empno
+            , ename
+            , CONCAT('<xyz.com/emp/job/', job,'>') AS jobTypeURI
+            , job
+            , deptno
+            , CONCAT('<xyz.com/emp/etype/', etype,'>') AS empTypeURI
+            , etype
+            , CONCAT('<xyz.com/graph/', job , '/' , etype,'>') AS graphURI
+       from emp
+       
+2011-01-19 00:27:44,424 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: <xyz.com/emp/7369>
+2011-01-19 00:27:44,425 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write default graph
+2011-01-19 00:27:44,425 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://www.example.com/emp#empNameGraph
+2011-01-19 00:27:44,426 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: <xyz.com/graph/CLERK/PARTTIME>
+2011-01-19 00:27:44,428 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example4.r2r
+2011-01-19 00:27:44,436 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+SELECT ?tMap ?class ?table ?subCol ?inverse ?tableGraph ?rowGraph WHERE { 
+?tMap a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:logicalTable ?table ; 
+rr:subjectMap ?subMap . 
+OPTIONAL { ?tMap rr:tableGraphIRI ?tableGraph . } 
+OPTIONAL { ?tMap rr:rowGraph ?rowGraph . } 
+OPTIONAL { ?tMap rr:class ?class . } 
+?subMap rr:column ?subCol . 
+OPTIONAL { ?subMap rr:inverseExpression ?inverse . } }
+2011-01-19 00:27:44,437 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-01-19 00:27:44,439 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap3
+2011-01-19 00:27:44,439 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+SELECT ?property ?propertyColumn ?typeProperty ?column ?datatype ?constant ?columnGraph ?columnGraphIRI WHERE { 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap3> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:propertyObjectMap ?pMap . 
+OPTIONAL { ?pMap rr:property ?property . } 
+OPTIONAL { ?pMap rr:propertyColumn ?propertyColumn . } 
+OPTIONAL { ?pMap rr:RDFTypeProperty ?typeProperty . } 
+OPTIONAL { ?pMap rr:columnGraph ?columnGraph . } 
+OPTIONAL { ?pMap rr:columnGraphIRI ?columnGraphIRI . } 
+OPTIONAL { ?pMap rr:column ?column . } 
+OPTIONAL { ?pMap rr:datatype ?datatype . } 
+OPTIONAL { ?pMap rr:constantValue ?constant . } 
+}
+2011-01-19 00:27:44,441 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-01-19 00:27:44,443 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - likedObj-null-null
+2011-01-19 00:27:44,444 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap2
+2011-01-19 00:27:44,444 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+SELECT ?property ?propertyColumn ?typeProperty ?column ?datatype ?constant ?columnGraph ?columnGraphIRI WHERE { 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap2> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:propertyObjectMap ?pMap . 
+OPTIONAL { ?pMap rr:property ?property . } 
+OPTIONAL { ?pMap rr:propertyColumn ?propertyColumn . } 
+OPTIONAL { ?pMap rr:RDFTypeProperty ?typeProperty . } 
+OPTIONAL { ?pMap rr:columnGraph ?columnGraph . } 
+OPTIONAL { ?pMap rr:columnGraphIRI ?columnGraphIRI . } 
+OPTIONAL { ?pMap rr:column ?column . } 
+OPTIONAL { ?pMap rr:datatype ?datatype . } 
+OPTIONAL { ?pMap rr:constantValue ?constant . } 
+}
+2011-01-19 00:27:44,446 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-01-19 00:27:44,448 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - deptno-http://www.example.com/emp#deptNum-null
+2011-01-19 00:27:44,448 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - etype-http://www.example.com/emp#etype-null
+2011-01-19 00:27:44,449 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - empTypeURI-null-null
+2011-01-19 00:27:44,450 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - jobTypeURI-null-null
+2011-01-19 00:27:44,450 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - ename-http://www.example.com/emp#name-null
+2011-01-19 00:27:44,451 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - empno-http://www.example.com/emp#empno-null
+2011-01-19 00:27:44,452 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - job-http://www.example.com/emp#job-null
+2011-01-19 00:27:44,452 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1
+2011-01-19 00:27:44,452 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+SELECT ?property ?propertyColumn ?typeProperty ?column ?datatype ?constant ?columnGraph ?columnGraphIRI WHERE { 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:propertyObjectMap ?pMap . 
+OPTIONAL { ?pMap rr:property ?property . } 
+OPTIONAL { ?pMap rr:propertyColumn ?propertyColumn . } 
+OPTIONAL { ?pMap rr:RDFTypeProperty ?typeProperty . } 
+OPTIONAL { ?pMap rr:columnGraph ?columnGraph . } 
+OPTIONAL { ?pMap rr:columnGraphIRI ?columnGraphIRI . } 
+OPTIONAL { ?pMap rr:column ?column . } 
+OPTIONAL { ?pMap rr:datatype ?datatype . } 
+OPTIONAL { ?pMap rr:constantValue ?constant . } 
+}
+2011-01-19 00:27:44,454 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-01-19 00:27:44,456 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/dept#COMPANY-null
+2011-01-19 00:27:44,457 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - loc-http://www.example.com/dept#location-null
+2011-01-19 00:27:44,457 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - dname-http://www.example.com/dept#name-null
+2011-01-19 00:27:44,458 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - deptno-http://www.example.com/dept#deptno-Datatype[http://www.w3.org/2001/XMLSchema#positiveInteger]
+2011-01-19 00:27:44,458 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-01-19 00:27:44,458 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: 
+    	Select CONCAT('<xyz.com/emp/',id,'>') AS empId , 
+    		CONCAT('<xyz.com/emp/likes/',likeType,'>') AS empLikes  , 
+    		likedObj  
+    	from likes 
+    	
+2011-01-19 00:27:44,459 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: <xyz.com/emp/7369>
+2011-01-19 00:27:44,459 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: <xyz.com/emp/7369>
+2011-01-19 00:27:44,459 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: 
+       Select CONCAT('<xyz.com/emp/', empno,'>') AS empURI
+            , empno
+            , ename
+            , CONCAT('<xyz.com/emp/job/', job,'>') AS jobTypeURI
+            , job
+            , deptno
+            , CONCAT('<xyz.com/emp/etype/', etype,'>') AS empTypeURI
+            , etype
+            , CONCAT('<xyz.com/graph/', job , '/' , etype,'>') AS graphURI
+       from emp
+       
+2011-01-19 00:27:44,460 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: <xyz.com/emp/7369>
+2011-01-19 00:27:44,461 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: 
+    	Select CONCAT('_:Department',deptno) AS deptId, 
+    		deptno, 
+    		dname, 
+    		loc 
+    	from dept
+    	
+2011-01-19 00:27:44,461 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: _:Department10
+2011-01-19 00:27:44,462 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write default graph
+2011-01-19 00:27:44,462 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://example.com/ns#DeptGraph
+2011-01-19 00:27:44,463 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://www.example.com/emp#empNameGraph
+2011-01-19 00:27:44,464 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: <xyz.com/graph/CLERK/PARTTIME>
+2011-01-19 00:27:44,466 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://example.com/ns#LikesGraph

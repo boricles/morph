@@ -1,0 +1,42 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix exa: <http://example.com/ns#> .
+@prefix dept: <http://www.example.com/dept#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix : <http://es.upm.fi.dia.oeg/R2RMapping#> .
+:TriplesMap1
+    a rr:TriplesMapClass;
+    rr:SQLQuery """
+       Select CONCAT('Department', deptno) AS "deptId"
+       		, deptno
+            , dname
+            , loc
+         from test.DEPT
+       """;
+
+    rr:subjectMap [ rr:column "deptId"; rr:termtype "BlankNode";               
+    				rr:class exa:dept; 
+                    rr:graph exa:DeptGraph;
+                    rr:inverseExpression "{deptno} = substr({deptId},length('Department')+1)"];
+
+    rr:predicateObjectMap
+    [ rr:predicateMap [ rr:predicate dept:deptno ]; 
+      rr:objectMap    [ rr:column "deptno"; rr:datatype xsd:positiveInteger ] ];
+      
+    rr:predicateObjectMap 
+    [ 
+      rr:predicateMap [ rr:predicate dept:name ]; 
+      rr:objectMap    [ rr:column "dname" ]
+    ];
+
+    rr:predicateObjectMap 
+    [ 
+      rr:predicateMap [ rr:predicate dept:location ]; 
+      rr:objectMap    [ rr:column "loc" ]
+    ];
+
+    rr:predicateObjectMap 
+    [ 
+      rr:predicateMap [ rr:predicate dept:COMPANY ]; 
+      rr:objectMap    [ rr:object "EXAMPLE Corporation" ]
+    ]
+.
