@@ -15,7 +15,8 @@
   
   	<modules>
 		<module>morph-core</module>
-	</modules>
+		<module>morph-r2rml</module>
+  	</modules>
   
   <scm>
   	<connection>scm:svn:http://morph.googlecode.com/svn/trunk</connection>
