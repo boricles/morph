@@ -3,6 +3,8 @@
   
   <groupId>es.upm.fi.dia.oeg</groupId>
   <artifactId>morph</artifactId>
+  <packaging>pom</packaging>
+  <name>Morph</name>
   <version>0.0.1-SNAPSHOT</version>  
   
   <parent>
@@ -17,6 +19,8 @@
   	<url>http://morph.googlecode.com/svn/trunk</url>
   </scm>
   
+  <description>An R2RML implementation</description>
+  <url>http://morph.googlecode.com</url>
   <issueManagement>
   	<system>Morph Goggle Code</system>
   	<url>http://code.google.com/p/morph/issues/list</url>
@@ -117,5 +121,8 @@
 			</plugin>
 		</plugins>
 	</reporting>
+	<modules>
+		<module>morph-core</module>
+	</modules>
 	
 </project>
