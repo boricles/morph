@@ -57,6 +57,18 @@
 		<type>jar</type>
 		<scope>compile</scope>
 	</dependency>
+	<dependency>
+		<groupId>commons-io</groupId>
+		<artifactId>commons-io</artifactId>
+		<version>2.0.1</version>
+		<type>jar</type>
+		<scope>compile</scope>
+	</dependency>
+	<dependency>
+		<groupId>net.sf</groupId>
+		<artifactId>jsqlparser</artifactId>
+		<version>0.0.1</version>
+	</dependency>
   </dependencies>
   <issueManagement>
   	<system>Morph GCode</system>

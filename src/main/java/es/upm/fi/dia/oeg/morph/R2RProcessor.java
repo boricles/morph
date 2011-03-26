@@ -23,6 +23,8 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.RDF;
 
 import es.upm.fi.dia.oeg.morph.r2rml.InvalidPropertyMapException;
+import es.upm.fi.dia.oeg.morph.r2rml.InvalidR2RDocumentException;
+import es.upm.fi.dia.oeg.morph.r2rml.InvalidR2RLocationException;
 import es.upm.fi.dia.oeg.morph.r2rml.R2RModel;
 import es.upm.fi.dia.oeg.morph.r2rml.PredicateObjectMap;
 import es.upm.fi.dia.oeg.morph.r2rml.TriplesMap;
@@ -49,8 +51,7 @@ public class R2RProcessor extends Observable
 		return configured;
 	}
 
-	
-	public void configure(Properties props) throws R2RProcessorConfigurationException 
+	private void configureRelational(Properties props) throws R2RProcessorConfigurationException
 	{
 		Class<?> relationalClass;
 		try
@@ -95,41 +96,27 @@ public class R2RProcessor extends Observable
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+			
+	}
+	
+	public void configure(Properties props) throws R2RProcessorConfigurationException, InvalidR2RDocumentException, InvalidR2RLocationException 
+	{
+		configureRelational(props);
 		
-		String mapping = props.getProperty(R2R_MAPPING_URL);
+		URI mapping;
+		try
+		{
+			mapping = new URI(props.getProperty(R2R_MAPPING_URL));
+		} catch (URISyntaxException e1)
+		{
+			throw new IllegalArgumentException("Invalid Mapping URI: "+e1.getMessage(),e1);
+		}
 		logger.debug("Mapping file: "+mapping);
 		if (model!=null)
 			model.close();
 		model = new R2RModel();
 
-		try
-		{
-			model.read(new URI(props.getProperty(R2R_MAPPING_URL)));
-		} 
-		catch (IllegalArgumentException e)
-		{
-			URL in = R2RProcessor.class.getClassLoader().getResource(mapping);
-			try
-			{
-				model.read(in.toURI());
-			} catch (IOException e1)
-			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (URISyntaxException e1)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (URISyntaxException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
+		model.read(mapping);
 		configured = true;
 	}
 	

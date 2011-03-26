@@ -24,6 +24,7 @@ public class TriplesMap
 	{
 		this.setUri(uri);
 		predicateObjectMap = new ArrayList<PredicateObjectMap>();
+		refPredicateObjectMap = new ArrayList<RefPredicateObjectMap>();
 	}
 	public void addPropertyObjectMap(PredicateObjectMap propertyObjectMap)
 	{
@@ -33,6 +34,16 @@ public class TriplesMap
 	public Collection<PredicateObjectMap> getPropertyObjectMaps()
 	{
 		return this.predicateObjectMap;
+	}
+
+	public void addRefPropertyObjectMap(RefPredicateObjectMap refPropertyObjectMap)
+	{
+		this.refPredicateObjectMap.add(refPropertyObjectMap);
+	}
+	
+	public Collection<RefPredicateObjectMap> getRefPropertyObjectMaps()
+	{
+		return this.refPredicateObjectMap;
 	}
 
 	public void setSqlQuery(String sqlQuery)

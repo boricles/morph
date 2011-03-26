@@ -2,6 +2,7 @@ package es.upm.fi.dia.oeg.morph.r2rml;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,11 +11,14 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import com.hp.hpl.jena.datatypes.RDFDatatype;
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
+import com.hp.hpl.jena.n3.turtle.TurtleParseException;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
@@ -37,8 +41,11 @@ public class R2RModel
 	
 	private static Logger logger = Logger.getLogger(R2RModel.class.getName());
 
+	public static final String R2RML_URI = "http://www.w3.org/ns/r2rml";
 	private static String r2rmlNS = "http://www.w3.org/ns/r2rml#";
+	private static String morphNS = "http://es.upm.fi.dia.oeg/morph#";	
 	private static String r2rml = "rr";
+	private static String morph = "morph";
 	private Model model;
 	
 	private Property rrSqlQuery = null;
@@ -49,6 +56,9 @@ public class R2RModel
     private Property rrPredicateObjectMap = null;
     private Property rrPredicateMap = null;
     private Property rrObjectMap = null;
+    private Property rrRefPredicateObjectMap = null;
+    private Property rrRefPredicateMap = null;
+    private Property rrRefObjectMap = null;
     private Property rrPredicate = null;
     private Property rrPropertyColumn = null;
     private Property rrRDFTypeProperty = null;
@@ -59,11 +69,15 @@ public class R2RModel
     private Property rrRowGraph = null;
     private Property rrInverseExpression = null;
     private Property rrGraphColumn = null;
-    private Property rrColumnGraphIRI = null;
-    
+    private Property rrColumnGraphIRI = null;    
 	private Resource rrTriplesMap = null;
-
-	private Collection<TriplesMap> triplesMap;
+	private Property rrJoinCondition = null;
+	private Property rrParentTriplesMap = null;
+	
+	private Resource morphColumnOperation = null;
+	
+	
+	private Map<String,TriplesMap> triplesMap;
 	private Property rrTermType;
 	private Property rrGraph;
 	
@@ -79,6 +93,10 @@ public class R2RModel
         rrPredicateObjectMap = model.createProperty(r2rmlNS+"predicateObjectMap");
         rrPredicateMap = model.createProperty(r2rmlNS+"predicateMap");
         rrObjectMap = model.createProperty(r2rmlNS+"objectMap");
+        rrRefPredicateObjectMap = model.createProperty(r2rmlNS+"refPredicateObjectMap");
+        rrRefPredicateMap = model.createProperty(r2rmlNS+"refPredicateMap");
+        rrRefObjectMap = model.createProperty(r2rmlNS+"refObjectMap");
+        
         rrPredicate = model.createProperty(r2rmlNS+"predicate");
         rrPropertyColumn = model.createProperty(r2rmlNS+"propertyColumn");
         rrRDFTypeProperty = model.createProperty(r2rmlNS+"RDFTypeProperty");
@@ -96,7 +114,10 @@ public class R2RModel
         rrGraphColumn = model.createProperty(r2rmlNS,"graphColumn");
     	rrTriplesMap = model.createResource(r2rmlNS+"TriplesMapClass");
 
-		
+    	rrJoinCondition = model.createProperty(r2rmlNS+"joinCondition");
+    	rrParentTriplesMap = model.createProperty(r2rmlNS+"parentTriplesMap");
+    	
+    	morphColumnOperation = model.createResource(morphNS+"columnOperation");
 	}
 	
 	public void close()
@@ -104,13 +125,22 @@ public class R2RModel
 		model.close();
 	}
 	
-	public void read(URI mappingUrl) throws IOException
+	public void read(URI mappingUrl) throws InvalidR2RDocumentException, InvalidR2RLocationException
 	{
 		if (mappingUrl.isAbsolute())
 		{
-		InputStream in = new FileInputStream(new File(mappingUrl));
-		this.read(in);
-		in.close();
+			try
+			{
+				InputStream in = new FileInputStream(new File(mappingUrl));
+				this.read(in);
+				in.close();
+			}
+			catch (FileNotFoundException e)
+			{
+				throw new InvalidR2RLocationException(e.getMessage(), e);
+			} catch (IOException e)
+			{
+				throw new InvalidR2RLocationException(e.getMessage(), e);			}
 		}
 		else
 		{
@@ -120,16 +150,26 @@ public class R2RModel
 				this.read(url.toURI());
 			} catch (URISyntaxException e)
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				String msg = "Error reading the mapping location: "+e.getMessage();
+				logger.error(msg);
+				throw new InvalidR2RLocationException(msg,e);
 			}
 		}
 	}
 	
-	public void read(InputStream in)
+	public void read(InputStream in) throws InvalidR2RDocumentException
 	{
 		RDFReader arp = model.getReader(TURTLE_FORMAT);
-		arp.read(model,in,"");
+		try
+		{
+			arp.read(model,in,"");
+		}
+		catch (TurtleParseException e)
+		{
+			String msg = "Error parsing the r2r document: "+e.getMessage();
+			logger.error(msg);
+			throw new InvalidR2RDocumentException(msg,e);
+		}
 		readTriplesMap();
 		
 	}
@@ -144,20 +184,32 @@ public class R2RModel
 
 	public Collection<TriplesMap> getTriplesMap()
 	{
-        return this.triplesMap;
+        return this.triplesMap.values();
 	}
 	
 	private void readTriplesMap()
 	{
-		Collection<TriplesMap> maps = new ArrayList<TriplesMap>();
+		triplesMap = new HashMap<String,TriplesMap>();
+		readTriplesMap(null);
+		
+	}
+	
+	private void readTriplesMap(String triplesMapUri)
+	{
+		String tMapVar = "?tMap";
+		if (triplesMapUri!=null)
+			tMapVar = "<"+triplesMapUri+">";
+		//Collection<TriplesMap> maps = new ArrayList<TriplesMap>();
 		String queryString = "PREFIX "+r2rml+": <"+r2rmlNS+"> \n"+
-				"SELECT ?tMap ?query ?table ?subjCol ?subjType ?subject ?subjClass " +
+				"PREFIX "+morph+": <"+morphNS+"> \n"+
+				"SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass " +
 				"?subjGraph ?subjGraphCol ?subjInverse WHERE { \n" +
-				"?tMap a <"+rrTriplesMap.getURI()+"> ; \n" +
+				tMapVar+" a <"+rrTriplesMap.getURI()+"> ; \n" +
 				r2rml+":"+rrSqlQuery.getLocalName()+ " ?query ; \n"+
 				r2rml+":"+rrSubjectMap.getLocalName()+ " ?subjMap . \n" +
 				"OPTIONAL { ?tMap "+r2rml+":"+rrTableName.getLocalName() + " ?table . } \n"+				
 				"OPTIONAL { ?subjMap "+r2rml+":"+rrColumn.getLocalName() + " ?subjCol . } \n"+				
+				"OPTIONAL { ?subjMap "+morph+":"+morphColumnOperation.getLocalName() + " ?subjColOp . } \n"+				
 				"OPTIONAL { ?subjMap "+r2rml+":"+rrTermType.getLocalName() + " ?subjType . } \n"+				
 				"OPTIONAL { ?subjMap "+r2rml+":"+rrSubject.getLocalName() + " ?subject . } \n"+				
 				"OPTIONAL { ?subjMap "+r2rml+":"+rrClass.getLocalName() + " ?subjClass . } \n"+				
@@ -168,14 +220,16 @@ public class R2RModel
 		
 		logger.debug("Query tripleMap: "+queryString);
 		Query query = QueryFactory.create(queryString ) ;
+		
 		  QueryExecution qexec = QueryExecutionFactory.create(query, model) ;
 		  try {
 		    ResultSet results = qexec.execSelect() ;
 		    for ( ; results.hasNext() ; )
 		    {
 		      QuerySolution soln = results.nextSolution() ;
-		      String uri = soln.get("tMap").asResource().getURI();
-		      
+		      String uri = triplesMapUri==null?soln.get("tMap").asResource().getURI():triplesMapUri;
+		      if (triplesMap.containsKey(uri))
+		    	  continue;
 		      logger.debug("Triples map found: "+uri);
 		      
 		      Resource subjClass = soln.getResource("subjClass"); 
@@ -184,6 +238,7 @@ public class R2RModel
 		      Literal subjGraphCol = soln.getLiteral("subjGraphCol");
 		      Literal inverse = soln.getLiteral("subjInverse");
 		      Literal column = soln.getLiteral("subjCol");
+		      Literal columnOperation = soln.getLiteral("subjColOp");
 		      Literal termType = soln.getLiteral("subjType");
 		      RDFNode subject = soln.getResource("subject");
 		      Literal table = soln.getLiteral("table");
@@ -198,6 +253,8 @@ public class R2RModel
 		    	  subjectMap.setGraph(subjGraph.getURI());
 		      else if (subjGraphCol!= null)
 		    	  subjectMap.setGraphColumn(subjGraphCol.getString());
+		      if (columnOperation != null)
+		    	  subjectMap.setColumnOperation(columnOperation.getString());
 		      if (column!=null)
 		    	  subjectMap.setColumn(column.getString());
 		      if (inverse != null)
@@ -208,16 +265,28 @@ public class R2RModel
 		      tMap.setSubjectMap(subjectMap );
 		      
 		      readPropertyObjectMap(tMap);
+		      readRefPropertyObjectMap(tMap);
 		      
-		      maps.add(tMap);
+		      triplesMap.put(uri, tMap);
 		    }
 		  } finally { qexec.close() ; }
 
-		this.triplesMap=maps;
+		//this.triplesMap=maps;
 		
 	}
 	
-
+	/*
+	private void fillRefTriplesMap(TriplesMap tMap)
+	{
+		for (TriplesMap t:getTriplesMap())
+		{
+			for (RefPredicateObjectMap refPOM:t.getRefPropertyObjectMaps())
+			{
+				if (refPOM.getObjectMap().get)
+			}
+		}
+	}
+	*/
 	private void readPropertyObjectMap(TriplesMap tMap)
 	{
 		String queryString = "PREFIX "+r2rml+": <"+r2rmlNS+"> \n" +
@@ -236,6 +305,7 @@ public class R2RModel
 					"OPTIONAL { ?oMap "+r2rml+":"+rrObject.getLocalName() + " ?object . } \n"+				
 					"}";
 		logger.debug("Query propertyObjectMap: "+queryString);
+		
 		Query query = QueryFactory.create(queryString ) ;
 		  QueryExecution qexec = QueryExecutionFactory.create(query, model) ;
 		  try {
@@ -276,6 +346,73 @@ public class R2RModel
 		      poMap.setObjectMap(oMap);
 		      poMap.setTriplesMap(tMap);
 		      tMap.addPropertyObjectMap(poMap);
+		    }
+		  } finally { qexec.close() ; }
+		
+	}
+
+	private void readRefPropertyObjectMap(TriplesMap tMap)
+	{
+		String queryString = "PREFIX "+r2rml+": <"+r2rmlNS+"> \n" +
+					"SELECT ?predicate ?parentTm ?join " +
+					"?graphColumn ?graph WHERE { \n" +
+					"<"+tMap.getUri()+ "> a <"+rrTriplesMap.getURI()+"> ; \n" +
+					r2rml+":"+rrRefPredicateObjectMap.getLocalName()+ " ?poMap . \n" +
+					"?poMap "+r2rml+":"+rrRefPredicateMap.getLocalName()+ " ?pMap . \n" +
+					"?poMap "+r2rml+":"+rrRefObjectMap.getLocalName()+ " ?oMap . \n" +
+					"OPTIONAL { ?pMap "+r2rml+":"+rrPredicate.getLocalName() + " ?predicate . } \n"+				
+					"OPTIONAL { ?poMap "+r2rml+":"+rrGraphColumn.getLocalName() + " ?graphColumn . } \n"+				
+					"OPTIONAL { ?poMap "+r2rml+":"+rrGraph.getLocalName() + " ?graph . } \n"+				
+					"OPTIONAL { ?oMap "+r2rml+":"+rrJoinCondition.getLocalName() + " ?join . } \n"+				
+					"OPTIONAL { ?oMap "+r2rml+":"+rrParentTriplesMap.getLocalName() + " ?parentTm . } \n"+				
+					"}";
+		logger.debug("Query refPropertyObjectMap: "+queryString);
+		
+		Query query = QueryFactory.create(queryString ) ;
+		  QueryExecution qexec = QueryExecutionFactory.create(query, model) ;
+		  try {
+		    ResultSet results = qexec.execSelect() ;
+		    for ( ; results.hasNext() ; )
+		    {
+		      QuerySolution soln = results.nextSolution() ;
+		      Resource predicate = soln.getResource("predicate");
+		      Literal join = soln.getLiteral("join"); 
+		      RDFNode parent = soln.get("parentTm");		     		  
+		      Literal graphColumn = soln.getLiteral("graphColumn");
+		      Resource graph = soln.getResource("graph");
+		      
+		      RefPredicateObjectMap poMap = new RefPredicateObjectMap();
+		      RefPredicateMap pMap = new RefPredicateMap();
+		      RefObjectMap oMap = new RefObjectMap();
+		      if (predicate!=null)
+		    	  pMap.setPredicate(model.createProperty(predicate.getURI()));
+		      
+		      if (join!=null)
+		    	  oMap.setJoinCondition(join.getString());
+		      if (parent != null)
+		      {
+		    	  if (triplesMap.containsKey(parent.asResource().getURI()))
+		    		  oMap.setParentTriplesMap(triplesMap.get(parent.asResource().getURI()));
+		    	  else
+		    	  {
+		    		  logger.debug("Find ref: "+parent.asResource().getURI());
+		    		  readTriplesMap(parent.asResource().getURI());
+		    		  oMap.setParentTriplesMap(triplesMap.get(parent.asResource().getURI()));
+		    	  }
+		      }
+		      if (graphColumn!=null)
+		    	  poMap.setGraphColumn(graphColumn.getString());
+		      if (graph!=null)
+		    	  poMap.setGraph(graph.getURI());
+		      
+		      
+		      logger.debug(oMap.getJoinCondition()+"-"+pMap.getPredicate());
+		      if (oMap.getParentTriplesMap()!=null)
+		    	  logger.debug("Triples: -"+oMap.getParentTriplesMap().getUri());
+		      poMap.setRefPredicateMap(pMap);
+		      poMap.setRefObjectMap(oMap);
+		      poMap.setTriplesMap(tMap);
+		      tMap.addRefPropertyObjectMap(poMap);
 		    }
 		  } finally { qexec.close() ; }
 		
@@ -325,9 +462,24 @@ public class R2RModel
 					col.add(moMap);
 			}
 		}
+		col.addAll(getRefPredicateObjectMapForUri(uri));
 		return col;
 	}
 	
+	public Collection<RefPredicateObjectMap> getRefPredicateObjectMapForUri(String uri)
+	{
+		Collection<RefPredicateObjectMap> col = new ArrayList<RefPredicateObjectMap>();
+		
+		for (TriplesMap t :this.getTriplesMap())
+		{
+			for (RefPredicateObjectMap moMap:t.getRefPropertyObjectMaps())
+			{
+				if (moMap.getRefPredicateMap().getPredicate().getURI().equals(uri))
+					col.add(moMap);
+			}
+		}
+		return col;
+	}
 	
 	
 	

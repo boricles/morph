@@ -15,6 +15,9 @@ public class SubjectMap extends NodeMap
 	private String inverseExpression;
 	private RDFNode subject;
 	
+	//TODO: this is solely for morph
+	private String columnOperation;
+	
 	@Override
 	public RDFNode getConstant()
 	{
@@ -95,6 +98,16 @@ public class SubjectMap extends NodeMap
 	public String getColumn()
 	{
 		return column;
+	}
+
+	public void setColumnOperation(String columnOperation)
+	{
+		this.columnOperation = columnOperation;
+	}
+
+	public String getColumnOperation()
+	{
+		return columnOperation;
 	}
 	
 }

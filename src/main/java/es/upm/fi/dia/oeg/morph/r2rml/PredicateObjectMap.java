@@ -12,9 +12,9 @@ public class PredicateObjectMap extends NodeMap
 	private ObjectMap objectMap;
 
 	
-	private String graphColumn;
-	private String graph; //TODO should we accept multi-values?
-	private String graphTemplate;
+	protected String graphColumn;
+	protected String graph; //TODO should we accept multi-values?
+	protected String graphTemplate;
 	
 
 	
@@ -103,6 +103,15 @@ public class PredicateObjectMap extends NodeMap
 	public RDFNode getConstant()
 	{
 		return getObjectMap().getObject();
+	}
+
+
+
+	@Override
+	public String getColumnOperation()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
