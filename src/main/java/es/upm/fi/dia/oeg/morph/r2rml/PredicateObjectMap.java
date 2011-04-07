@@ -113,5 +113,13 @@ public class PredicateObjectMap extends NodeMap
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+
+	@Override
+	public String getTemplate()
+	{
+		return getObjectMap().getTemplate();
+	}
 	
 }

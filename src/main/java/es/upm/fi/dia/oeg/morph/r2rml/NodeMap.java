@@ -7,6 +7,7 @@ public abstract class NodeMap
 	
 	public abstract String getColumn();
 	public abstract String getColumnOperation();
+	public abstract String getTemplate();
 	
 	public abstract RDFNode getConstant();
 	public void setTriplesMap(TriplesMap triplesMap)

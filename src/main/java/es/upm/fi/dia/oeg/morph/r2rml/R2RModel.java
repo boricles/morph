@@ -71,6 +71,7 @@ public class R2RModel
     private Property rrGraphColumn = null;
     private Property rrColumnGraphIRI = null;    
 	private Resource rrTriplesMap = null;
+	private Resource rrTemplate = null;
 	private Property rrJoinCondition = null;
 	private Property rrParentTriplesMap = null;
 	
@@ -102,7 +103,8 @@ public class R2RModel
         rrRDFTypeProperty = model.createProperty(r2rmlNS+"RDFTypeProperty");
         rrDatatype = model.createProperty(r2rmlNS+"datatype");
         rrTableName = model.createProperty(r2rmlNS+"tableName");
-        
+
+        rrTemplate = model.createProperty(r2rmlNS+"template");
         rrObject = model.createProperty(r2rmlNS+"object");
         rrTableGraphIRI = model.createProperty(r2rmlNS+"tableGraphIRI");
         rrRowGraph = model.createProperty(r2rmlNS+"rowGraph");
@@ -203,13 +205,14 @@ public class R2RModel
 		String queryString = "PREFIX "+r2rml+": <"+r2rmlNS+"> \n"+
 				"PREFIX "+morph+": <"+morphNS+"> \n"+
 				"SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass " +
-				"?subjGraph ?subjGraphCol ?subjInverse WHERE { \n" +
+				"?subjGraph ?subjGraphCol ?subjInverse ?subjTemplate WHERE { \n" +
 				tMapVar+" a <"+rrTriplesMap.getURI()+"> ; \n" +
 				r2rml+":"+rrSqlQuery.getLocalName()+ " ?query ; \n"+
 				r2rml+":"+rrSubjectMap.getLocalName()+ " ?subjMap . \n" +
-				"OPTIONAL { ?tMap "+r2rml+":"+rrTableName.getLocalName() + " ?table . } \n"+				
+				"OPTIONAL { "+tMapVar+" "+r2rml+":"+rrTableName.getLocalName() + " ?table . } \n"+				
 				"OPTIONAL { ?subjMap "+r2rml+":"+rrColumn.getLocalName() + " ?subjCol . } \n"+				
 				"OPTIONAL { ?subjMap "+morph+":"+morphColumnOperation.getLocalName() + " ?subjColOp . } \n"+				
+				"OPTIONAL { ?subjMap "+r2rml+":"+rrTemplate.getLocalName() + " ?subjTemplate . } \n"+				
 				"OPTIONAL { ?subjMap "+r2rml+":"+rrTermType.getLocalName() + " ?subjType . } \n"+				
 				"OPTIONAL { ?subjMap "+r2rml+":"+rrSubject.getLocalName() + " ?subject . } \n"+				
 				"OPTIONAL { ?subjMap "+r2rml+":"+rrClass.getLocalName() + " ?subjClass . } \n"+				
@@ -227,7 +230,16 @@ public class R2RModel
 		    for ( ; results.hasNext() ; )
 		    {
 		      QuerySolution soln = results.nextSolution() ;
-		      String uri = triplesMapUri==null?soln.get("tMap").asResource().getURI():triplesMapUri;
+		      
+		      String uri = triplesMapUri;
+		      if (triplesMapUri==null)
+		      {
+		    	if (soln.get("tMap").isAnon())
+			    		uri = soln.get("tMap").asNode().getBlankNodeLabel();
+		    	else if (soln.get("tMap").isResource())
+		    		uri = soln.get("tMap").asResource().getURI();
+		      }
+		      //triplesMapUri==null?soln.get("tMap").asResource().getURI():triplesMapUri;
 		      if (triplesMap.containsKey(uri))
 		    	  continue;
 		      logger.debug("Triples map found: "+uri);
@@ -242,6 +254,7 @@ public class R2RModel
 		      Literal termType = soln.getLiteral("subjType");
 		      RDFNode subject = soln.getResource("subject");
 		      Literal table = soln.getLiteral("table");
+		      Literal subjTemplate = soln.getLiteral("subjTemplate");
 		      
 		      TriplesMap tMap = new TriplesMap(uri);
 		      SubjectMap subjectMap = new SubjectMap();
@@ -255,6 +268,8 @@ public class R2RModel
 		    	  subjectMap.setGraphColumn(subjGraphCol.getString());
 		      if (columnOperation != null)
 		    	  subjectMap.setColumnOperation(columnOperation.getString());
+		      if (subjTemplate != null)
+		    	  subjectMap.setTemplate(subjTemplate.getString());
 		      if (column!=null)
 		    	  subjectMap.setColumn(column.getString());
 		      if (inverse != null)
@@ -391,13 +406,15 @@ public class R2RModel
 		    	  oMap.setJoinCondition(join.getString());
 		      if (parent != null)
 		      {
-		    	  if (triplesMap.containsKey(parent.asResource().getURI()))
-		    		  oMap.setParentTriplesMap(triplesMap.get(parent.asResource().getURI()));
+		    	  String parentUri = parent.isAnon()?parent.asNode().getBlankNodeLabel():parent.asResource().getURI(); 
+		    	  logger.debug(parentUri);
+		    	  if (triplesMap.containsKey(parentUri))
+		    		  oMap.setParentTriplesMap(triplesMap.get(parentUri));
 		    	  else
 		    	  {
-		    		  logger.debug("Find ref: "+parent.asResource().getURI());
-		    		  readTriplesMap(parent.asResource().getURI());
-		    		  oMap.setParentTriplesMap(triplesMap.get(parent.asResource().getURI()));
+		    		  logger.debug("Find ref: "+parentUri);
+		    		  readTriplesMap(parentUri);
+		    		  oMap.setParentTriplesMap(triplesMap.get(parentUri));
 		    	  }
 		      }
 		      if (graphColumn!=null)

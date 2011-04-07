@@ -63,5 +63,10 @@ public class RefPredicateObjectMap extends PredicateObjectMap
 	{
 		return null;
 	}
+	@Override
+	public String getTemplate()
+	{
+		return null;
+	}
 	
 }
