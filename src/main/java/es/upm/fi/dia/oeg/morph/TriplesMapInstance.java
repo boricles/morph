@@ -41,13 +41,13 @@ public class TriplesMapInstance
 	private void generateGraphUri()
 	{
 		String uri = null;
-		if (tMap.getSubjectMap().getGraph()!=null)
-			uri = tMap.getSubjectMap().getGraph();
-		else if (tMap.getSubjectMap().getGraphColumn()!=null)
+		if (!tMap.getSubjectMap().getGraphSet().isEmpty())
+			uri = tMap.getSubjectMap().getGraphSet().iterator().next();
+		else if (!tMap.getSubjectMap().getGraphColumnSet().isEmpty())
 		{
 			try
 			{
-				uri = rs.getString(tMap.getSubjectMap().getGraphColumn());
+				uri = rs.getString(tMap.getSubjectMap().getGraphColumnSet().iterator().next());
 			} catch (SQLException e)
 			{
 				logger.error("Unable to generate Uri: "+e.getMessage());

@@ -107,6 +107,16 @@ public class R2RProcessorTest
 		//r2r.generate();
 	}
 	
+	@Test
+	public void testGenerateEx8() throws  InvalidPropertyMapException, R2RProcessorConfigurationException, RelationalModelException, 
+	InvalidR2RDocumentException, InvalidR2RLocationException
+	{
+		props.setProperty(R2RProcessor.R2R_MAPPING_URL, "mappings/example8.r2r");
+		r2r.configure(props);
+		
+		//r2r.generate();
+	}
+
 	
 	@Test
 	public void testMappingSQL() throws  JSQLParserException

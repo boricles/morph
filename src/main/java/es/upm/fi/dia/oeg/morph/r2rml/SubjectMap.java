@@ -1,5 +1,8 @@
 package es.upm.fi.dia.oeg.morph.r2rml;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 
@@ -9,14 +12,22 @@ public class SubjectMap extends NodeMap
 	private String template;
 	private String termType;
 	private Resource rdfsClass;
-	private String graph;
-	private String graphColumn;
-	private String graphTemplate;
+	private Set<String> graphSet;
+	private Set<String> graphColumnSet;
+	private Set<String> graphTemplateSet;
 	private String inverseExpression;
 	private RDFNode subject;
 	
 	//TODO: this is solely for morph
 	private String columnOperation;
+
+	public SubjectMap()
+	{
+		graphSet = new HashSet<String>();
+		graphColumnSet = new HashSet<String>();
+		graphTemplateSet = new HashSet<String>();
+		
+	}
 	
 	@Override
 	public RDFNode getConstant()
@@ -48,29 +59,17 @@ public class SubjectMap extends NodeMap
 	{
 		this.rdfsClass = rdfsClass;
 	}
-	public String getGraph()
+	public Set<String> getGraphSet()
 	{
-		return graph;
+		return graphSet;
 	}
-	public void setGraph(String graph)
+	public Set<String> getGraphColumnSet()
 	{
-		this.graph = graph;
+		return graphColumnSet;
 	}
-	public String getGraphColumn()
+	public Set<String> getGraphTemplateSet()
 	{
-		return graphColumn;
-	}
-	public void setGraphColumn(String graphColumn)
-	{
-		this.graphColumn = graphColumn;
-	}
-	public String getGraphTemplate()
-	{
-		return graphTemplate;
-	}
-	public void setGraphTemplate(String graphTemplate)
-	{
-		this.graphTemplate = graphTemplate;
+		return graphTemplateSet;
 	}
 	public String getInverseExpression()
 	{
@@ -108,6 +107,19 @@ public class SubjectMap extends NodeMap
 	public String getColumnOperation()
 	{
 		return columnOperation;
+	}
+
+	public void addGraph(String graph)
+	{
+		graphSet.add(graph);
+	}
+	public void addGraphColumn(String graphColumn)
+	{
+		graphColumnSet.add(graphColumn);
+	}
+	public void addGraphTemplate(String graphTemplate)
+	{
+		graphTemplateSet.add(graphTemplate);
 	}
 	
 }
