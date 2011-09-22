@@ -6,19 +6,19 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix : <http://es.upm.fi.dia.oeg/R2RMapping#> . 
 :TriplesMap2
-    a rr:TriplesMapClass;
-    rr:SQLQuery """
-       Select CONCAT('example.com/emp/', empno) AS "empURI"
-            , empno
-            , ename
-            , CONCAT('example.com/emp/job/', job) AS "jobTypeURI"
-            , job
-            , deptno
-            , CONCAT('example.com/emp/etype/', etype) AS "empTypeURI"
-            , etype
-            , CONCAT('example.com/graph/', job ,'/' , etype) AS "graphURI"
-       from test.EMP
-       """;
+    a rr:TriplesMap;
+    rr:logicalTable [rr:sqlQuery """
+       			Select CONCAT('example.com/emp/', empno) AS "empURI"
+            		, empno
+            		, ename
+		            , CONCAT('example.com/emp/job/', job) AS "jobTypeURI"
+		            , job
+		            , deptno
+		            , CONCAT('example.com/emp/etype/', etype) AS "empTypeURI"
+		            , etype
+		            , CONCAT('example.com/graph/', job ,'/' , etype) AS "graphURI"
+			       from test.EMP
+		       """];
 
     rr:subjectMap [ rr:column "empURI";
                     rr:class exa:emp; 

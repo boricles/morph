@@ -9,7 +9,7 @@ public class R2RML
 
 	protected static final String uri="http://www.w3.org/ns/r2rml#";
 	
-	public static final Property sqlQuery = property("SQLQuery");
+	public static final Property sqlQuery = property("sqlQuery");
 	public static final Property classProperty = property("class");
 	public static final Property column = property("column");
 	public static final Property subject = property("subject");
@@ -26,6 +26,7 @@ public class R2RML
 	public static final Property rdfTypeProperty = property("RDFTypeProperty");
 	public static final Property datatype = property("datatype");
 	public static final Property tableName = property("tableName");
+	public static final Property logicalTable = property("logicalTable");	
 
 	public static final Property template = property("template");
 	public static final Property object = property("object");
@@ -37,7 +38,7 @@ public class R2RML
 	public static final Property termType = property("termtype");
 	public static final Property graph = property("graph");
 	public static final Property graphColumn = property("graphColumn");
-	public static final Resource TriplesMap = resource("TriplesMapClass");
+	public static final Resource TriplesMap = resource("TriplesMap");
 
 	public static final Property joinCondition = property("joinCondition");
 	public static final Property parentTriplesMap = property("parentTriplesMap");

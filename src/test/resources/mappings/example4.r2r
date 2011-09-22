@@ -6,11 +6,11 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix : <http://es.upm.fi.dia.oeg/R2RMapping#> . 
 :TriplesMap1
-    a rr:TriplesMapClass;
-    rr:SQLQuery """
+    a rr:TriplesMap;
+    rr:logicalTable [rr:sqlQuery """
        Select CONCAT('Department', deptno) AS "deptId", deptno , dname , loc
          from test.DEPT
-       """;
+       """];
 
     rr:subjectMap [ rr:column "deptId"; rr:termtype "BlankNode"; rr:class exa:dept; 
                     rr:graph exa:DeptGraph;
@@ -29,13 +29,13 @@
       rr:objectMap    [ rr:object "EXAMPLE Corporation" ]]
 .
 :TriplesMap3
- a rr:TriplesMapClass;
-    rr:SQLQuery """
+ a rr:TriplesMap;
+    rr:logicalTable[rr:sqlQuery """
       Select CONCAT('example.com/emp/', id) AS "empId"
            , CONCAT('example.com/emp/likes/', likeType) AS "empLikes"
            , likedObj
         from test.LIKES
-      """;
+      """];
 
     rr:subjectMap [ rr:column "empId"; rr:graph exa:LikesGraph ];
 
@@ -43,8 +43,8 @@
       rr:objectMap    [ rr:column "likedObj" ] ]
  .
  :TriplesMap2
-    a rr:TriplesMapClass;
-    rr:SQLQuery """
+    a rr:TriplesMap;
+    rr:logicalTable[ rr:sqlQuery """
        Select CONCAT('example.com/emp/', empno) AS "empURI"
             , empno
             , ename
@@ -55,7 +55,7 @@
             , etype
             , CONCAT('example.com/graph/', job ,'/' , etype) AS "graphURI"
        from test.EMP
-       """;
+       """];
 
     rr:subjectMap [ rr:column "empURI";  rr:class exa:emp;  rr:graphColumn "graphURI" ];
 

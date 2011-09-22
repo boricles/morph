@@ -4,13 +4,13 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix : <http://es.upm.fi.dia.oeg/R2RMapping#> . 
 :TriplesMap3
- a rr:TriplesMapClass;
-    rr:SQLQuery """
-      Select CONCAT('example.com/emp/', id) AS "empId"
-           , CONCAT('example.com/emp/likes/', likeType) AS "empLikes"
-           , likedObj
-        from test.LIKES
-      """;
+ a rr:TriplesMap;
+    rr:logicalTable [rr:sqlQuery """
+      		Select CONCAT('example.com/emp/', id) AS "empId"
+           		, CONCAT('example.com/emp/likes/', likeType) AS "empLikes"
+           		, likedObj
+        		from test.LIKES
+      		"""];
 
     rr:subjectMap [ rr:column "empId"; rr:graph exa:LikesGraph ];
 

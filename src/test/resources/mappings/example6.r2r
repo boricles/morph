@@ -6,8 +6,8 @@
 @prefix emp: <http://www.example.com/emp#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix : <http://es.upm.fi.dia.oeg/R2RMapping#> . 
-:MilfordWaveObservation   a rr:TriplesMapClass;
-    rr:SQLQuery "Select * from cco.envdata_milford";
+:MilfordWaveObservation   a rr:TriplesMap;
+    rr:logicalTable [rr:sqlQuery "Select * from cco.envdata_milford"];
     rr:subjectMap [ morph:columnOperation "CONCAT('http://semsorgrid4env.eu/ns#Observation/milford/',DateTime)";
     				rr:column "DateTime";  rr:class ssg:Observation; rr:graph ssg:streamgraph ];
 
@@ -23,8 +23,8 @@
       						rr:objectMap    [ rr:object ssg:MilfordSensor ]];
  .
 
-ssg:MilfordSensorMap a rr:TriplesMapClass;
-  	rr:SQLQuery "select 'MilfordSensorUri' as uri from cco.envdata_milford";
+ssg:MilfordSensorMap a rr:TriplesMap;
+  	rr:logicalTable [rr:sqlQuery "select 'MilfordSensorUri' as uri from cco.envdata_milford"];
   	rr:subjectMap [rr:class ssg:Procedure; rr:column "uri"];
  	rr:predicateObjectMap [ rr:predicateMap [rr:predicate ssg:LocatedIn];
    							rr:objectMap 	[rr:object ssg:CCOSouthEastEngland] ];

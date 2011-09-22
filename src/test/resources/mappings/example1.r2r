@@ -4,14 +4,15 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix : <http://es.upm.fi.dia.oeg/R2RMapping#> .
 :TriplesMap1
-    a rr:TriplesMapClass;
-    rr:SQLQuery """
-       Select CONCAT('Department', deptno) AS "deptId"
+    a rr:TriplesMap;
+    rr:logicalTable [
+    	rr:sqlQuery """
+       		Select CONCAT('Department', deptno) AS "deptId"
        		, deptno
             , dname
             , loc
-         from test.DEPT
-       """;
+         	from test.DEPT
+       		"""];
 
     rr:subjectMap [ rr:column "deptId"; rr:termtype "BlankNode";               
     				rr:class exa:dept; 

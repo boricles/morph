@@ -1,35 +1,27 @@
-2011-03-26 17:24:19,552 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example1.r2r
-2011-03-26 17:24:20,116 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:19,616 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example1.r2r
+2011-07-28 15:16:19,623 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 PREFIX morph: <http://es.upm.fi.dia.oeg/morph#> 
-SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjGraph ?subjGraphCol ?subjInverse WHERE { 
-?tMap a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
-rr:SQLQuery ?query ; 
+SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjInverse ?subjTemplate ?unique WHERE { 
+?tMap a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:logicalTable ?lt; 
 rr:subjectMap ?subjMap . 
-OPTIONAL { ?tMap rr:tableName ?table . } 
+OPTIONAL { ?lt rr:sqlQuery ?query . } 
+OPTIONAL { ?lt rr:tableName ?table . } 
+OPTIONAL { ?lt morph:uniqueIndex ?unique . } 
 OPTIONAL { ?subjMap rr:column ?subjCol . } 
 OPTIONAL { ?subjMap morph:columnOperation ?subjColOp . } 
+OPTIONAL { ?subjMap rr:template ?subjTemplate . } 
 OPTIONAL { ?subjMap rr:termtype ?subjType . } 
 OPTIONAL { ?subjMap rr:subject ?subject . } 
 OPTIONAL { ?subjMap rr:class ?subjClass . } 
-OPTIONAL { ?subjMap rr:graph ?subjGraph . } 
-OPTIONAL { ?subjMap rr:graphColumn ?subjGraphCol . } 
 OPTIONAL { ?subjMap rr:inverseExpression ?subjInverse . } }
-2011-03-26 17:24:20,179 [main] DEBUG com.hp.hpl.jena.sparql.mgt.ARQMgt - Register MBean: com.hp.hpl.jena.sparql.system:type=Context
-2011-03-26 17:24:20,180 [main] DEBUG com.hp.hpl.jena.sparql.mgt.ARQMgt - Register MBean: com.hp.hpl.jena.sparql.system:type=Engine
-2011-03-26 17:24:20,181 [main] DEBUG com.hp.hpl.jena.sparql.mgt.ARQMgt - Register MBean: com.hp.hpl.jena.sparql.system:type=SystemInfo
-2011-03-26 17:24:20,182 [main] DEBUG com.hp.hpl.jena.sparql.mgt.ARQMgt - Register MBean: com.hp.hpl.jena.sparql.system:type=SystemInfo
-2011-03-26 17:24:20,183 [main] DEBUG com.hp.hpl.jena.sparql.mgt.ARQMgt - Register MBean: org.openjena.riot.system:type=SystemInfo
-2011-03-26 17:24:20,245 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,255 [main] DEBUG com.hp.hpl.jena.util.FileManager - Add location: LocatorFile
-2011-03-26 17:24:20,256 [main] DEBUG com.hp.hpl.jena.util.FileManager - Add location: ClassLoaderLocator
-2011-03-26 17:24:20,256 [main] DEBUG com.hp.hpl.jena.util.LocationMapper - Failed to find configuration: file:location-mapping.rdf;file:location-mapping.n3;file:location-mapping.ttl;file:etc/location-mapping.rdf;file:etc/location-mapping.n3;file:etc/location-mapping.ttl
-2011-03-26 17:24:20,256 [main] DEBUG com.hp.hpl.jena.util.FileManager - Add location: LocatorFile
-2011-03-26 17:24:20,257 [main] DEBUG com.hp.hpl.jena.util.FileManager - Add location: LocatorURL
-2011-03-26 17:24:20,257 [main] DEBUG com.hp.hpl.jena.util.FileManager - Add location: ClassLoaderLocator
-2011-03-26 17:24:20,355 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1
-2011-03-26 17:24:20,357 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:19,626 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:19,630 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1
+2011-07-28 15:16:19,631 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:19,633 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:19,635 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?predicateColumn ?object ?column ?datatype ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:predicateObjectMap ?poMap . 
 ?poMap rr:predicateMap ?pMap . 
 ?poMap rr:objectMap ?oMap . 
@@ -41,14 +33,14 @@ OPTIONAL { ?oMap rr:column ?column . }
 OPTIONAL { ?oMap rr:datatype ?datatype . } 
 OPTIONAL { ?oMap rr:object ?object . } 
 }
-2011-03-26 17:24:20,359 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,363 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/dept#COMPANY-null
-2011-03-26 17:24:20,364 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - loc-http://www.example.com/dept#location-null
-2011-03-26 17:24:20,365 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - dname-http://www.example.com/dept#name-null
-2011-03-26 17:24:20,366 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - deptno-http://www.example.com/dept#deptno-Datatype[http://www.w3.org/2001/XMLSchema#positiveInteger]
-2011-03-26 17:24:20,366 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:19,637 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:19,640 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/dept#COMPANY-null
+2011-07-28 15:16:19,641 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - loc-http://www.example.com/dept#location-null
+2011-07-28 15:16:19,642 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - dname-http://www.example.com/dept#name-null
+2011-07-28 15:16:19,643 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - deptno-http://www.example.com/dept#deptno-Datatype[http://www.w3.org/2001/XMLSchema#positiveInteger]
+2011-07-28 15:16:19,643 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?parentTm ?join ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:refPredicateObjectMap ?poMap . 
 ?poMap rr:refPredicateMap ?pMap . 
 ?poMap rr:refObjectMap ?oMap . 
@@ -58,28 +50,31 @@ OPTIONAL { ?poMap rr:graph ?graph . }
 OPTIONAL { ?oMap rr:joinCondition ?join . } 
 OPTIONAL { ?oMap rr:parentTriplesMap ?parentTm . } 
 }
-2011-03-26 17:24:20,368 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,380 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example1.r2r
-2011-03-26 17:24:20,421 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:19,645 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:19,648 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example1.r2r
+2011-07-28 15:16:19,654 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 PREFIX morph: <http://es.upm.fi.dia.oeg/morph#> 
-SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjGraph ?subjGraphCol ?subjInverse WHERE { 
-?tMap a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
-rr:SQLQuery ?query ; 
+SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjInverse ?subjTemplate ?unique WHERE { 
+?tMap a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:logicalTable ?lt; 
 rr:subjectMap ?subjMap . 
-OPTIONAL { ?tMap rr:tableName ?table . } 
+OPTIONAL { ?lt rr:sqlQuery ?query . } 
+OPTIONAL { ?lt rr:tableName ?table . } 
+OPTIONAL { ?lt morph:uniqueIndex ?unique . } 
 OPTIONAL { ?subjMap rr:column ?subjCol . } 
 OPTIONAL { ?subjMap morph:columnOperation ?subjColOp . } 
+OPTIONAL { ?subjMap rr:template ?subjTemplate . } 
 OPTIONAL { ?subjMap rr:termtype ?subjType . } 
 OPTIONAL { ?subjMap rr:subject ?subject . } 
 OPTIONAL { ?subjMap rr:class ?subjClass . } 
-OPTIONAL { ?subjMap rr:graph ?subjGraph . } 
-OPTIONAL { ?subjMap rr:graphColumn ?subjGraphCol . } 
 OPTIONAL { ?subjMap rr:inverseExpression ?subjInverse . } }
-2011-03-26 17:24:20,422 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,425 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1
-2011-03-26 17:24:20,425 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:19,657 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:19,661 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1
+2011-07-28 15:16:19,662 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:19,669 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:19,671 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?predicateColumn ?object ?column ?datatype ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:predicateObjectMap ?poMap . 
 ?poMap rr:predicateMap ?pMap . 
 ?poMap rr:objectMap ?oMap . 
@@ -91,14 +86,14 @@ OPTIONAL { ?oMap rr:column ?column . }
 OPTIONAL { ?oMap rr:datatype ?datatype . } 
 OPTIONAL { ?oMap rr:object ?object . } 
 }
-2011-03-26 17:24:20,427 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,430 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/dept#COMPANY-null
-2011-03-26 17:24:20,431 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - loc-http://www.example.com/dept#location-null
-2011-03-26 17:24:20,432 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - dname-http://www.example.com/dept#name-null
-2011-03-26 17:24:20,433 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - deptno-http://www.example.com/dept#deptno-Datatype[http://www.w3.org/2001/XMLSchema#positiveInteger]
-2011-03-26 17:24:20,433 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:19,673 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:19,676 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/dept#COMPANY-null
+2011-07-28 15:16:19,677 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - loc-http://www.example.com/dept#location-null
+2011-07-28 15:16:19,678 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - dname-http://www.example.com/dept#name-null
+2011-07-28 15:16:19,680 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - deptno-http://www.example.com/dept#deptno-Datatype[http://www.w3.org/2001/XMLSchema#positiveInteger]
+2011-07-28 15:16:19,680 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?parentTm ?join ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:refPredicateObjectMap ?poMap . 
 ?poMap rr:refPredicateMap ?pMap . 
 ?poMap rr:refObjectMap ?oMap . 
@@ -108,48 +103,51 @@ OPTIONAL { ?poMap rr:graph ?graph . }
 OPTIONAL { ?oMap rr:joinCondition ?join . } 
 OPTIONAL { ?oMap rr:parentTriplesMap ?parentTm . } 
 }
-2011-03-26 17:24:20,435 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,438 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,438 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: 
-       Select CONCAT('Department', deptno) AS "deptId"
+2011-07-28 15:16:19,683 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:19,689 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:19,689 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: 
+       		Select CONCAT('Department', deptno) AS "deptId"
        		, deptno
             , dname
             , loc
-         from test.DEPT
-       
-2011-03-26 17:24:20,735 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: Department10
-2011-03-26 17:24:20,736 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#COMPANY
-2011-03-26 17:24:20,736 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#location
-2011-03-26 17:24:20,736 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#name
-2011-03-26 17:24:20,737 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#deptno
-2011-03-26 17:24:20,737 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: Department20
-2011-03-26 17:24:20,737 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#COMPANY
-2011-03-26 17:24:20,737 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#location
-2011-03-26 17:24:20,737 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#name
-2011-03-26 17:24:20,737 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#deptno
-2011-03-26 17:24:20,744 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write default graph
-2011-03-26 17:24:20,774 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://example.com/ns#DeptGraph
-2011-03-26 17:24:20,781 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example2.r2r
-2011-03-26 17:24:20,784 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+         	from test.DEPT
+       		
+2011-07-28 15:16:20,202 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: Department10
+2011-07-28 15:16:20,204 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#COMPANY
+2011-07-28 15:16:20,204 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#location
+2011-07-28 15:16:20,204 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#name
+2011-07-28 15:16:20,204 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#deptno
+2011-07-28 15:16:20,205 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: Department20
+2011-07-28 15:16:20,205 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#COMPANY
+2011-07-28 15:16:20,205 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#location
+2011-07-28 15:16:20,205 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#name
+2011-07-28 15:16:20,205 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#deptno
+2011-07-28 15:16:20,222 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write default graph
+2011-07-28 15:16:20,259 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://example.com/ns#DeptGraph
+2011-07-28 15:16:20,272 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example2.r2r
+2011-07-28 15:16:20,276 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 PREFIX morph: <http://es.upm.fi.dia.oeg/morph#> 
-SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjGraph ?subjGraphCol ?subjInverse WHERE { 
-?tMap a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
-rr:SQLQuery ?query ; 
+SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjInverse ?subjTemplate ?unique WHERE { 
+?tMap a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:logicalTable ?lt; 
 rr:subjectMap ?subjMap . 
-OPTIONAL { ?tMap rr:tableName ?table . } 
+OPTIONAL { ?lt rr:sqlQuery ?query . } 
+OPTIONAL { ?lt rr:tableName ?table . } 
+OPTIONAL { ?lt morph:uniqueIndex ?unique . } 
 OPTIONAL { ?subjMap rr:column ?subjCol . } 
 OPTIONAL { ?subjMap morph:columnOperation ?subjColOp . } 
+OPTIONAL { ?subjMap rr:template ?subjTemplate . } 
 OPTIONAL { ?subjMap rr:termtype ?subjType . } 
 OPTIONAL { ?subjMap rr:subject ?subject . } 
 OPTIONAL { ?subjMap rr:class ?subjClass . } 
-OPTIONAL { ?subjMap rr:graph ?subjGraph . } 
-OPTIONAL { ?subjMap rr:graphColumn ?subjGraphCol . } 
 OPTIONAL { ?subjMap rr:inverseExpression ?subjInverse . } }
-2011-03-26 17:24:20,786 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,789 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap3
-2011-03-26 17:24:20,789 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,279 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,282 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap3
+2011-07-28 15:16:20,284 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,286 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,288 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?predicateColumn ?object ?column ?datatype ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap3> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap3> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:predicateObjectMap ?poMap . 
 ?poMap rr:predicateMap ?pMap . 
 ?poMap rr:objectMap ?oMap . 
@@ -161,11 +159,11 @@ OPTIONAL { ?oMap rr:column ?column . }
 OPTIONAL { ?oMap rr:datatype ?datatype . } 
 OPTIONAL { ?oMap rr:object ?object . } 
 }
-2011-03-26 17:24:20,791 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,793 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - likedObj-null-null
-2011-03-26 17:24:20,793 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,290 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,293 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - likedObj-null-null
+2011-07-28 15:16:20,293 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?parentTm ?join ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap3> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap3> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:refPredicateObjectMap ?poMap . 
 ?poMap rr:refPredicateMap ?pMap . 
 ?poMap rr:refObjectMap ?oMap . 
@@ -175,41 +173,44 @@ OPTIONAL { ?poMap rr:graph ?graph . }
 OPTIONAL { ?oMap rr:joinCondition ?join . } 
 OPTIONAL { ?oMap rr:parentTriplesMap ?parentTm . } 
 }
-2011-03-26 17:24:20,795 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,796 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,796 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: 
-      Select CONCAT('example.com/emp/', id) AS "empId"
-           , CONCAT('example.com/emp/likes/', likeType) AS "empLikes"
-           , likedObj
-        from test.LIKES
-      
-2011-03-26 17:24:20,808 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: example.com/emp/7369
-2011-03-26 17:24:20,809 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbigexample.com/emp/likes/Playing
-2011-03-26 17:24:20,809 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: example.com/emp/7369
-2011-03-26 17:24:20,809 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbigexample.com/emp/likes/Watching
-2011-03-26 17:24:20,809 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write default graph
-2011-03-26 17:24:20,810 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://example.com/ns#LikesGraph
-2011-03-26 17:24:20,811 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example3.r2r
-2011-03-26 17:24:20,822 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,299 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,301 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,301 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: 
+      		Select CONCAT('example.com/emp/', id) AS "empId"
+           		, CONCAT('example.com/emp/likes/', likeType) AS "empLikes"
+           		, likedObj
+        		from test.LIKES
+      		
+2011-07-28 15:16:20,329 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: example.com/emp/7369
+2011-07-28 15:16:20,329 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbigexample.com/emp/likes/Playing
+2011-07-28 15:16:20,329 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: example.com/emp/7369
+2011-07-28 15:16:20,329 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbigexample.com/emp/likes/Watching
+2011-07-28 15:16:20,330 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write default graph
+2011-07-28 15:16:20,330 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://example.com/ns#LikesGraph
+2011-07-28 15:16:20,333 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example3.r2r
+2011-07-28 15:16:20,344 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 PREFIX morph: <http://es.upm.fi.dia.oeg/morph#> 
-SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjGraph ?subjGraphCol ?subjInverse WHERE { 
-?tMap a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
-rr:SQLQuery ?query ; 
+SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjInverse ?subjTemplate ?unique WHERE { 
+?tMap a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:logicalTable ?lt; 
 rr:subjectMap ?subjMap . 
-OPTIONAL { ?tMap rr:tableName ?table . } 
+OPTIONAL { ?lt rr:sqlQuery ?query . } 
+OPTIONAL { ?lt rr:tableName ?table . } 
+OPTIONAL { ?lt morph:uniqueIndex ?unique . } 
 OPTIONAL { ?subjMap rr:column ?subjCol . } 
 OPTIONAL { ?subjMap morph:columnOperation ?subjColOp . } 
+OPTIONAL { ?subjMap rr:template ?subjTemplate . } 
 OPTIONAL { ?subjMap rr:termtype ?subjType . } 
 OPTIONAL { ?subjMap rr:subject ?subject . } 
 OPTIONAL { ?subjMap rr:class ?subjClass . } 
-OPTIONAL { ?subjMap rr:graph ?subjGraph . } 
-OPTIONAL { ?subjMap rr:graphColumn ?subjGraphCol . } 
 OPTIONAL { ?subjMap rr:inverseExpression ?subjInverse . } }
-2011-03-26 17:24:20,824 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,827 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap2
-2011-03-26 17:24:20,827 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,348 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,351 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap2
+2011-07-28 15:16:20,352 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,355 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,356 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?predicateColumn ?object ?column ?datatype ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap2> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap2> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:predicateObjectMap ?poMap . 
 ?poMap rr:predicateMap ?pMap . 
 ?poMap rr:objectMap ?oMap . 
@@ -221,19 +222,19 @@ OPTIONAL { ?oMap rr:column ?column . }
 OPTIONAL { ?oMap rr:datatype ?datatype . } 
 OPTIONAL { ?oMap rr:object ?object . } 
 }
-2011-03-26 17:24:20,829 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,831 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - jobTypeURI-http://www.example.com/emp#jobtype-null
-2011-03-26 17:24:20,832 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - empTypeURI-http://www.w3.org/1999/02/22-rdf-syntax-ns#type-null
-2011-03-26 17:24:20,832 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - deptno-http://www.example.com/emp#deptNum-null
-2011-03-26 17:24:20,833 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - etype-http://www.example.com/emp#etype-null
-2011-03-26 17:24:20,834 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - ename-http://www.example.com/emp#name-null
-2011-03-26 17:24:20,835 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - empTypeURI-http://www.example.com/emp#emptype-null
-2011-03-26 17:24:20,836 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - empno-http://www.example.com/emp#empno-null
-2011-03-26 17:24:20,836 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - job-http://www.example.com/emp#job-null
-2011-03-26 17:24:20,837 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - jobTypeURI-http://www.w3.org/1999/02/22-rdf-syntax-ns#type-null
-2011-03-26 17:24:20,837 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,358 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,361 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - ename-http://www.example.com/emp#name-null
+2011-07-28 15:16:20,363 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - etype-http://www.example.com/emp#etype-null
+2011-07-28 15:16:20,364 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - jobTypeURI-http://www.example.com/emp#jobtype-null
+2011-07-28 15:16:20,365 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - empTypeURI-http://www.w3.org/1999/02/22-rdf-syntax-ns#type-null
+2011-07-28 15:16:20,366 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - job-http://www.example.com/emp#job-null
+2011-07-28 15:16:20,367 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - empTypeURI-http://www.example.com/emp#emptype-null
+2011-07-28 15:16:20,368 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - empno-http://www.example.com/emp#empno-null
+2011-07-28 15:16:20,369 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - deptno-http://www.example.com/emp#deptNum-null
+2011-07-28 15:16:20,370 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - jobTypeURI-http://www.w3.org/1999/02/22-rdf-syntax-ns#type-null
+2011-07-28 15:16:20,370 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?parentTm ?join ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap2> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap2> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:refPredicateObjectMap ?poMap . 
 ?poMap rr:refPredicateMap ?pMap . 
 ?poMap rr:refObjectMap ?oMap . 
@@ -243,72 +244,77 @@ OPTIONAL { ?poMap rr:graph ?graph . }
 OPTIONAL { ?oMap rr:joinCondition ?join . } 
 OPTIONAL { ?oMap rr:parentTriplesMap ?parentTm . } 
 }
-2011-03-26 17:24:20,839 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,842 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Find ref: file:///C:/Users/jpc/workspace/morph/#TriplesMap1
-2011-03-26 17:24:20,843 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,372 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,375 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - file:///C:/Users/jpc/workspace-helios/morph/#TriplesMap1
+2011-07-28 15:16:20,375 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Find ref: file:///C:/Users/jpc/workspace-helios/morph/#TriplesMap1
+2011-07-28 15:16:20,375 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 PREFIX morph: <http://es.upm.fi.dia.oeg/morph#> 
-SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjGraph ?subjGraphCol ?subjInverse WHERE { 
-<file:///C:/Users/jpc/workspace/morph/#TriplesMap1> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
-rr:SQLQuery ?query ; 
+SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjInverse ?subjTemplate ?unique WHERE { 
+<file:///C:/Users/jpc/workspace-helios/morph/#TriplesMap1> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:logicalTable ?lt; 
 rr:subjectMap ?subjMap . 
-OPTIONAL { ?tMap rr:tableName ?table . } 
+OPTIONAL { ?lt rr:sqlQuery ?query . } 
+OPTIONAL { ?lt rr:tableName ?table . } 
+OPTIONAL { ?lt morph:uniqueIndex ?unique . } 
 OPTIONAL { ?subjMap rr:column ?subjCol . } 
 OPTIONAL { ?subjMap morph:columnOperation ?subjColOp . } 
+OPTIONAL { ?subjMap rr:template ?subjTemplate . } 
 OPTIONAL { ?subjMap rr:termtype ?subjType . } 
 OPTIONAL { ?subjMap rr:subject ?subject . } 
 OPTIONAL { ?subjMap rr:class ?subjClass . } 
-OPTIONAL { ?subjMap rr:graph ?subjGraph . } 
-OPTIONAL { ?subjMap rr:graphColumn ?subjGraphCol . } 
 OPTIONAL { ?subjMap rr:inverseExpression ?subjInverse . } }
-2011-03-26 17:24:20,844 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,846 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - child.{deptno} = parent.{deptno}-http://www.example.com/emp#c_ref_deptno
-2011-03-26 17:24:20,846 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,846 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: 
-       Select CONCAT('example.com/emp/', empno) AS "empURI"
-            , empno
-            , ename
-            , CONCAT('example.com/emp/job/', job) AS "jobTypeURI"
-            , job
-            , deptno
-            , CONCAT('example.com/emp/etype/', etype) AS "empTypeURI"
-            , etype
-            , CONCAT('example.com/graph/', job ,'/' , etype) AS "graphURI"
-       from test.EMP
-       
-2011-03-26 17:24:20,857 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: example.com/emp/7369
-2011-03-26 17:24:20,857 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#jobtype
-2011-03-26 17:24:20,857 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.w3.org/1999/02/22-rdf-syntax-ns#type
-2011-03-26 17:24:20,858 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#deptNum
-2011-03-26 17:24:20,858 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#etype
-2011-03-26 17:24:20,858 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#name
-2011-03-26 17:24:20,858 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#emptype
-2011-03-26 17:24:20,858 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#empno
-2011-03-26 17:24:20,858 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#job
-2011-03-26 17:24:20,858 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.w3.org/1999/02/22-rdf-syntax-ns#type
-2011-03-26 17:24:20,859 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write default graph
-2011-03-26 17:24:20,859 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://www.example.com/emp#empNameGraph
-2011-03-26 17:24:20,860 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: example.com/graph/CLERK/PARTTIME
-2011-03-26 17:24:20,861 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example4.r2r
-2011-03-26 17:24:20,870 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,378 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,380 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - child.{deptno} = parent.{deptno}-http://www.example.com/emp#c_ref_deptno
+2011-07-28 15:16:20,381 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,381 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: 
+       			Select CONCAT('example.com/emp/', empno) AS "empURI"
+            		, empno
+            		, ename
+		            , CONCAT('example.com/emp/job/', job) AS "jobTypeURI"
+		            , job
+		            , deptno
+		            , CONCAT('example.com/emp/etype/', etype) AS "empTypeURI"
+		            , etype
+		            , CONCAT('example.com/graph/', job ,'/' , etype) AS "graphURI"
+			       from test.EMP
+		       
+2011-07-28 15:16:20,401 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: example.com/emp/7369
+2011-07-28 15:16:20,402 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#name
+2011-07-28 15:16:20,402 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#etype
+2011-07-28 15:16:20,402 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#jobtype
+2011-07-28 15:16:20,402 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.w3.org/1999/02/22-rdf-syntax-ns#type
+2011-07-28 15:16:20,402 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#job
+2011-07-28 15:16:20,403 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#emptype
+2011-07-28 15:16:20,403 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#empno
+2011-07-28 15:16:20,403 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#deptNum
+2011-07-28 15:16:20,404 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.w3.org/1999/02/22-rdf-syntax-ns#type
+2011-07-28 15:16:20,404 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write default graph
+2011-07-28 15:16:20,405 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://www.example.com/emp#empNameGraph
+2011-07-28 15:16:20,406 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: example.com/graph/CLERK/PARTTIME
+2011-07-28 15:16:20,409 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example4.r2r
+2011-07-28 15:16:20,422 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 PREFIX morph: <http://es.upm.fi.dia.oeg/morph#> 
-SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjGraph ?subjGraphCol ?subjInverse WHERE { 
-?tMap a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
-rr:SQLQuery ?query ; 
+SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjInverse ?subjTemplate ?unique WHERE { 
+?tMap a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:logicalTable ?lt; 
 rr:subjectMap ?subjMap . 
-OPTIONAL { ?tMap rr:tableName ?table . } 
+OPTIONAL { ?lt rr:sqlQuery ?query . } 
+OPTIONAL { ?lt rr:tableName ?table . } 
+OPTIONAL { ?lt morph:uniqueIndex ?unique . } 
 OPTIONAL { ?subjMap rr:column ?subjCol . } 
 OPTIONAL { ?subjMap morph:columnOperation ?subjColOp . } 
+OPTIONAL { ?subjMap rr:template ?subjTemplate . } 
 OPTIONAL { ?subjMap rr:termtype ?subjType . } 
 OPTIONAL { ?subjMap rr:subject ?subject . } 
 OPTIONAL { ?subjMap rr:class ?subjClass . } 
-OPTIONAL { ?subjMap rr:graph ?subjGraph . } 
-OPTIONAL { ?subjMap rr:graphColumn ?subjGraphCol . } 
 OPTIONAL { ?subjMap rr:inverseExpression ?subjInverse . } }
-2011-03-26 17:24:20,871 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,873 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap2
-2011-03-26 17:24:20,874 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,431 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,435 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap2
+2011-07-28 15:16:20,436 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,440 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,441 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?predicateColumn ?object ?column ?datatype ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap2> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap2> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:predicateObjectMap ?poMap . 
 ?poMap rr:predicateMap ?pMap . 
 ?poMap rr:objectMap ?oMap . 
@@ -320,19 +326,19 @@ OPTIONAL { ?oMap rr:column ?column . }
 OPTIONAL { ?oMap rr:datatype ?datatype . } 
 OPTIONAL { ?oMap rr:object ?object . } 
 }
-2011-03-26 17:24:20,875 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,877 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - jobTypeURI-http://www.example.com/emp#jobtype-null
-2011-03-26 17:24:20,878 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - jobTypeURI-http://www.w3.org/1999/02/22-rdf-syntax-ns#type-null
-2011-03-26 17:24:20,878 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - empno-http://www.example.com/emp#empno-null
-2011-03-26 17:24:20,879 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - ename-http://www.example.com/emp#name-null
-2011-03-26 17:24:20,880 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - etype-http://www.example.com/emp#etype-null
-2011-03-26 17:24:20,880 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - deptno-http://www.example.com/emp#deptNum-null
-2011-03-26 17:24:20,881 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - empTypeURI-http://www.w3.org/1999/02/22-rdf-syntax-ns#type-null
-2011-03-26 17:24:20,882 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - job-http://www.example.com/emp#job-null
-2011-03-26 17:24:20,883 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - empTypeURI-http://www.example.com/emp#emptype-null
-2011-03-26 17:24:20,883 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,444 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,447 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - jobTypeURI-http://www.w3.org/1999/02/22-rdf-syntax-ns#type-null
+2011-07-28 15:16:20,448 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - ename-http://www.example.com/emp#name-null
+2011-07-28 15:16:20,449 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - empTypeURI-http://www.w3.org/1999/02/22-rdf-syntax-ns#type-null
+2011-07-28 15:16:20,450 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - jobTypeURI-http://www.example.com/emp#jobtype-null
+2011-07-28 15:16:20,450 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - deptno-http://www.example.com/emp#deptNum-null
+2011-07-28 15:16:20,451 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - job-http://www.example.com/emp#job-null
+2011-07-28 15:16:20,452 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - etype-http://www.example.com/emp#etype-null
+2011-07-28 15:16:20,453 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - empno-http://www.example.com/emp#empno-null
+2011-07-28 15:16:20,454 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - empTypeURI-http://www.example.com/emp#emptype-null
+2011-07-28 15:16:20,454 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?parentTm ?join ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap2> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap2> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:refPredicateObjectMap ?poMap . 
 ?poMap rr:refPredicateMap ?pMap . 
 ?poMap rr:refObjectMap ?oMap . 
@@ -342,29 +348,33 @@ OPTIONAL { ?poMap rr:graph ?graph . }
 OPTIONAL { ?oMap rr:joinCondition ?join . } 
 OPTIONAL { ?oMap rr:parentTriplesMap ?parentTm . } 
 }
-2011-03-26 17:24:20,884 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,886 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Find ref: file:///C:/Users/jpc/workspace/morph/#TriplesMap1
-2011-03-26 17:24:20,886 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,456 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,458 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - file:///C:/Users/jpc/workspace-helios/morph/#TriplesMap1
+2011-07-28 15:16:20,459 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Find ref: file:///C:/Users/jpc/workspace-helios/morph/#TriplesMap1
+2011-07-28 15:16:20,459 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 PREFIX morph: <http://es.upm.fi.dia.oeg/morph#> 
-SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjGraph ?subjGraphCol ?subjInverse WHERE { 
-<file:///C:/Users/jpc/workspace/morph/#TriplesMap1> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
-rr:SQLQuery ?query ; 
+SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjInverse ?subjTemplate ?unique WHERE { 
+<file:///C:/Users/jpc/workspace-helios/morph/#TriplesMap1> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:logicalTable ?lt; 
 rr:subjectMap ?subjMap . 
-OPTIONAL { ?tMap rr:tableName ?table . } 
+OPTIONAL { ?lt rr:sqlQuery ?query . } 
+OPTIONAL { ?lt rr:tableName ?table . } 
+OPTIONAL { ?lt morph:uniqueIndex ?unique . } 
 OPTIONAL { ?subjMap rr:column ?subjCol . } 
 OPTIONAL { ?subjMap morph:columnOperation ?subjColOp . } 
+OPTIONAL { ?subjMap rr:template ?subjTemplate . } 
 OPTIONAL { ?subjMap rr:termtype ?subjType . } 
 OPTIONAL { ?subjMap rr:subject ?subject . } 
 OPTIONAL { ?subjMap rr:class ?subjClass . } 
-OPTIONAL { ?subjMap rr:graph ?subjGraph . } 
-OPTIONAL { ?subjMap rr:graphColumn ?subjGraphCol . } 
 OPTIONAL { ?subjMap rr:inverseExpression ?subjInverse . } }
-2011-03-26 17:24:20,887 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,889 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - child.{deptno} = parent.{deptno}-http://www.example.com/emp#c_ref_deptno
-2011-03-26 17:24:20,889 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap3
-2011-03-26 17:24:20,890 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,462 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,464 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - child.{deptno} = parent.{deptno}-http://www.example.com/emp#c_ref_deptno
+2011-07-28 15:16:20,466 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap3
+2011-07-28 15:16:20,467 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,469 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,471 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?predicateColumn ?object ?column ?datatype ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap3> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap3> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:predicateObjectMap ?poMap . 
 ?poMap rr:predicateMap ?pMap . 
 ?poMap rr:objectMap ?oMap . 
@@ -376,11 +386,11 @@ OPTIONAL { ?oMap rr:column ?column . }
 OPTIONAL { ?oMap rr:datatype ?datatype . } 
 OPTIONAL { ?oMap rr:object ?object . } 
 }
-2011-03-26 17:24:20,891 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,893 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - likedObj-null-null
-2011-03-26 17:24:20,893 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,473 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,476 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - likedObj-null-null
+2011-07-28 15:16:20,476 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?parentTm ?join ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap3> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap3> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:refPredicateObjectMap ?poMap . 
 ?poMap rr:refPredicateMap ?pMap . 
 ?poMap rr:refObjectMap ?oMap . 
@@ -390,11 +400,13 @@ OPTIONAL { ?poMap rr:graph ?graph . }
 OPTIONAL { ?oMap rr:joinCondition ?join . } 
 OPTIONAL { ?oMap rr:parentTriplesMap ?parentTm . } 
 }
-2011-03-26 17:24:20,894 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,895 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1
-2011-03-26 17:24:20,896 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,478 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,481 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1
+2011-07-28 15:16:20,482 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,485 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,487 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?predicateColumn ?object ?column ?datatype ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:predicateObjectMap ?poMap . 
 ?poMap rr:predicateMap ?pMap . 
 ?poMap rr:objectMap ?oMap . 
@@ -406,14 +418,14 @@ OPTIONAL { ?oMap rr:column ?column . }
 OPTIONAL { ?oMap rr:datatype ?datatype . } 
 OPTIONAL { ?oMap rr:object ?object . } 
 }
-2011-03-26 17:24:20,897 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,899 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/dept#COMPANY-null
-2011-03-26 17:24:20,900 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - loc-http://www.example.com/dept#location-null
-2011-03-26 17:24:20,900 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - dname-http://www.example.com/dept#name-null
-2011-03-26 17:24:20,901 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - deptno-http://www.example.com/dept#deptno-Datatype[http://www.w3.org/2001/XMLSchema#positiveInteger]
-2011-03-26 17:24:20,901 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,489 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,492 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/dept#COMPANY-null
+2011-07-28 15:16:20,493 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - loc-http://www.example.com/dept#location-null
+2011-07-28 15:16:20,493 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - dname-http://www.example.com/dept#name-null
+2011-07-28 15:16:20,494 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - deptno-http://www.example.com/dept#deptno-Datatype[http://www.w3.org/2001/XMLSchema#positiveInteger]
+2011-07-28 15:16:20,495 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?parentTm ?join ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#TriplesMap1> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:refPredicateObjectMap ?poMap . 
 ?poMap rr:refPredicateMap ?pMap . 
 ?poMap rr:refObjectMap ?oMap . 
@@ -423,23 +435,23 @@ OPTIONAL { ?poMap rr:graph ?graph . }
 OPTIONAL { ?oMap rr:joinCondition ?join . } 
 OPTIONAL { ?oMap rr:parentTriplesMap ?parentTm . } 
 }
-2011-03-26 17:24:20,902 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,904 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,904 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: 
+2011-07-28 15:16:20,497 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,499 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,500 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: 
        Select CONCAT('Department', deptno) AS "deptId", deptno , dname , loc
          from test.DEPT
        
-2011-03-26 17:24:20,915 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: Department10
-2011-03-26 17:24:20,915 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#COMPANY
-2011-03-26 17:24:20,915 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#location
-2011-03-26 17:24:20,915 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#name
-2011-03-26 17:24:20,916 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#deptno
-2011-03-26 17:24:20,916 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: Department20
-2011-03-26 17:24:20,916 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#COMPANY
-2011-03-26 17:24:20,916 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#location
-2011-03-26 17:24:20,916 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#name
-2011-03-26 17:24:20,916 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#deptno
-2011-03-26 17:24:20,917 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: 
+2011-07-28 15:16:20,518 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: Department10
+2011-07-28 15:16:20,519 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#COMPANY
+2011-07-28 15:16:20,519 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#location
+2011-07-28 15:16:20,519 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#name
+2011-07-28 15:16:20,519 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#deptno
+2011-07-28 15:16:20,519 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: Department20
+2011-07-28 15:16:20,520 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#COMPANY
+2011-07-28 15:16:20,520 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#location
+2011-07-28 15:16:20,520 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#name
+2011-07-28 15:16:20,520 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/dept#deptno
+2011-07-28 15:16:20,521 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: 
        Select CONCAT('example.com/emp/', empno) AS "empURI"
             , empno
             , ename
@@ -451,52 +463,55 @@ OPTIONAL { ?oMap rr:parentTriplesMap ?parentTm . }
             , CONCAT('example.com/graph/', job ,'/' , etype) AS "graphURI"
        from test.EMP
        
-2011-03-26 17:24:20,927 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: example.com/emp/7369
-2011-03-26 17:24:20,927 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#jobtype
-2011-03-26 17:24:20,927 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.w3.org/1999/02/22-rdf-syntax-ns#type
-2011-03-26 17:24:20,927 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#empno
-2011-03-26 17:24:20,928 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#name
-2011-03-26 17:24:20,928 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#etype
-2011-03-26 17:24:20,928 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#deptNum
-2011-03-26 17:24:20,928 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.w3.org/1999/02/22-rdf-syntax-ns#type
-2011-03-26 17:24:20,928 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#job
-2011-03-26 17:24:20,928 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#emptype
-2011-03-26 17:24:20,929 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: 
+2011-07-28 15:16:20,540 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: example.com/emp/7369
+2011-07-28 15:16:20,540 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.w3.org/1999/02/22-rdf-syntax-ns#type
+2011-07-28 15:16:20,540 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#name
+2011-07-28 15:16:20,541 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.w3.org/1999/02/22-rdf-syntax-ns#type
+2011-07-28 15:16:20,541 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#jobtype
+2011-07-28 15:16:20,541 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#deptNum
+2011-07-28 15:16:20,541 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#job
+2011-07-28 15:16:20,542 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#etype
+2011-07-28 15:16:20,542 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#empno
+2011-07-28 15:16:20,542 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#emptype
+2011-07-28 15:16:20,543 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: 
       Select CONCAT('example.com/emp/', id) AS "empId"
            , CONCAT('example.com/emp/likes/', likeType) AS "empLikes"
            , likedObj
         from test.LIKES
       
-2011-03-26 17:24:20,939 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: example.com/emp/7369
-2011-03-26 17:24:20,939 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbigexample.com/emp/likes/Playing
-2011-03-26 17:24:20,939 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: example.com/emp/7369
-2011-03-26 17:24:20,939 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbigexample.com/emp/likes/Watching
-2011-03-26 17:24:20,939 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write default graph
-2011-03-26 17:24:20,940 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://example.com/ns#DeptGraph
-2011-03-26 17:24:20,942 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://www.example.com/emp#empNameGraph
-2011-03-26 17:24:20,942 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: example.com/graph/CLERK/PARTTIME
-2011-03-26 17:24:20,944 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://example.com/ns#LikesGraph
-2011-03-26 17:24:20,945 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example5.r2r
-2011-03-26 17:24:20,950 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,560 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: example.com/emp/7369
+2011-07-28 15:16:20,560 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbigexample.com/emp/likes/Playing
+2011-07-28 15:16:20,560 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: example.com/emp/7369
+2011-07-28 15:16:20,561 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbigexample.com/emp/likes/Watching
+2011-07-28 15:16:20,561 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write default graph
+2011-07-28 15:16:20,562 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://example.com/ns#DeptGraph
+2011-07-28 15:16:20,565 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://www.example.com/emp#empNameGraph
+2011-07-28 15:16:20,566 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: example.com/graph/CLERK/PARTTIME
+2011-07-28 15:16:20,569 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://example.com/ns#LikesGraph
+2011-07-28 15:16:20,571 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example5.r2r
+2011-07-28 15:16:20,577 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 PREFIX morph: <http://es.upm.fi.dia.oeg/morph#> 
-SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjGraph ?subjGraphCol ?subjInverse WHERE { 
-?tMap a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
-rr:SQLQuery ?query ; 
+SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjInverse ?subjTemplate ?unique WHERE { 
+?tMap a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:logicalTable ?lt; 
 rr:subjectMap ?subjMap . 
-OPTIONAL { ?tMap rr:tableName ?table . } 
+OPTIONAL { ?lt rr:sqlQuery ?query . } 
+OPTIONAL { ?lt rr:tableName ?table . } 
+OPTIONAL { ?lt morph:uniqueIndex ?unique . } 
 OPTIONAL { ?subjMap rr:column ?subjCol . } 
 OPTIONAL { ?subjMap morph:columnOperation ?subjColOp . } 
+OPTIONAL { ?subjMap rr:template ?subjTemplate . } 
 OPTIONAL { ?subjMap rr:termtype ?subjType . } 
 OPTIONAL { ?subjMap rr:subject ?subject . } 
 OPTIONAL { ?subjMap rr:class ?subjClass . } 
-OPTIONAL { ?subjMap rr:graph ?subjGraph . } 
-OPTIONAL { ?subjMap rr:graphColumn ?subjGraphCol . } 
 OPTIONAL { ?subjMap rr:inverseExpression ?subjInverse . } }
-2011-03-26 17:24:20,951 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,953 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://semsorgrid4env.eu/ns#MilfordSensorMap
-2011-03-26 17:24:20,954 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,579 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,582 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://semsorgrid4env.eu/ns#MilfordSensorMap
+2011-07-28 15:16:20,584 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,586 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,587 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?predicateColumn ?object ?column ?datatype ?graphColumn ?graph WHERE { 
-<http://semsorgrid4env.eu/ns#MilfordSensorMap> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://semsorgrid4env.eu/ns#MilfordSensorMap> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:predicateObjectMap ?poMap . 
 ?poMap rr:predicateMap ?pMap . 
 ?poMap rr:objectMap ?oMap . 
@@ -508,11 +523,11 @@ OPTIONAL { ?oMap rr:column ?column . }
 OPTIONAL { ?oMap rr:datatype ?datatype . } 
 OPTIONAL { ?oMap rr:object ?object . } 
 }
-2011-03-26 17:24:20,955 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,956 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://semsorgrid4env.eu/ns#LocatedIn-null
-2011-03-26 17:24:20,957 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,590 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,592 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://semsorgrid4env.eu/ns#LocatedIn-null
+2011-07-28 15:16:20,592 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?parentTm ?join ?graphColumn ?graph WHERE { 
-<http://semsorgrid4env.eu/ns#MilfordSensorMap> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://semsorgrid4env.eu/ns#MilfordSensorMap> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:refPredicateObjectMap ?poMap . 
 ?poMap rr:refPredicateMap ?pMap . 
 ?poMap rr:refObjectMap ?oMap . 
@@ -522,11 +537,13 @@ OPTIONAL { ?poMap rr:graph ?graph . }
 OPTIONAL { ?oMap rr:joinCondition ?join . } 
 OPTIONAL { ?oMap rr:parentTriplesMap ?parentTm . } 
 }
-2011-03-26 17:24:20,961 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,964 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation
-2011-03-26 17:24:20,964 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,594 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,596 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation
+2011-07-28 15:16:20,598 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,600 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,601 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?predicateColumn ?object ?column ?datatype ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:predicateObjectMap ?poMap . 
 ?poMap rr:predicateMap ?pMap . 
 ?poMap rr:objectMap ?oMap . 
@@ -538,15 +555,15 @@ OPTIONAL { ?oMap rr:column ?column . }
 OPTIONAL { ?oMap rr:datatype ?datatype . } 
 OPTIONAL { ?oMap rr:object ?object . } 
 }
-2011-03-26 17:24:20,965 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,967 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://semsorgrid4env.eu/ns#measuredBy-null
-2011-03-26 17:24:20,968 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/emp#observedProperty-null
-2011-03-26 17:24:20,969 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/emp#featureOfInterest-null
-2011-03-26 17:24:20,969 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - timestamp-http://semsorgrid4env.eu/ns#observationResultTime-null
-2011-03-26 17:24:20,970 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Hs-http://semsorgrid4env.eu/ns#observationResult-null
-2011-03-26 17:24:20,970 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,604 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,606 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://semsorgrid4env.eu/ns#measuredBy-null
+2011-07-28 15:16:20,607 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/emp#observedProperty-null
+2011-07-28 15:16:20,607 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/emp#featureOfInterest-null
+2011-07-28 15:16:20,608 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - timestamp-http://semsorgrid4env.eu/ns#observationResultTime-null
+2011-07-28 15:16:20,609 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Hs-http://semsorgrid4env.eu/ns#observationResult-null
+2011-07-28 15:16:20,609 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?parentTm ?join ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:refPredicateObjectMap ?poMap . 
 ?poMap rr:refPredicateMap ?pMap . 
 ?poMap rr:refObjectMap ?oMap . 
@@ -556,41 +573,44 @@ OPTIONAL { ?poMap rr:graph ?graph . }
 OPTIONAL { ?oMap rr:joinCondition ?join . } 
 OPTIONAL { ?oMap rr:parentTriplesMap ?parentTm . } 
 }
-2011-03-26 17:24:20,971 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,972 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:20,972 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: Select * from cco.envdata_milford
-2011-03-26 17:24:20,981 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: 1-1-2001 10:30:30
-2011-03-26 17:24:20,981 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://semsorgrid4env.eu/ns#measuredBy
-2011-03-26 17:24:20,981 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#observedProperty
-2011-03-26 17:24:20,981 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#featureOfInterest
-2011-03-26 17:24:20,982 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://semsorgrid4env.eu/ns#observationResultTime
-2011-03-26 17:24:20,982 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://semsorgrid4env.eu/ns#observationResult
-2011-03-26 17:24:20,982 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: select 'MilfordSensorUri' as uri from cco.envdata_milford
-2011-03-26 17:24:21,008 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: MilfordSensorUri
-2011-03-26 17:24:21,008 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://semsorgrid4env.eu/ns#LocatedIn
-2011-03-26 17:24:21,008 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write default graph
-2011-03-26 17:24:21,009 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://semsorgrid4env.eu/ns#streamgraph
-2011-03-26 17:24:21,010 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example6.r2r
-2011-03-26 17:24:21,014 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,611 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,613 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,613 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: Select * from cco.envdata_milford
+2011-07-28 15:16:20,629 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: 1-1-2001 10:30:30
+2011-07-28 15:16:20,629 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://semsorgrid4env.eu/ns#measuredBy
+2011-07-28 15:16:20,630 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#observedProperty
+2011-07-28 15:16:20,630 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#featureOfInterest
+2011-07-28 15:16:20,630 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://semsorgrid4env.eu/ns#observationResultTime
+2011-07-28 15:16:20,630 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://semsorgrid4env.eu/ns#observationResult
+2011-07-28 15:16:20,631 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: select 'MilfordSensorUri' as uri from cco.envdata_milford
+2011-07-28 15:16:20,679 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: MilfordSensorUri
+2011-07-28 15:16:20,679 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://semsorgrid4env.eu/ns#LocatedIn
+2011-07-28 15:16:20,679 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write default graph
+2011-07-28 15:16:20,680 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://semsorgrid4env.eu/ns#streamgraph
+2011-07-28 15:16:20,683 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example6.r2r
+2011-07-28 15:16:20,689 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 PREFIX morph: <http://es.upm.fi.dia.oeg/morph#> 
-SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjGraph ?subjGraphCol ?subjInverse WHERE { 
-?tMap a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
-rr:SQLQuery ?query ; 
+SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjInverse ?subjTemplate ?unique WHERE { 
+?tMap a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:logicalTable ?lt; 
 rr:subjectMap ?subjMap . 
-OPTIONAL { ?tMap rr:tableName ?table . } 
+OPTIONAL { ?lt rr:sqlQuery ?query . } 
+OPTIONAL { ?lt rr:tableName ?table . } 
+OPTIONAL { ?lt morph:uniqueIndex ?unique . } 
 OPTIONAL { ?subjMap rr:column ?subjCol . } 
 OPTIONAL { ?subjMap morph:columnOperation ?subjColOp . } 
+OPTIONAL { ?subjMap rr:template ?subjTemplate . } 
 OPTIONAL { ?subjMap rr:termtype ?subjType . } 
 OPTIONAL { ?subjMap rr:subject ?subject . } 
 OPTIONAL { ?subjMap rr:class ?subjClass . } 
-OPTIONAL { ?subjMap rr:graph ?subjGraph . } 
-OPTIONAL { ?subjMap rr:graphColumn ?subjGraphCol . } 
 OPTIONAL { ?subjMap rr:inverseExpression ?subjInverse . } }
-2011-03-26 17:24:21,015 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:21,017 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://semsorgrid4env.eu/ns#MilfordSensorMap
-2011-03-26 17:24:21,017 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,691 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,694 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://semsorgrid4env.eu/ns#MilfordSensorMap
+2011-07-28 15:16:20,695 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,698 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,699 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?predicateColumn ?object ?column ?datatype ?graphColumn ?graph WHERE { 
-<http://semsorgrid4env.eu/ns#MilfordSensorMap> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://semsorgrid4env.eu/ns#MilfordSensorMap> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:predicateObjectMap ?poMap . 
 ?poMap rr:predicateMap ?pMap . 
 ?poMap rr:objectMap ?oMap . 
@@ -602,11 +622,11 @@ OPTIONAL { ?oMap rr:column ?column . }
 OPTIONAL { ?oMap rr:datatype ?datatype . } 
 OPTIONAL { ?oMap rr:object ?object . } 
 }
-2011-03-26 17:24:21,020 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:21,023 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://semsorgrid4env.eu/ns#LocatedIn-null
-2011-03-26 17:24:21,024 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,701 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,703 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://semsorgrid4env.eu/ns#LocatedIn-null
+2011-07-28 15:16:20,703 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?parentTm ?join ?graphColumn ?graph WHERE { 
-<http://semsorgrid4env.eu/ns#MilfordSensorMap> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://semsorgrid4env.eu/ns#MilfordSensorMap> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:refPredicateObjectMap ?poMap . 
 ?poMap rr:refPredicateMap ?pMap . 
 ?poMap rr:refObjectMap ?oMap . 
@@ -616,11 +636,13 @@ OPTIONAL { ?poMap rr:graph ?graph . }
 OPTIONAL { ?oMap rr:joinCondition ?join . } 
 OPTIONAL { ?oMap rr:parentTriplesMap ?parentTm . } 
 }
-2011-03-26 17:24:21,026 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:21,029 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation
-2011-03-26 17:24:21,030 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,705 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,708 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation
+2011-07-28 15:16:20,709 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,711 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,712 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?predicateColumn ?object ?column ?datatype ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:predicateObjectMap ?poMap . 
 ?poMap rr:predicateMap ?pMap . 
 ?poMap rr:objectMap ?oMap . 
@@ -632,15 +654,15 @@ OPTIONAL { ?oMap rr:column ?column . }
 OPTIONAL { ?oMap rr:datatype ?datatype . } 
 OPTIONAL { ?oMap rr:object ?object . } 
 }
-2011-03-26 17:24:21,032 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:21,035 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://semsorgrid4env.eu/ns#measuredBy-null
-2011-03-26 17:24:21,037 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/emp#observedProperty-null
-2011-03-26 17:24:21,038 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/emp#featureOfInterest-null
-2011-03-26 17:24:21,039 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - timestamp-http://semsorgrid4env.eu/ns#observationResultTime-null
-2011-03-26 17:24:21,040 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Hs-http://semsorgrid4env.eu/ns#observationResult-null
-2011-03-26 17:24:21,040 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,714 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,716 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://semsorgrid4env.eu/ns#measuredBy-null
+2011-07-28 15:16:20,717 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/emp#observedProperty-null
+2011-07-28 15:16:20,717 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/emp#featureOfInterest-null
+2011-07-28 15:16:20,718 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - timestamp-http://semsorgrid4env.eu/ns#observationResultTime-null
+2011-07-28 15:16:20,719 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Hs-http://semsorgrid4env.eu/ns#observationResult-null
+2011-07-28 15:16:20,719 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?parentTm ?join ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:refPredicateObjectMap ?poMap . 
 ?poMap rr:refPredicateMap ?pMap . 
 ?poMap rr:refObjectMap ?oMap . 
@@ -650,41 +672,44 @@ OPTIONAL { ?poMap rr:graph ?graph . }
 OPTIONAL { ?oMap rr:joinCondition ?join . } 
 OPTIONAL { ?oMap rr:parentTriplesMap ?parentTm . } 
 }
-2011-03-26 17:24:21,042 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:21,045 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:21,045 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: Select * from cco.envdata_milford
-2011-03-26 17:24:21,055 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: 1-1-2001 10:30:30
-2011-03-26 17:24:21,055 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://semsorgrid4env.eu/ns#measuredBy
-2011-03-26 17:24:21,055 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#observedProperty
-2011-03-26 17:24:21,055 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#featureOfInterest
-2011-03-26 17:24:21,056 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://semsorgrid4env.eu/ns#observationResultTime
-2011-03-26 17:24:21,056 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://semsorgrid4env.eu/ns#observationResult
-2011-03-26 17:24:21,056 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: select 'MilfordSensorUri' as uri from cco.envdata_milford
-2011-03-26 17:24:21,063 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: MilfordSensorUri
-2011-03-26 17:24:21,064 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://semsorgrid4env.eu/ns#LocatedIn
-2011-03-26 17:24:21,064 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write default graph
-2011-03-26 17:24:21,064 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://semsorgrid4env.eu/ns#streamgraph
-2011-03-26 17:24:21,066 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example7.r2r
-2011-03-26 17:24:21,072 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,722 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,723 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,723 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: Select * from cco.envdata_milford
+2011-07-28 15:16:20,738 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: 1-1-2001 10:30:30
+2011-07-28 15:16:20,739 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://semsorgrid4env.eu/ns#measuredBy
+2011-07-28 15:16:20,739 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#observedProperty
+2011-07-28 15:16:20,739 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://www.example.com/emp#featureOfInterest
+2011-07-28 15:16:20,740 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://semsorgrid4env.eu/ns#observationResultTime
+2011-07-28 15:16:20,740 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://semsorgrid4env.eu/ns#observationResult
+2011-07-28 15:16:20,740 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Query to execute: select 'MilfordSensorUri' as uri from cco.envdata_milford
+2011-07-28 15:16:20,758 [main] DEBUG es.upm.fi.dia.oeg.morph.TriplesMapInstance - Identifier for uri: MilfordSensorUri
+2011-07-28 15:16:20,758 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - bigbighttp://semsorgrid4env.eu/ns#LocatedIn
+2011-07-28 15:16:20,759 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write default graph
+2011-07-28 15:16:20,760 [main]  INFO es.upm.fi.dia.oeg.morph.R2RProcessor - Write graph: http://semsorgrid4env.eu/ns#streamgraph
+2011-07-28 15:16:20,763 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example7.r2r
+2011-07-28 15:16:20,770 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 PREFIX morph: <http://es.upm.fi.dia.oeg/morph#> 
-SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjGraph ?subjGraphCol ?subjInverse WHERE { 
-?tMap a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
-rr:SQLQuery ?query ; 
+SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjInverse ?subjTemplate ?unique WHERE { 
+?tMap a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:logicalTable ?lt; 
 rr:subjectMap ?subjMap . 
-OPTIONAL { ?tMap rr:tableName ?table . } 
+OPTIONAL { ?lt rr:sqlQuery ?query . } 
+OPTIONAL { ?lt rr:tableName ?table . } 
+OPTIONAL { ?lt morph:uniqueIndex ?unique . } 
 OPTIONAL { ?subjMap rr:column ?subjCol . } 
 OPTIONAL { ?subjMap morph:columnOperation ?subjColOp . } 
+OPTIONAL { ?subjMap rr:template ?subjTemplate . } 
 OPTIONAL { ?subjMap rr:termtype ?subjType . } 
 OPTIONAL { ?subjMap rr:subject ?subject . } 
 OPTIONAL { ?subjMap rr:class ?subjClass . } 
-OPTIONAL { ?subjMap rr:graph ?subjGraph . } 
-OPTIONAL { ?subjMap rr:graphColumn ?subjGraphCol . } 
 OPTIONAL { ?subjMap rr:inverseExpression ?subjInverse . } }
-2011-03-26 17:24:21,073 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:21,075 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://semsorgrid4env.eu/ns#MilfordSensorMap
-2011-03-26 17:24:21,075 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,773 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,776 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://semsorgrid4env.eu/ns#MilfordSensorMap
+2011-07-28 15:16:20,777 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,779 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,780 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?predicateColumn ?object ?column ?datatype ?graphColumn ?graph WHERE { 
-<http://semsorgrid4env.eu/ns#MilfordSensorMap> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://semsorgrid4env.eu/ns#MilfordSensorMap> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:predicateObjectMap ?poMap . 
 ?poMap rr:predicateMap ?pMap . 
 ?poMap rr:objectMap ?oMap . 
@@ -696,11 +721,11 @@ OPTIONAL { ?oMap rr:column ?column . }
 OPTIONAL { ?oMap rr:datatype ?datatype . } 
 OPTIONAL { ?oMap rr:object ?object . } 
 }
-2011-03-26 17:24:21,076 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:21,077 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://semsorgrid4env.eu/ns#LocatedIn-null
-2011-03-26 17:24:21,078 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,782 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,784 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://semsorgrid4env.eu/ns#LocatedIn-null
+2011-07-28 15:16:20,785 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?parentTm ?join ?graphColumn ?graph WHERE { 
-<http://semsorgrid4env.eu/ns#MilfordSensorMap> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://semsorgrid4env.eu/ns#MilfordSensorMap> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:refPredicateObjectMap ?poMap . 
 ?poMap rr:refPredicateMap ?pMap . 
 ?poMap rr:refObjectMap ?oMap . 
@@ -710,11 +735,13 @@ OPTIONAL { ?poMap rr:graph ?graph . }
 OPTIONAL { ?oMap rr:joinCondition ?join . } 
 OPTIONAL { ?oMap rr:parentTriplesMap ?parentTm . } 
 }
-2011-03-26 17:24:21,079 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:21,080 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation
-2011-03-26 17:24:21,080 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,786 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,789 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation
+2011-07-28 15:16:20,790 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,792 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,793 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?predicateColumn ?object ?column ?datatype ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:predicateObjectMap ?poMap . 
 ?poMap rr:predicateMap ?pMap . 
 ?poMap rr:objectMap ?oMap . 
@@ -726,15 +753,15 @@ OPTIONAL { ?oMap rr:column ?column . }
 OPTIONAL { ?oMap rr:datatype ?datatype . } 
 OPTIONAL { ?oMap rr:object ?object . } 
 }
-2011-03-26 17:24:21,081 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:21,083 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://semsorgrid4env.eu/ns#measuredBy-null
-2011-03-26 17:24:21,083 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/emp#observedProperty-null
-2011-03-26 17:24:21,084 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/emp#featureOfInterest-null
-2011-03-26 17:24:21,085 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - timestamp-http://semsorgrid4env.eu/ns#observationResultTime-null
-2011-03-26 17:24:21,085 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Hs-http://semsorgrid4env.eu/ns#observationResult-null
-2011-03-26 17:24:21,085 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,796 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,798 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://semsorgrid4env.eu/ns#measuredBy-null
+2011-07-28 15:16:20,799 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/emp#observedProperty-null
+2011-07-28 15:16:20,799 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/emp#featureOfInterest-null
+2011-07-28 15:16:20,800 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - timestamp-http://semsorgrid4env.eu/ns#observationResultTime-null
+2011-07-28 15:16:20,801 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Hs-http://semsorgrid4env.eu/ns#observationResult-null
+2011-07-28 15:16:20,801 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?parentTm ?join ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:refPredicateObjectMap ?poMap . 
 ?poMap rr:refPredicateMap ?pMap . 
 ?poMap rr:refObjectMap ?oMap . 
@@ -744,28 +771,32 @@ OPTIONAL { ?poMap rr:graph ?graph . }
 OPTIONAL { ?oMap rr:joinCondition ?join . } 
 OPTIONAL { ?oMap rr:parentTriplesMap ?parentTm . } 
 }
-2011-03-26 17:24:21,086 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:21,087 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Find ref: http://es.upm.fi.dia.oeg/R2RMapping#PropMap
-2011-03-26 17:24:21,087 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,803 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,805 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - http://es.upm.fi.dia.oeg/R2RMapping#PropMap
+2011-07-28 15:16:20,806 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Find ref: http://es.upm.fi.dia.oeg/R2RMapping#PropMap
+2011-07-28 15:16:20,806 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 PREFIX morph: <http://es.upm.fi.dia.oeg/morph#> 
-SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjGraph ?subjGraphCol ?subjInverse WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#PropMap> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
-rr:SQLQuery ?query ; 
+SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjInverse ?subjTemplate ?unique WHERE { 
+<http://es.upm.fi.dia.oeg/R2RMapping#PropMap> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:logicalTable ?lt; 
 rr:subjectMap ?subjMap . 
-OPTIONAL { ?tMap rr:tableName ?table . } 
+OPTIONAL { ?lt rr:sqlQuery ?query . } 
+OPTIONAL { ?lt rr:tableName ?table . } 
+OPTIONAL { ?lt morph:uniqueIndex ?unique . } 
 OPTIONAL { ?subjMap rr:column ?subjCol . } 
 OPTIONAL { ?subjMap morph:columnOperation ?subjColOp . } 
+OPTIONAL { ?subjMap rr:template ?subjTemplate . } 
 OPTIONAL { ?subjMap rr:termtype ?subjType . } 
 OPTIONAL { ?subjMap rr:subject ?subject . } 
 OPTIONAL { ?subjMap rr:class ?subjClass . } 
-OPTIONAL { ?subjMap rr:graph ?subjGraph . } 
-OPTIONAL { ?subjMap rr:graphColumn ?subjGraphCol . } 
 OPTIONAL { ?subjMap rr:inverseExpression ?subjInverse . } }
-2011-03-26 17:24:21,088 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:21,090 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#PropMap
-2011-03-26 17:24:21,090 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,809 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,811 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#PropMap
+2011-07-28 15:16:20,812 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,814 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,815 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?predicateColumn ?object ?column ?datatype ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#PropMap> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#PropMap> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:predicateObjectMap ?poMap . 
 ?poMap rr:predicateMap ?pMap . 
 ?poMap rr:objectMap ?oMap . 
@@ -777,11 +808,11 @@ OPTIONAL { ?oMap rr:column ?column . }
 OPTIONAL { ?oMap rr:datatype ?datatype . } 
 OPTIONAL { ?oMap rr:object ?object . } 
 }
-2011-03-26 17:24:21,091 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:21,093 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - propCol-http://semsorgrid4env.eu/ns#propPred-null
-2011-03-26 17:24:21,093 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+2011-07-28 15:16:20,817 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,819 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - propCol-http://semsorgrid4env.eu/ns#propPred-null
+2011-07-28 15:16:20,819 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
 SELECT ?predicate ?parentTm ?join ?graphColumn ?graph WHERE { 
-<http://es.upm.fi.dia.oeg/R2RMapping#PropMap> a <http://www.w3.org/ns/r2rml#TriplesMapClass> ; 
+<http://es.upm.fi.dia.oeg/R2RMapping#PropMap> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
 rr:refPredicateObjectMap ?poMap . 
 ?poMap rr:refPredicateMap ?pMap . 
 ?poMap rr:refObjectMap ?oMap . 
@@ -791,6 +822,145 @@ OPTIONAL { ?poMap rr:graph ?graph . }
 OPTIONAL { ?oMap rr:joinCondition ?join . } 
 OPTIONAL { ?oMap rr:parentTriplesMap ?parentTm . } 
 }
-2011-03-26 17:24:21,094 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
-2011-03-26 17:24:21,095 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - join-http://semsorgrid4env.eu/ns#sensorProp
-2011-03-26 17:24:21,095 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples: -http://es.upm.fi.dia.oeg/R2RMapping#PropMap
+2011-07-28 15:16:20,821 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,823 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - join-http://semsorgrid4env.eu/ns#sensorProp
+2011-07-28 15:16:20,823 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples: -http://es.upm.fi.dia.oeg/R2RMapping#PropMap
+2011-07-28 15:16:20,824 [main] DEBUG es.upm.fi.dia.oeg.morph.R2RProcessor - Mapping file: mappings/example8.r2r
+2011-07-28 15:16:20,832 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+PREFIX morph: <http://es.upm.fi.dia.oeg/morph#> 
+SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjInverse ?subjTemplate ?unique WHERE { 
+?tMap a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:logicalTable ?lt; 
+rr:subjectMap ?subjMap . 
+OPTIONAL { ?lt rr:sqlQuery ?query . } 
+OPTIONAL { ?lt rr:tableName ?table . } 
+OPTIONAL { ?lt morph:uniqueIndex ?unique . } 
+OPTIONAL { ?subjMap rr:column ?subjCol . } 
+OPTIONAL { ?subjMap morph:columnOperation ?subjColOp . } 
+OPTIONAL { ?subjMap rr:template ?subjTemplate . } 
+OPTIONAL { ?subjMap rr:termtype ?subjType . } 
+OPTIONAL { ?subjMap rr:subject ?subject . } 
+OPTIONAL { ?subjMap rr:class ?subjClass . } 
+OPTIONAL { ?subjMap rr:inverseExpression ?subjInverse . } }
+2011-07-28 15:16:20,839 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,841 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://semsorgrid4env.eu/ns#MilfordSensorMap
+2011-07-28 15:16:20,842 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,844 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,846 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+SELECT ?predicate ?predicateColumn ?object ?column ?datatype ?graphColumn ?graph WHERE { 
+<http://semsorgrid4env.eu/ns#MilfordSensorMap> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:predicateObjectMap ?poMap . 
+?poMap rr:predicateMap ?pMap . 
+?poMap rr:objectMap ?oMap . 
+OPTIONAL { ?pMap rr:predicate ?predicate . } 
+OPTIONAL { ?pMap rr:column ?predicateColumn . } 
+OPTIONAL { ?poMap rr:graphColumn ?graphColumn . } 
+OPTIONAL { ?poMap rr:graph ?graph . } 
+OPTIONAL { ?oMap rr:column ?column . } 
+OPTIONAL { ?oMap rr:datatype ?datatype . } 
+OPTIONAL { ?oMap rr:object ?object . } 
+}
+2011-07-28 15:16:20,848 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,849 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://semsorgrid4env.eu/ns#LocatedIn-null
+2011-07-28 15:16:20,850 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+SELECT ?predicate ?parentTm ?join ?graphColumn ?graph WHERE { 
+<http://semsorgrid4env.eu/ns#MilfordSensorMap> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:refPredicateObjectMap ?poMap . 
+?poMap rr:refPredicateMap ?pMap . 
+?poMap rr:refObjectMap ?oMap . 
+OPTIONAL { ?pMap rr:predicate ?predicate . } 
+OPTIONAL { ?poMap rr:graphColumn ?graphColumn . } 
+OPTIONAL { ?poMap rr:graph ?graph . } 
+OPTIONAL { ?oMap rr:joinCondition ?join . } 
+OPTIONAL { ?oMap rr:parentTriplesMap ?parentTm . } 
+}
+2011-07-28 15:16:20,852 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,854 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation
+2011-07-28 15:16:20,855 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,857 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,858 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+SELECT ?predicate ?predicateColumn ?object ?column ?datatype ?graphColumn ?graph WHERE { 
+<http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:predicateObjectMap ?poMap . 
+?poMap rr:predicateMap ?pMap . 
+?poMap rr:objectMap ?oMap . 
+OPTIONAL { ?pMap rr:predicate ?predicate . } 
+OPTIONAL { ?pMap rr:column ?predicateColumn . } 
+OPTIONAL { ?poMap rr:graphColumn ?graphColumn . } 
+OPTIONAL { ?poMap rr:graph ?graph . } 
+OPTIONAL { ?oMap rr:column ?column . } 
+OPTIONAL { ?oMap rr:datatype ?datatype . } 
+OPTIONAL { ?oMap rr:object ?object . } 
+}
+2011-07-28 15:16:20,860 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,862 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://semsorgrid4env.eu/ns#measuredBy-null
+2011-07-28 15:16:20,863 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/emp#observedProperty-null
+2011-07-28 15:16:20,863 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - null-http://www.example.com/emp#featureOfInterest-null
+2011-07-28 15:16:20,864 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - timestamp-http://semsorgrid4env.eu/ns#observationResultTime-null
+2011-07-28 15:16:20,865 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Hs-http://semsorgrid4env.eu/ns#observationResult-null
+2011-07-28 15:16:20,865 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+SELECT ?predicate ?parentTm ?join ?graphColumn ?graph WHERE { 
+<http://es.upm.fi.dia.oeg/R2RMapping#MilfordWaveObservation> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:refPredicateObjectMap ?poMap . 
+?poMap rr:refPredicateMap ?pMap . 
+?poMap rr:refObjectMap ?oMap . 
+OPTIONAL { ?pMap rr:predicate ?predicate . } 
+OPTIONAL { ?poMap rr:graphColumn ?graphColumn . } 
+OPTIONAL { ?poMap rr:graph ?graph . } 
+OPTIONAL { ?oMap rr:joinCondition ?join . } 
+OPTIONAL { ?oMap rr:parentTriplesMap ?parentTm . } 
+}
+2011-07-28 15:16:20,867 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,869 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - http://es.upm.fi.dia.oeg/R2RMapping#PropMap
+2011-07-28 15:16:20,869 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Find ref: http://es.upm.fi.dia.oeg/R2RMapping#PropMap
+2011-07-28 15:16:20,869 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query tripleMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+PREFIX morph: <http://es.upm.fi.dia.oeg/morph#> 
+SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass ?subjInverse ?subjTemplate ?unique WHERE { 
+<http://es.upm.fi.dia.oeg/R2RMapping#PropMap> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:logicalTable ?lt; 
+rr:subjectMap ?subjMap . 
+OPTIONAL { ?lt rr:sqlQuery ?query . } 
+OPTIONAL { ?lt rr:tableName ?table . } 
+OPTIONAL { ?lt morph:uniqueIndex ?unique . } 
+OPTIONAL { ?subjMap rr:column ?subjCol . } 
+OPTIONAL { ?subjMap morph:columnOperation ?subjColOp . } 
+OPTIONAL { ?subjMap rr:template ?subjTemplate . } 
+OPTIONAL { ?subjMap rr:termtype ?subjType . } 
+OPTIONAL { ?subjMap rr:subject ?subject . } 
+OPTIONAL { ?subjMap rr:class ?subjClass . } 
+OPTIONAL { ?subjMap rr:inverseExpression ?subjInverse . } }
+2011-07-28 15:16:20,872 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,873 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples map found: http://es.upm.fi.dia.oeg/R2RMapping#PropMap
+2011-07-28 15:16:20,875 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,877 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,878 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query propertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+SELECT ?predicate ?predicateColumn ?object ?column ?datatype ?graphColumn ?graph WHERE { 
+<http://es.upm.fi.dia.oeg/R2RMapping#PropMap> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:predicateObjectMap ?poMap . 
+?poMap rr:predicateMap ?pMap . 
+?poMap rr:objectMap ?oMap . 
+OPTIONAL { ?pMap rr:predicate ?predicate . } 
+OPTIONAL { ?pMap rr:column ?predicateColumn . } 
+OPTIONAL { ?poMap rr:graphColumn ?graphColumn . } 
+OPTIONAL { ?poMap rr:graph ?graph . } 
+OPTIONAL { ?oMap rr:column ?column . } 
+OPTIONAL { ?oMap rr:datatype ?datatype . } 
+OPTIONAL { ?oMap rr:object ?object . } 
+}
+2011-07-28 15:16:20,880 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,882 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - propCol-http://semsorgrid4env.eu/ns#propPred-null
+2011-07-28 15:16:20,882 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Query refPropertyObjectMap: PREFIX rr: <http://www.w3.org/ns/r2rml#> 
+SELECT ?predicate ?parentTm ?join ?graphColumn ?graph WHERE { 
+<http://es.upm.fi.dia.oeg/R2RMapping#PropMap> a <http://www.w3.org/ns/r2rml#TriplesMap> ; 
+rr:refPredicateObjectMap ?poMap . 
+?poMap rr:refPredicateMap ?pMap . 
+?poMap rr:refObjectMap ?oMap . 
+OPTIONAL { ?pMap rr:predicate ?predicate . } 
+OPTIONAL { ?poMap rr:graphColumn ?graphColumn . } 
+OPTIONAL { ?poMap rr:graph ?graph . } 
+OPTIONAL { ?oMap rr:joinCondition ?join . } 
+OPTIONAL { ?oMap rr:parentTriplesMap ?parentTm . } 
+}
+2011-07-28 15:16:20,884 [main] DEBUG com.hp.hpl.jena.shared.LockMRSW - Lock : main
+2011-07-28 15:16:20,886 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - join-http://semsorgrid4env.eu/ns#sensorProp
+2011-07-28 15:16:20,886 [main] DEBUG es.upm.fi.dia.oeg.morph.r2rml.R2RModel - Triples: -http://es.upm.fi.dia.oeg/R2RMapping#PropMap

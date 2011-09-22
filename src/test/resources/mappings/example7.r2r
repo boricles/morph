@@ -7,16 +7,15 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix : <http://es.upm.fi.dia.oeg/R2RMapping#> . 
 
-:PropMap a rr:TriplesMapClass;
-	rr:SQLQuery "";
-	rr:subjectMap [ rr:column "propIdCol"; rr:class ssg:PropClass; rr:graph ssg:streamgraph ];
-	rr:tableName "prop";
+:PropMap a rr:TriplesMap;
+	rr:logicalTable [rr:tableName "prop"];
+	rr:subjectMap [ rr:column "propIdCol"; rr:class ssg:PropClass; rr:graph ssg:streamgraph ];	
 	rr:predicateObjectMap [ rr:predicateMap [ rr:predicate ssg:propPred ];
 						   	rr:objectMap	[ rr:column "propCol" ]];	
 .
 
-:MilfordWaveObservation   a rr:TriplesMapClass;
-    rr:SQLQuery "Select * from cco.envdata_milford";
+:MilfordWaveObservation   a rr:TriplesMap;
+    rr:logicalTable [rr:sqlQuery "Select * from cco.envdata_milford"];
     rr:subjectMap [ morph:columnOperation "CONCAT('http://semsorgrid4env.eu/ns#Observation/milford/',DateTime)";
     				rr:column "DateTime";  rr:class ssg:Observation; rr:graph ssg:streamgraph ];
 
@@ -34,8 +33,8 @@
     						   rr:refObjectMap 	  [ rr:parentTriplesMap :PropMap; rr:joinCondition "join" ]]; 	
  .
 
-ssg:MilfordSensorMap a rr:TriplesMapClass;
-  	rr:SQLQuery "select 'MilfordSensorUri' as uri from cco.envdata_milford";
+ssg:MilfordSensorMap a rr:TriplesMap;
+  	rr:logicalTable [rr:sqlQuery "select 'MilfordSensorUri' as uri from cco.envdata_milford"];
   	rr:subjectMap [rr:class ssg:Procedure; rr:column "uri"];
  	rr:predicateObjectMap [ rr:predicateMap [rr:predicate ssg:LocatedIn];
    							rr:objectMap 	[rr:object ssg:CCOSouthEastEngland] ];

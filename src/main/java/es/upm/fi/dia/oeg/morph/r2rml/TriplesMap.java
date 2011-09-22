@@ -13,6 +13,7 @@ public class TriplesMap
 	private String uri;
 	private String tableOwner;
 	private String tableName;
+	private String tableUniqueIndex;
 	private String sqlQuery;
 	private SubjectMap subjectMap;
 	private Collection<PredicateObjectMap> predicateObjectMap;
@@ -90,5 +91,11 @@ public class TriplesMap
 	public String getTableName()
 	{
 		return tableName;
+	}
+	public void setTableUniqueIndex(String tableUniqueIndex) {
+		this.tableUniqueIndex = tableUniqueIndex;
+	}
+	public String getTableUniqueIndex() {
+		return tableUniqueIndex;
 	}
 }

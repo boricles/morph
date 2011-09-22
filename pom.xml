@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>es.upm.fi.dia.oeg.integrator</groupId>
   <artifactId>morph</artifactId>
-  <version>0.0.1-SNAPSHOT</version>  
+  <version>0.0.4-SNAPSHOT</version>  
   <dependencies>
     <dependency>
       <groupId>com.hp.hpl.jena</groupId>

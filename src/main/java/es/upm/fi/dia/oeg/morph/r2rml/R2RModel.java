@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import static es.upm.fi.dia.oeg.morph.r2rml.R2RML.*;
+import static es.upm.fi.dia.oeg.morph.Morph.*;
 import org.apache.log4j.Logger;
 import org.openjena.riot.RiotException;
 
@@ -34,11 +34,9 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.RDFReader;
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.sparql.algebra.Algebra;
 import com.hp.hpl.jena.sparql.algebra.Op;
 import com.hp.hpl.jena.sparql.algebra.op.OpBGP;
@@ -47,6 +45,8 @@ import com.hp.hpl.jena.sparql.algebra.op.OpProject;
 import com.hp.hpl.jena.sparql.core.Var;
 import com.hp.hpl.jena.sparql.resultset.ResultSetException;
 import com.hp.hpl.jena.vocabulary.RDF;
+
+import es.upm.fi.dia.oeg.morph.Morph;
 
 public class R2RModel 
 {
@@ -57,7 +57,7 @@ public class R2RModel
 
 	public static final String R2RML_URI = "http://www.w3.org/ns/r2rml";
 	//private static String r2rmlNS = "http://www.w3.org/ns/r2rml#";
-	private static String morphNS = "http://es.upm.fi.dia.oeg/morph#";	
+	//private static String morphNS = "http://es.upm.fi.dia.oeg/morph#";	
 	private static String r2rml = "rr";
 	private static String morph = "morph";
 	private Model model;
@@ -73,7 +73,7 @@ public class R2RModel
 	{
 		
 		model = ModelFactory.createDefaultModel();
-    	morphColumnOperation = model.createResource(morphNS+"columnOperation");
+    	morphColumnOperation = model.createResource(Morph.getUri()+"columnOperation");
 	}
 	
 	public R2RModel(String mappingEnpoint)
@@ -138,7 +138,6 @@ public class R2RModel
 			throw new InvalidR2RDocumentException("Error reading  r2r document: "+e.getMessage(), e);
 		}
 		readTriplesMap();
-		
 	}
 	
 	public void write(URI uri) throws IOException
@@ -146,7 +145,7 @@ public class R2RModel
 		FileWriter fw = new FileWriter(new File(uri));
 		model.write(fw, TURTLE_FORMAT);
 		model.close();
-		
+		fw.close();		
 	}
 
 	public Collection<TriplesMap> getTriplesMap()
@@ -175,13 +174,15 @@ public class R2RModel
 			tMapVar = "<"+triplesMapUri+">";
 		//Collection<TriplesMap> maps = new ArrayList<TriplesMap>();
 		String queryString = "PREFIX "+r2rml+": <"+R2RML.getUri()+"> \n"+
-				"PREFIX "+morph+": <"+morphNS+"> \n"+
+				"PREFIX "+morph+": <"+Morph.getUri()+"> \n"+
 				"SELECT ?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass " +
-				"?subjInverse ?subjTemplate WHERE { \n" +
+				"?subjInverse ?subjTemplate ?unique WHERE { \n" +
 				tMapVar+" a <"+TriplesMap.getURI()+"> ; \n" +
-				r2rml+":"+sqlQuery.getLocalName()+ " ?query ; \n"+
+				r2rml+":"+logicalTable.getLocalName()+" ?lt; \n"+
 				r2rml+":"+subjectMap.getLocalName()+ " ?subjMap . \n" +
-				"OPTIONAL { "+tMapVar+" "+r2rml+":"+tableName.getLocalName() + " ?table . } \n"+				
+				"OPTIONAL { ?lt "+r2rml+":"+sqlQuery.getLocalName()+ " ?query . } \n"+
+				"OPTIONAL { ?lt "+r2rml+":"+tableName.getLocalName() + " ?table . } \n"+				
+				"OPTIONAL { ?lt "+morph+":"+uniqueIndex.getLocalName() + " ?unique . } \n"+				
 				"OPTIONAL { ?subjMap "+r2rml+":"+column.getLocalName() + " ?subjCol . } \n"+				
 				"OPTIONAL { ?subjMap "+morph+":"+morphColumnOperation.getLocalName() + " ?subjColOp . } \n"+				
 				"OPTIONAL { ?subjMap "+r2rml+":"+template.getLocalName() + " ?subjTemplate . } \n"+				
@@ -217,7 +218,7 @@ public class R2RModel
 		      logger.debug("Triples map found: "+uri);
 		      
 		      Resource subjClass = soln.getResource("subjClass"); 
-		      Literal sqlQuery = soln.get("query").asLiteral();
+		      Literal sqlQuery = soln.getLiteral("query");
 		      //Resource subjGraph = soln.getResource("subjGraph");
 		      //Literal subjGraphCol = soln.getLiteral("subjGraphCol");
 		      Literal inverse = soln.getLiteral("subjInverse");
@@ -227,13 +228,17 @@ public class R2RModel
 		      RDFNode subject = soln.getResource("subject");
 		      Literal table = soln.getLiteral("table");
 		      Literal subjTemplate = soln.getLiteral("subjTemplate");
+		      Literal unique = soln.getLiteral("unique");
 		      
 		      TriplesMap tMap = new TriplesMap(uri);
 		      SubjectMap subjectMap = new SubjectMap();
 		      subjectMap.setRdfsClass(subjClass);
-		      tMap.setSqlQuery(sqlQuery.getString());
+		      if (sqlQuery != null)
+		    	  tMap.setSqlQuery(sqlQuery.getString());
 		      if (table!=null)
 		    	  tMap.setTableName(table.getString());
+		      if (unique !=null)
+		    	  tMap.setTableUniqueIndex(unique.getString());
 		      //if (subjGraph!=null)
 		      //	  subjectMap.addGraph(subjGraph.getURI());
 		      //else if (subjGraphCol!= null)
@@ -251,6 +256,7 @@ public class R2RModel
 		      subjectMap.setTriplesMap(tMap);
 		      tMap.setSubjectMap(subjectMap );
 		      
+		      readIndexes(tMap);
 		      readGraphs(subjectMap);
 		      readGraphColumns(subjectMap);
 		      readPropertyObjectMap(tMap);
@@ -264,6 +270,11 @@ public class R2RModel
 		
 	}
 	
+	private void readIndexes(TriplesMap tMap) 
+	{
+		
+	}
+
 	/*
 	private void fillRefTriplesMap(TriplesMap tMap)
 	{
@@ -411,13 +422,13 @@ public class R2RModel
 
 	private void readGraphs(SubjectMap sMap)
 	{
-		HashSet<String> graphs = new HashSet<String>();
+		//HashSet<String> graphs = new HashSet<String>();
 		String queryString = "PREFIX "+r2rml+": <"+R2RML.getUri()+"> \n" +
 					"SELECT ?graph WHERE { \n" +
-		"<"+sMap.getTriplesMap().getUri()+ "> a <"+TriplesMap.getURI()+"> ; \n" +
-		r2rml+":"+subjectMap.getLocalName()+ " ?sMap . \n" +
-		"OPTIONAL {?sMap "+r2rml+":"+graph.getLocalName()+ " ?graph . }\n" +
-		"}";
+						"<"+sMap.getTriplesMap().getUri()+ "> a <"+TriplesMap.getURI()+"> ; \n" +
+						r2rml+":"+subjectMap.getLocalName()+ " ?sMap . \n" +
+						"OPTIONAL {?sMap "+r2rml+":"+graph.getLocalName()+ " ?graph . }\n" +
+						"}";
 		if (logger.isTraceEnabled())
 			logger.trace("Query graph "+queryString);
 		
@@ -502,7 +513,7 @@ public class R2RModel
 			Collection<TriplesMap> col = new ArrayList<TriplesMap>();
 
 			String queryString = "PREFIX "+r2rml+": <"+R2RML.getUri()+"> \n" +
-					"PREFIX "+morph+": <"+morphNS+"> \n"+
+					"PREFIX "+morph+": <"+Morph.getUri()+"> \n"+
 					"SELECT DISTINCT ?object ?column ?datatype " +
 					"?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass "+
 					"?graphColumn ?graph WHERE { \n" +
@@ -658,7 +669,7 @@ public class R2RModel
 		Collection<PredicateObjectMap> col = new ArrayList<PredicateObjectMap>();
 
 		String queryString = "PREFIX "+r2rml+": <"+R2RML.getUri()+"> \n" +
-				"PREFIX "+morph+": <"+morphNS+"> \n"+
+				"PREFIX "+morph+": <"+Morph.getUri()+"> \n"+
 				"SELECT DISTINCT ?object ?column ?datatype " +
 				"?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass "+
 				"?graphColumn ?graph WHERE { \n" +
@@ -790,7 +801,7 @@ public class R2RModel
 		Collection<RefPredicateObjectMap> col = new ArrayList<RefPredicateObjectMap>();
 
 		String queryString = "PREFIX "+r2rml+": <"+R2RML.getUri()+"> \n" +
-				"PREFIX "+morph+": <"+morphNS+"> \n"+
+				"PREFIX "+morph+": <"+Morph.getUri()+"> \n"+
 				"SELECT DISTINCT ?object ?column ?datatype " +
 				"?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass "+
 				"?graphColumn ?graph "+
