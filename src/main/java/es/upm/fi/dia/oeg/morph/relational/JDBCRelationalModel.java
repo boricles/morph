@@ -13,15 +13,18 @@ public class JDBCRelationalModel implements RelationalModel
 	private static final String JDBC_SOURCE_URL = "jdbc.source.url";
 	private static final String JDBC_SOURCE_USER = "jdbc.source.user";
 	private static final String JDBC_SOURCE_PASSWORD = "jdbc.source.password";
+	private static final String JDBC_DRIVER = "jdbc.driver";
 	
 	private String sourceUrl;
 	private String user;
 	private String password;
+	private String driver;
 	
 	@Override
 	public void configure(Properties props) throws InstantiationException, IllegalAccessException, ClassNotFoundException
 	{
-		Class.forName("com.mysql.jdbc.Driver").newInstance();
+		this.driver = props.getProperty(JDBC_DRIVER);
+		Class.forName(driver).newInstance();
 	    this.sourceUrl = props.getProperty(JDBC_SOURCE_URL); 
 	    this.user = props.getProperty(JDBC_SOURCE_USER);
 	    this.password = props.getProperty(JDBC_SOURCE_PASSWORD);

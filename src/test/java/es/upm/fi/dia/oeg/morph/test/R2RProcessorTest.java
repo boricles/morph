@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URISyntaxException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Properties;
 
 import net.sf.jsqlparser.JSQLParserException;
@@ -14,6 +18,7 @@ import net.sf.jsqlparser.statement.Statement;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import es.upm.fi.dia.oeg.morph.ParameterUtils;
@@ -34,6 +39,75 @@ public class R2RProcessorTest
 		PropertyConfigurator.configure(R2RProcessorTest.class.getClassLoader().getResource("log4j.properties"));
 		props = ParameterUtils.load(R2RProcessorTest.class.getClassLoader().getResourceAsStream("config.properties"));
 		r2r = new R2RProcessor();
+		
+		Connection c = DriverManager.getConnection(
+		          "jdbc:hsqldb:mem:test", "SA", "");
+		PreparedStatement ps;
+		
+		String create = 
+			"CREATE SCHEMA test";
+					
+		ps = c.prepareStatement(create);
+		ps.execute();
+		
+		create = 
+			"CREATE TABLE test.dept ( "+
+			" deptno int NOT NULL PRIMARY KEY, "+
+			" dname varchar(30) DEFAULT NULL,"+
+			" loc varchar(100) DEFAULT NULL"+
+			" )";
+					
+		ps = c.prepareStatement(create);
+		ps.execute();
+		
+		
+		create = "CREATE TABLE test.emp ("+
+				 " empno int NOT NULL,"+
+				 " ename varchar(100) DEFAULT NULL,"+
+				 " job varchar(30) DEFAULT NULL,"+
+				 " deptno int DEFAULT NULL,"+
+				 " etype varchar(30) DEFAULT NULL,"+
+				 " PRIMARY KEY (empno) )";
+		ps = c.prepareStatement(create);
+		ps.execute();
+		
+		create = "CREATE TABLE test.likes ( "+
+				  " id  varchar(4000) DEFAULT NULL, "+
+				  " likeType varchar(30) DEFAULT NULL, "+
+				  " likedObj varchar(100) DEFAULT NULL )";
+		ps = c.prepareStatement(create);
+		ps.execute();
+		
+		String insert = 
+			"INSERT INTO test.dept VALUES "+
+			"(10,'APPSERVER','NEW YORK'),"+
+			"(20,'APPCONF','CHICAGO')";
+		ps = c.prepareStatement(insert);
+		ps.execute();
+		
+		insert = 
+			"INSERT INTO test.emp VALUES "+
+			"(7369,'SMITH','CLERK',10,'PARTTIME')";
+		ps = c.prepareStatement(insert);
+		ps.execute();
+		
+		insert = 
+			"INSERT INTO test.likes VALUES "+
+			"(7369,'Playing','Soccer'),"+
+			"(7369,'Watching','Basketball'),";
+		
+		String query =
+			"SELECT CONCAT(deptno,'asdasd','asdasd') AS dcon FROM test.dept";
+		
+		ps = c.prepareStatement(query);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next())
+		{
+			System.out.println(rs.getObject("dcon"));
+		}
+		
+		c.close();
+		
 	}
 
 	
@@ -80,7 +154,7 @@ public class R2RProcessorTest
 		r2r.generate();
 	}
 	
-	@Test
+	@Test@Ignore
 	public void testGenerateEx5() throws  InvalidPropertyMapException, R2RProcessorConfigurationException, RelationalModelException, 
 	InvalidR2RDocumentException, InvalidR2RLocationException
 	{
@@ -89,7 +163,7 @@ public class R2RProcessorTest
 		r2r.generate();
 	}
 	
-	@Test
+	@Test@Ignore
 	public void testGenerateEx6() throws  InvalidPropertyMapException, R2RProcessorConfigurationException, RelationalModelException, 
 	InvalidR2RDocumentException, InvalidR2RLocationException
 	{

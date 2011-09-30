@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>es.upm.fi.dia.oeg.integrator</groupId>
   <artifactId>morph</artifactId>
-  <version>0.0.4-SNAPSHOT</version>  
+  <version>0.0.5-SNAPSHOT</version>  
   <dependencies>
     <dependency>
       <groupId>com.hp.hpl.jena</groupId>
@@ -68,6 +68,11 @@
 		<groupId>net.sf</groupId>
 		<artifactId>jsqlparser</artifactId>
 		<version>0.0.1</version>
+	</dependency>
+	<dependency>
+		<groupId>org.hsqldb</groupId>
+		<artifactId>hsqldb</artifactId>
+		<version>2.2.4</version>
 	</dependency>
   </dependencies>
   <issueManagement>
