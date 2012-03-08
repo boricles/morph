@@ -11,22 +11,22 @@
     rr:subjectMap [ morph:columnOperation "CONCAT('http://semsorgrid4env.eu/ns#Observation/milford/',DateTime)";
     				rr:column "DateTime";  rr:class ssg:Observation; rr:graph ssg:streamgraph ];
 
-    rr:predicateObjectMap [ rr:predicateMap [ rr:predicate ssg:observationResult ]; 
+    rr:predicateObjectMap [ rr:predicateMap [ rr:constant ssg:observationResult ]; 
       						rr:objectMap    [ rr:column "Hs" ]];
-    rr:predicateObjectMap [	rr:predicateMap [ rr:predicate ssg:observationResultTime ]; 
+    rr:predicateObjectMap [	rr:predicateMap [ rr:constant ssg:observationResultTime ]; 
       						rr:objectMap    [ rr:column "timestamp" ]];
-    rr:predicateObjectMap [ rr:predicateMap [ rr:predicate emp:featureOfInterest ]; 
+    rr:predicateObjectMap [ rr:predicateMap [ rr:constant emp:featureOfInterest ]; 
       						rr:objectMap    [ rr:object ssg:Sea ]];
-    rr:predicateObjectMap [ rr:predicateMap [ rr:predicate emp:observedProperty ]; 
+    rr:predicateObjectMap [ rr:predicateMap [ rr:constant emp:observedProperty ]; 
       						rr:objectMap    [ rr:object ssg:WaveHeight ]];
-    rr:predicateObjectMap [ rr:predicateMap [ rr:predicate ssg:measuredBy ]; 
+    rr:predicateObjectMap [ rr:predicateMap [ rr:constant ssg:measuredBy ]; 
       						rr:objectMap    [ rr:object ssg:MilfordSensor ]];
  .
 
 ssg:MilfordSensorMap a rr:TriplesMap;
   	rr:logicalTable [rr:sqlQuery "select 'MilfordSensorUri' as uri from cco.envdata_milford"];
   	rr:subjectMap [rr:class ssg:Procedure; rr:column "uri"];
- 	rr:predicateObjectMap [ rr:predicateMap [rr:predicate ssg:LocatedIn];
+ 	rr:predicateObjectMap [ rr:predicateMap [rr:constant ssg:LocatedIn];
    							rr:objectMap 	[rr:object ssg:CCOSouthEastEngland] ];
 .
     

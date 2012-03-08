@@ -92,33 +92,35 @@ public class R2RModel
 	
 	public void read(URI mappingUrl) throws InvalidR2RDocumentException, InvalidR2RLocationException
 	{
-		if (mappingUrl.isAbsolute())
+		//if (mappingUrl.isAbsolute())
 		{
 			try
 			{
-				InputStream in = new FileInputStream(new File(mappingUrl));
+				InputStream in = new FileInputStream(mappingUrl.toString());
 				this.read(in);
 				in.close();
 			}
 			catch (FileNotFoundException e)
 			{
-				throw new InvalidR2RLocationException(e.getMessage(), e);
+				InputStream iss = R2RModel.class.getClassLoader().getResourceAsStream(mappingUrl.toString());
+				//try
+				{
+					this.read(iss);
+				} 
+				/*catch (URISyntaxException e2)
+				{
+					String msg = "Error reading the mapping location: "+e2.getMessage();
+					logger.error(msg);
+					throw new InvalidR2RLocationException(msg,e2);
+				}*/
+		
+				//throw new InvalidR2RLocationException(e.getMessage(), e);
 			} catch (IOException e)
 			{
 				throw new InvalidR2RLocationException(e.getMessage(), e);			}
 		}
-		else
+		//else
 		{
-			URL url = R2RModel.class.getClassLoader().getResource(mappingUrl.toString());
-			try
-			{
-				this.read(url.toURI());
-			} catch (URISyntaxException e)
-			{
-				String msg = "Error reading the mapping location: "+e.getMessage();
-				logger.error(msg);
-				throw new InvalidR2RLocationException(msg,e);
-			}
 		}
 	}
 	
@@ -224,7 +226,7 @@ public class R2RModel
 		      Literal inverse = soln.getLiteral("subjInverse");
 		      Literal column = soln.getLiteral("subjCol");
 		      Literal columnOperation = soln.getLiteral("subjColOp");
-		      Literal termType = soln.getLiteral("subjType");
+		      Resource termType = soln.getResource("subjType");
 		      RDFNode subject = soln.getResource("subject");
 		      Literal table = soln.getLiteral("table");
 		      Literal subjTemplate = soln.getLiteral("subjTemplate");
@@ -233,6 +235,8 @@ public class R2RModel
 		      TriplesMap tMap = new TriplesMap(uri);
 		      SubjectMap subjectMap = new SubjectMap();
 		      subjectMap.setRdfsClass(subjClass);
+		      if (termType!=null)
+		    	  subjectMap.setTermType(termType.getURI());
 		      if (sqlQuery != null)
 		    	  tMap.setSqlQuery(sqlQuery.getString());
 		      if (table!=null)
@@ -296,7 +300,7 @@ public class R2RModel
 					r2rml+":"+predicateObjectMap.getLocalName()+ " ?poMap . \n" +
 					"?poMap "+r2rml+":"+predicateMap.getLocalName()+ " ?pMap . \n" +
 					"?poMap "+r2rml+":"+objectMap.getLocalName()+ " ?oMap . \n" +
-					"OPTIONAL { ?pMap "+r2rml+":"+predicate.getLocalName() + " ?predicate . } \n"+				
+					"OPTIONAL { ?pMap "+r2rml+":"+constant.getLocalName() + " ?predicate . } \n"+				
 					"OPTIONAL { ?pMap "+r2rml+":"+column.getLocalName() + " ?predicateColumn . } \n"+												
 					"OPTIONAL { ?poMap "+r2rml+":"+graphColumn.getLocalName() + " ?graphColumn . } \n"+				
 					"OPTIONAL { ?poMap "+r2rml+":"+graph.getLocalName() + " ?graph . } \n"+				
@@ -360,7 +364,7 @@ public class R2RModel
 					r2rml+":"+refPredicateObjectMap.getLocalName()+ " ?poMap . \n" +
 					"?poMap "+r2rml+":"+refPredicateMap.getLocalName()+ " ?pMap . \n" +
 					"?poMap "+r2rml+":"+refObjectMap.getLocalName()+ " ?oMap . \n" +
-					"OPTIONAL { ?pMap "+r2rml+":"+predicate.getLocalName() + " ?predicate . } \n"+				
+					"OPTIONAL { ?pMap "+r2rml+":"+constant.getLocalName() + " ?predicate . } \n"+				
 					"OPTIONAL { ?poMap "+r2rml+":"+graphColumn.getLocalName() + " ?graphColumn . } \n"+				
 					"OPTIONAL { ?poMap "+r2rml+":"+graph.getLocalName() + " ?graph . } \n"+				
 					"OPTIONAL { ?oMap "+r2rml+":"+joinCondition.getLocalName() + " ?join . } \n"+				
@@ -677,7 +681,7 @@ public class R2RModel
 				"?tMap "+r2rml+":"+predicateObjectMap.getLocalName()+ " ?poMap . \n" +
 				"?poMap "+r2rml+":"+predicateMap.getLocalName()+ " ?pMap . \n" +
 				"?poMap "+r2rml+":"+objectMap.getLocalName()+ " ?oMap . \n" +
-				"?pMap "+r2rml+":"+predicate.getLocalName() + " <"+uri+"> . \n"+				
+				"?pMap "+r2rml+":"+constant.getLocalName() + " <"+uri+"> . \n"+				
 				//"OPTIONAL { ?pMap "+r2rml+":"+column.getLocalName() + " ?predicateColumn . } \n"+												
 				//"OPTIONAL { ?poMap "+r2rml+":"+graphColumn.getLocalName() + " ?graphColumn . } \n"+				
 				"OPTIONAL { ?poMap "+r2rml+":"+graph.getLocalName() + " ?graph . } \n"+				
@@ -817,7 +821,7 @@ public class R2RModel
 				"?tMap "+r2rml+":"+tableName.getLocalName() + " ?table .  \n"+				
 				"?poMap "+r2rml+":"+refPredicateMap.getLocalName()+ " ?pMap . \n" +
 				"?poMap "+r2rml+":"+refObjectMap.getLocalName()+ " ?oMap . \n" +
-				"?pMap "+r2rml+":"+predicate.getLocalName() + " <"+uri+"> . \n"+				
+				"?pMap "+r2rml+":"+constant.getLocalName() + " <"+uri+"> . \n"+				
 				"?oMap "+r2rml+":"+parentTriplesMap.getLocalName() + " ?parentTMap .  \n"+
 				"?parentTMap "+r2rml+":"+subjectMap.getLocalName()+ " ?parentSubjMap . \n" +
 				"?parentTMap "+r2rml+":"+tableName.getLocalName() + " ?parentTable .  \n"+				

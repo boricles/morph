@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import org.apache.log4j.Logger;
 
 import com.hp.hpl.jena.query.DataSource;
+import com.hp.hpl.jena.rdf.model.AnonId;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -80,7 +81,20 @@ public class TriplesMapInstance
 	
 	private void generateSubject()
 	{
-		String col = tMap.getSubjectMap().getColumn();
+		String ttype=tMap.getSubjectMap().getTermType();
+		if (ttype!=null)
+			this.generatedSubject=getModel().createResource(new AnonId());
+		else{
+		String col ="";
+		if (tMap.getSubjectMap().getColumn()!=null)
+			col=tMap.getSubjectMap().getColumn();
+		else{
+			int i=tMap.getSubjectMap().getTemplate().indexOf('{');
+			int j=tMap.getSubjectMap().getTemplate().indexOf('}');
+			
+			col=tMap.getSubjectMap().getTemplate().substring(i+1, j);
+		}
+			
 		String id = null;
 		try
 		{
@@ -92,7 +106,7 @@ public class TriplesMapInstance
 		}
 		logger.debug("Identifier for uri: "+id);
 		Resource subj = getModel().createResource(id);
-		this.generatedSubject = subj;
+		this.generatedSubject = subj;}
 	}
 	
 	private Model getModel()

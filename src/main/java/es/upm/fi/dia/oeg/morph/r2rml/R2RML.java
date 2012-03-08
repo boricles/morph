@@ -20,6 +20,7 @@ public class R2RML
 	public static final Property refPredicateObjectMap = property("refPredicateObjectMap");
 	public static final Property refPredicateMap = property("refPredicateMap");
 	public static final Property refObjectMap = property("refObjectMap");
+	public static final Property constant = property("constant");
     
 	public static final Property predicate = property("predicate");
 	public static final Property propertyColumn = property("propertyColumn");
@@ -35,7 +36,7 @@ public class R2RML
 	public static final Property inverseExpression = property("inverseExpression"); 
 	public static final Property columnGraphIRI = property("columnGraphIRI");
 
-	public static final Property termType = property("termtype");
+	public static final Property termType = property("termType");
 	public static final Property graph = property("graph");
 	public static final Property graphColumn = property("graphColumn");
 	public static final Resource TriplesMap = resource("TriplesMap");

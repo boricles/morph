@@ -26,61 +26,61 @@
 
     rr:predicateObjectMap 
     [ 
-      rr:predicateMap [ rr:predicate emp:jobtype ]; 
+      rr:predicateMap [ rr:constant emp:jobtype ]; 
       rr:objectMap    [ rr:column "jobTypeURI" ]
     ];
 
     rr:predicateObjectMap 
     [ 
-      rr:predicateMap [ rr:predicate rdf:type ]; 
+      rr:predicateMap [ rr:constant rdf:type ]; 
       rr:objectMap    [ rr:column "jobTypeURI" ]
     ];
 
     rr:predicateObjectMap 
     [ 
-      rr:predicateMap [ rr:predicate emp:emptype ]; 
+      rr:predicateMap [ rr:constant emp:emptype ]; 
       rr:objectMap    [ rr:column "empTypeURI" ]
     ];
 
     rr:predicateObjectMap 
     [ 
-      rr:predicateMap [rr:predicate rdf:type ]; 
+      rr:predicateMap [rr:constant rdf:type ]; 
       rr:objectMap    [ rr:column "empTypeURI" ]
     ];
 
     rr:predicateObjectMap 
     [ 
-      rr:predicateMap [ rr:predicate emp:empno ]; 
+      rr:predicateMap [ rr:constant emp:empno ]; 
       rr:objectMap    [ rr:column "empno" ]
     ];
 
     rr:predicateObjectMap 
     [ 
-      rr:predicateMap [ rr:predicate emp:name ]; 
+      rr:predicateMap [ rr:constant emp:name ]; 
       rr:objectMap    [ rr:column "ename" ]; 
       rr:graph emp:empNameGraph
     ];
 
     rr:predicateObjectMap 
     [ 
-      rr:predicateMap [ rr:predicate emp:job ]; 
+      rr:predicateMap [ rr:constant emp:job ]; 
       rr:objectMap    [ rr:column "job" ]
     ];
 
     rr:predicateObjectMap 
     [ 
-      rr:predicateMap [ rr:predicate emp:deptNum ]; 
+      rr:predicateMap [ rr:constant emp:deptNum ]; 
       rr:objectMap    [ rr:column "deptno" ]
     ];
 
     rr:predicateObjectMap 
     [ 
-      rr:predicateMap [ rr:predicate emp:etype ]; 
+      rr:predicateMap [ rr:constant emp:etype ]; 
       rr:objectMap    [ rr:column "etype" ]
     ];
 
     rr:refPredicateObjectMap [
-      rr:refPredicateMap [ rr:predicate emp:c_ref_deptno ];
+      rr:refPredicateMap [ rr:constant emp:c_ref_deptno ];
       rr:refObjectMap    [ rr:parentTriplesMap <#TriplesMap1>; rr:joinCondition "child.{deptno} = parent.{deptno}" ]
     ]
     .

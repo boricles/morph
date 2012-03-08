@@ -39,8 +39,8 @@ public class R2RProcessor extends Observable
 	private static Logger logger = Logger.getLogger(R2RProcessor.class.getName());
 
 	private boolean configured = false;
-	private R2RModel model;
-	private RelationalModel relational;
+	public R2RModel model;
+	public RelationalModel relational;
 	
 	public R2RProcessor()
 	{
@@ -175,7 +175,7 @@ public class R2RProcessor extends Observable
 	{
 		serialize(transform());
 	}
-	private DataSource execute(DataSource d,TriplesMap tMap) throws InvalidPropertyMapException, RelationalModelException
+	public DataSource execute(DataSource d,TriplesMap tMap) throws InvalidPropertyMapException, RelationalModelException
 	{
 		try
 		{

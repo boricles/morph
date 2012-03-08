@@ -20,24 +20,24 @@
                     rr:inverseExpression "{deptno} = substr({deptId},length('Department')+1)"];
 
     rr:predicateObjectMap
-    [ rr:predicateMap [ rr:predicate dept:deptno ]; 
+    [ rr:predicateMap [ rr:constant dept:deptno ]; 
       rr:objectMap    [ rr:column "deptno"; rr:datatype xsd:positiveInteger ] ];
       
     rr:predicateObjectMap 
     [ 
-      rr:predicateMap [ rr:predicate dept:name ]; 
+      rr:predicateMap [ rr:constant dept:name ]; 
       rr:objectMap    [ rr:column "dname" ]
     ];
 
     rr:predicateObjectMap 
     [ 
-      rr:predicateMap [ rr:predicate dept:location ]; 
+      rr:predicateMap [ rr:constant dept:location ]; 
       rr:objectMap    [ rr:column "loc" ]
     ];
 
     rr:predicateObjectMap 
     [ 
-      rr:predicateMap [ rr:predicate dept:COMPANY ]; 
+      rr:predicateMap [ rr:constant dept:COMPANY ]; 
       rr:objectMap    [ rr:object "EXAMPLE Corporation" ]
     ]
 .
