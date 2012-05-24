@@ -24,5 +24,9 @@ public class Morph
 	{ 
 		return ResourceFactory.createProperty( uri, local ); 
 	}
+	
+	public static void main(String []args) {
+		System.out.println("Here it is ");
+	}
 
 }
