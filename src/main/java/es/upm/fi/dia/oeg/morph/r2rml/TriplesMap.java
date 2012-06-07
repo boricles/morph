@@ -11,13 +11,12 @@ public class TriplesMap
 {
 
 	private String uri;
-	private String tableOwner;
 	private String tableName;
 	private String tableUniqueIndex;
 	private String sqlQuery;
 	private SubjectMap subjectMap;
 	private Collection<PredicateObjectMap> predicateObjectMap;
-	private Collection<RefPredicateObjectMap> refPredicateObjectMap;
+	private Collection<RefObjectMap> refObjectMap;
 	//private String rowGraph;
 	//private String tableGraphIRI; //TODO this should be a set of graph IRIs
 	
@@ -25,7 +24,7 @@ public class TriplesMap
 	{
 		this.setUri(uri);
 		predicateObjectMap = new ArrayList<PredicateObjectMap>();
-		refPredicateObjectMap = new ArrayList<RefPredicateObjectMap>();
+		refObjectMap = new ArrayList<RefObjectMap>();
 	}
 	public void addPropertyObjectMap(PredicateObjectMap propertyObjectMap)
 	{
@@ -37,14 +36,14 @@ public class TriplesMap
 		return this.predicateObjectMap;
 	}
 
-	public void addRefPropertyObjectMap(RefPredicateObjectMap refPropertyObjectMap)
+	public void addRefPropertyObjectMap(RefObjectMap refPropertyObjectMap)
 	{
-		this.refPredicateObjectMap.add(refPropertyObjectMap);
+		this.refObjectMap.add(refPropertyObjectMap);
 	}
 	
-	public Collection<RefPredicateObjectMap> getRefPropertyObjectMaps()
+	public Collection<RefObjectMap> getRefPropertyObjectMaps()
 	{
-		return this.refPredicateObjectMap;
+		return this.refObjectMap;
 	}
 
 	public void setSqlQuery(String sqlQuery)
@@ -75,14 +74,6 @@ public class TriplesMap
 	public String getUri()
 	{
 		return uri;
-	}
-	public void setTableOwner(String tableOwner)
-	{
-		this.tableOwner = tableOwner;
-	}
-	public String getTableOwner()
-	{
-		return tableOwner;
 	}
 	public void setTableName(String tableName)
 	{

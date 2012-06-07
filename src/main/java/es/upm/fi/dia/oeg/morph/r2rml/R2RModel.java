@@ -296,7 +296,7 @@ public class R2RModel
 		String queryString = "PREFIX "+r2rml+": <"+R2RML.getUri()+"> \n" +
 					"SELECT ?predicate ?predicateColumn ?object ?column ?datatype " +
 					"?graphColumn ?graph WHERE { \n" +
-					"<"+tMap.getUri()+ "> a <"+TriplesMap.getURI()+"> ; \n" +
+					"<"+tMap.getUri()+ "> a <"+TriplesMap.getURI()+"> ; \n" + 
 					r2rml+":"+predicateObjectMap.getLocalName()+ " ?poMap . \n" +
 					"?poMap "+r2rml+":"+predicateMap.getLocalName()+ " ?pMap . \n" +
 					"?poMap "+r2rml+":"+objectMap.getLocalName()+ " ?oMap . \n" +
@@ -361,8 +361,7 @@ public class R2RModel
 					"SELECT ?predicate ?parentTm ?join " +
 					"?graphColumn ?graph WHERE { \n" +
 					"<"+tMap.getUri()+ "> a <"+TriplesMap.getURI()+"> ; \n" +
-					r2rml+":"+refPredicateObjectMap.getLocalName()+ " ?poMap . \n" +
-					"?poMap "+r2rml+":"+refPredicateMap.getLocalName()+ " ?pMap . \n" +
+					r2rml+":"+predicateObjectMap.getLocalName()+ " ?poMap . \n" +
 					"?poMap "+r2rml+":"+refObjectMap.getLocalName()+ " ?oMap . \n" +
 					"OPTIONAL { ?pMap "+r2rml+":"+constant.getLocalName() + " ?predicate . } \n"+				
 					"OPTIONAL { ?poMap "+r2rml+":"+graphColumn.getLocalName() + " ?graphColumn . } \n"+				
@@ -385,25 +384,25 @@ public class R2RModel
 		      Literal graphColumn = soln.getLiteral("graphColumn");
 		      Resource graph = soln.getResource("graph");
 		      
-		      RefPredicateObjectMap poMap = new RefPredicateObjectMap();
-		      RefPredicateMap pMap = new RefPredicateMap();
-		      RefObjectMap oMap = new RefObjectMap();
+		      PredicateObjectMap poMap = new PredicateObjectMap();
+		      PredicateMap pMap = new PredicateMap();
+		      RefObjectMap roMap = new RefObjectMap();
 		      if (predicate!=null)
 		    	  pMap.setPredicate(model.createProperty(predicate.getURI()));
 		      
 		      if (join!=null)
-		    	  oMap.setJoinCondition(join.getString());
+		    	  roMap.setJoinCondition(join.getString());
 		      if (parent != null)
 		      {
 		    	  String parentUri = parent.isAnon()?parent.asNode().getBlankNodeLabel():parent.asResource().getURI(); 
 		    	  logger.debug(parentUri);
 		    	  if (triplesMap.containsKey(parentUri))
-		    		  oMap.setParentTriplesMap(triplesMap.get(parentUri));
+		    		  roMap.setParentTriplesMap(triplesMap.get(parentUri));
 		    	  else
 		    	  {
 		    		  logger.debug("Find ref: "+parentUri);
 		    		  readTriplesMap(parentUri);
-		    		  oMap.setParentTriplesMap(triplesMap.get(parentUri));
+		    		  roMap.setParentTriplesMap(triplesMap.get(parentUri));
 		    	  }
 		      }
 		      if (graphColumn!=null)
@@ -412,13 +411,12 @@ public class R2RModel
 		    	  poMap.setGraph(graph.getURI());
 		      
 		      
-		      logger.debug(oMap.getJoinCondition()+"-"+pMap.getPredicate());
-		      if (oMap.getParentTriplesMap()!=null)
-		    	  logger.debug("Triples: -"+oMap.getParentTriplesMap().getUri());
-		      poMap.setRefPredicateMap(pMap);
-		      poMap.setRefObjectMap(oMap);
+		      logger.debug(roMap.getJoinCondition()+"-"+pMap.getPredicate());
+		      if (roMap.getParentTriplesMap()!=null)
+		    	  logger.debug("Triples: -"+roMap.getParentTriplesMap().getUri());
+		      poMap.setRefObjectMap(roMap);
 		      poMap.setTriplesMap(tMap);
-		      tMap.addRefPropertyObjectMap(poMap);
+		      tMap.addRefPropertyObjectMap(roMap);
 		    }
 		  } finally { qexec.close() ; }
 		
@@ -646,6 +644,7 @@ public class R2RModel
 
 	}
 	
+	/*
 	public Collection<PredicateObjectMap> getPredicateObjectMapForUri(String uri)
 	{
 		Collection<PredicateObjectMap> col = new ArrayList<PredicateObjectMap>();
@@ -798,186 +797,10 @@ public class R2RModel
 
 		return col;
 	}
+	*/
 
-
-	private Collection<RefPredicateObjectMap> getRefPOMapForUri(String uri)
-	{
-		Collection<RefPredicateObjectMap> col = new ArrayList<RefPredicateObjectMap>();
-
-		String queryString = "PREFIX "+r2rml+": <"+R2RML.getUri()+"> \n" +
-				"PREFIX "+morph+": <"+Morph.getUri()+"> \n"+
-				"SELECT DISTINCT ?object ?column ?datatype " +
-				"?tMap ?query ?table ?subjCol ?subjColOp ?subjType ?subject ?subjClass "+
-				"?graphColumn ?graph "+
-				"?parentTMap ?parentTable ?parentSubjCol ?parentSubjTemplate ?parentSubject ?parentSubjClass "+
-				"WHERE { \n" +
-				"?tMap "+r2rml+":"+refPredicateObjectMap.getLocalName()+ " ?poMap . \n" +
-				"?tMap "+r2rml+":"+subjectMap.getLocalName()+ " ?subjMap . \n" +
-				"OPTIONAL { ?subjMap "+r2rml+":"+column.getLocalName() + " ?subjCol . } \n"+				
-				"OPTIONAL { ?subjMap "+r2rml+":"+template.getLocalName() + " ?subjTemplate . } \n"+				
-				"OPTIONAL { ?subjMap "+r2rml+":"+subject.getLocalName() + " ?subject . } \n"+				
-				"?subjMap "+r2rml+":"+classProperty.getLocalName() + " ?subjClass .  \n"+				
-				
-				"?tMap "+r2rml+":"+tableName.getLocalName() + " ?table .  \n"+				
-				"?poMap "+r2rml+":"+refPredicateMap.getLocalName()+ " ?pMap . \n" +
-				"?poMap "+r2rml+":"+refObjectMap.getLocalName()+ " ?oMap . \n" +
-				"?pMap "+r2rml+":"+constant.getLocalName() + " <"+uri+"> . \n"+				
-				"?oMap "+r2rml+":"+parentTriplesMap.getLocalName() + " ?parentTMap .  \n"+
-				"?parentTMap "+r2rml+":"+subjectMap.getLocalName()+ " ?parentSubjMap . \n" +
-				"?parentTMap "+r2rml+":"+tableName.getLocalName() + " ?parentTable .  \n"+				
-				//"OPTIONAL { ?pMap "+r2rml+":"+column.getLocalName() + " ?predicateColumn . } \n"+												
-				//"OPTIONAL { ?poMap "+r2rml+":"+graphColumn.getLocalName() + " ?graphColumn . } \n"+				
-				"OPTIONAL { ?parentSubjMap "+r2rml+":"+column.getLocalName() + " ?parentSubjCol . } \n"+				
-				"OPTIONAL { ?parentSubjMap "+r2rml+":"+template.getLocalName() + " ?parentSubjTemplate . } \n"+				
-				"OPTIONAL { ?parentSubjMap "+r2rml+":"+subject.getLocalName() + " ?parentSubject . } \n"+				
-				"?parentSubjMap "+r2rml+":"+classProperty.getLocalName() + " ?parentSubjClass .  \n"+
-				//"OPTIONAL { ?poMap "+r2rml+":"+graph.getLocalName() + " ?graph . } \n"+				
-				//"OPTIONAL { ?oMap "+r2rml+":"+column.getLocalName() + " ?column . } \n"+				
-				//"OPTIONAL { ?oMap "+r2rml+":"+datatype.getLocalName() + " ?datatype . } \n"+				
-				//"?tMap "+r2rml+":"+sqlQuery.getLocalName()+ " ?query ; \n"+
-				//"OPTIONAL { ?subjMap "+r2rml+":"+rrGraph.getLocalName() + " ?subjGraph . } \n"+				
-				//"OPTIONAL { ?subjMap "+r2rml+":"+rrGraphColumn.getLocalName() + " ?subjGraphCol . } \n"+				
-				//"OPTIONAL { ?subjMap "+r2rml+":"+inverseExpression.getLocalName() + " ?subjInverse . } "+				
-								
-
-				"}";
-		
-		logger.debug("Query propertyObjectMap: "+queryString);
-		Query query = QueryFactory.create(queryString );
-		QueryExecution exe = QueryExecutionFactory.sparqlService(endpoint, query);
-		ResultSet res = null;
-		try{
-			res = exe.execSelect();			
-		}
-		catch (ResultSetException e)
-		{
-			logger.debug("No results found.");
-			return col;
-		}
-
-		while (res.hasNext())
-		{
-			QuerySolution soln = res.nextSolution();
-		      //Resource predicate = ResourceFactory.createResource(uri);//  soln.getResource("predicate");
-		      Resource typeProperty = soln.getResource("typeProperty");
-		      Literal column = soln.getLiteral("column"); 
-		      Resource datatype = soln.getResource("datatype");		      
-		      RDFNode object = soln.get("object");		     		  
-		      Literal propColumn = soln.getLiteral("predicateColumn");
-		      Literal graphColumn = soln.getLiteral("graphColumn");
-		      Resource graph = soln.getResource("graph");
-		      Resource parentTMap = soln.getResource("parentTMap");
-		      
-		      RefPredicateObjectMap poMap = new RefPredicateObjectMap();
-		      RefPredicateMap pMap = new RefPredicateMap();
-		      RefObjectMap oMap = new RefObjectMap();
-		      //if (predicate!=null)
-		      pMap.setPredicate(model.createProperty(uri));
-		      //if (propColumn!=null)
-		    //	  pMap.setColumn(propColumn.getString());
-		      /*
-		      if (column!=null)
-		    	  oMap.setColumn(column.getString());
-		      if (datatype!=null)		    		    
-		    	  oMap.setDatatype(getDatatype(datatype.getURI()));
-		      if (object != null)
-		    	  oMap.setObject(object);*/
-		      if (graphColumn!=null)
-		    	  poMap.setGraphColumn(graphColumn.getString());
-		      if (graph!=null)
-		    	  poMap.setGraph(graph.getURI());
-		      TriplesMap parentTriplesMap = new TriplesMap(parentTMap.getURI());
-
-		      
-		      oMap.setParentTriplesMap(parentTriplesMap);
-		      //logger.debug(oMap.getColumn()+"-"+pMap.getPredicate()+"-"+oMap.getDatatype());
-		      poMap.setRefPredicateMap(pMap);
-		      poMap.setRefObjectMap(oMap);
-		      
-		      Resource tMapResource = soln.getResource("tMap");
-		      Resource subjClass = soln.getResource("subjClass"); 
-		      Literal sqlQuery = soln.getLiteral("query");
-		      //Resource subjGraph = soln.getResource("subjGraph");
-		      //Literal subjGraphCol = soln.getLiteral("subjGraphCol");
-		      Literal inverse = soln.getLiteral("subjInverse");
-		      Literal subjColumn = soln.getLiteral("subjCol");
-		      Literal subjColumnOperation = soln.getLiteral("subjColOp");
-		      Literal termType = soln.getLiteral("subjType");
-		      RDFNode subject = soln.getResource("subject");
-		      Literal table = soln.getLiteral("table");
-		      Literal subjTemplate = soln.getLiteral("subjTemplate");
-
-		      Literal parentTable = soln.getLiteral("table");
-		      Resource parentSubjClass = soln.getResource("subjClass"); 
-		      Literal parentSubjColumn = soln.getLiteral("subjCol");
-		      RDFNode parentSubject = soln.getResource("subject");
-		      Literal parentSubjTemplate = soln.getLiteral("subjTemplate");
-
-		      
-		      parentTriplesMap.setTableName(parentTable.getString());
-		      SubjectMap parentSubjectMap = new SubjectMap();
-			parentTriplesMap.setSubjectMap(parentSubjectMap );
-		      if (parentSubjColumn != null)
-		    	  parentSubjectMap.setColumn(parentSubjColumn.getString());
-		      if (parentSubjTemplate != null)
-		    	  parentSubjectMap.setTemplate(parentSubjTemplate.getString());
-		      if (parentSubject != null)
-		    	  parentSubjectMap.setSubject(parentSubject);
-		      parentSubjectMap.setRdfsClass(parentSubjClass);
-		      
-		      TriplesMap tMap = new TriplesMap(tMapResource.getURI());
-		      SubjectMap subjectMap = new SubjectMap();
-		      subjectMap.setRdfsClass(subjClass);
-		      if (sqlQuery != null)
-		    	  tMap.setSqlQuery(sqlQuery.getString());
-		      if (table!=null)
-		    	  tMap.setTableName(table.getString());
-		      //if (subjGraph!=null)
-		      //	  subjectMap.addGraph(subjGraph.getURI());
-		      //else if (subjGraphCol!= null)
-		      //	  subjectMap.addGraphColumn(subjGraphCol.getString());
-		      if (subjColumnOperation != null)
-		    	  subjectMap.setColumnOperation(subjColumnOperation.getString());
-		      if (subjTemplate != null)
-		    	  subjectMap.setTemplate(subjTemplate.getString());
-		      if (subjColumn!=null)
-		    	  subjectMap.setColumn(subjColumn.getString());
-		      if (inverse != null)
-		    	  subjectMap.setInverseExpression(inverse.getString());
-		      if (subject != null)
-		    	  subjectMap.setSubject(subject);
-		      subjectMap.setTriplesMap(tMap);
-		      tMap.setSubjectMap(subjectMap );
-
-		      
-		      
-		      poMap.setTriplesMap(tMap);
-		      col.add(poMap);
-		      //tMap.addPropertyObjectMap(poMap);
-
-		}
-
-		return col;
-	}
 
 	
-	public Collection<RefPredicateObjectMap> getRefPredicateObjectMapForUri(String uri)
-	{
-		Collection<RefPredicateObjectMap> col = new ArrayList<RefPredicateObjectMap>();
-		if (endpoint!=null)
-			return getRefPOMapForUri(uri);
-		
-		
-		for (TriplesMap t :this.getTriplesMap())
-		{
-			for (RefPredicateObjectMap moMap:t.getRefPropertyObjectMaps())
-			{
-				if (moMap.getRefPredicateMap().getPredicate().getURI().equals(uri))
-					col.add(moMap);
-			}
-		}
-		return col;
-	}
 
 	
 	private Map<String,String> uriSpaces;

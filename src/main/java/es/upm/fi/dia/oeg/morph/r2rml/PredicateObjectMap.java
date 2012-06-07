@@ -10,6 +10,7 @@ public class PredicateObjectMap extends NodeMap
 {
 	private PredicateMap predicateMap;
 	private ObjectMap objectMap;
+	private RefObjectMap refObjectMap;
 
 	
 	protected String graphColumn;
@@ -120,6 +121,18 @@ public class PredicateObjectMap extends NodeMap
 	public String getTemplate()
 	{
 		return getObjectMap().getTemplate();
+	}
+
+
+
+	public RefObjectMap getRefObjectMap() {
+		return refObjectMap;
+	}
+
+
+
+	public void setRefObjectMap(RefObjectMap refObjectMap) {
+		this.refObjectMap = refObjectMap;
 	}
 	
 }
