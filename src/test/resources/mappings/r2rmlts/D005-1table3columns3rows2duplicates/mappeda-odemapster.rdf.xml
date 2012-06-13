@@ -1,0 +1,13 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:j.0="http://xmlns.com/foaf/0.1/"
+    xmlns:j.1="http://example.com/" > 
+  <rdf:Description rdf:about="http://example.com/Sue-Jones">
+    <j.1:owes rdf:datatype="http://www.w3.org/2001/XMLSchema#double">20</j.1:owes>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.com/Bob-Smith">
+    <j.1:owes rdf:datatype="http://www.w3.org/2001/XMLSchema#double">30</j.1:owes>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+  </rdf:Description>
+</rdf:RDF>
