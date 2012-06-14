@@ -60,4 +60,92 @@ public class R2RMLTS {
 		String propertiesFileName = "R2RMLTC0001a.morph.properties";
 		R2RMLTS.runMorph(testDirectory, propertiesFileName);
 	}
+	
+	@Test
+	public void testR2RMLTC0001b() throws Exception {
+		String directoryName = "D001-1table1column1row";
+		String testName = "R2RMLTC0001b";
+		String configurationFile = testName + ".morph.properties";
+		R2RMLTS.runMorph(directoryName, configurationFile);
+	}
+	
+	@Test
+	public void testR2RMLTC0002a() throws Exception {
+		String directoryName = "D002-1table2columns1row";
+		String testName = "R2RMLTC0002a";
+		String configurationFile = testName + ".morph.properties";
+		R2RMLTS.runMorph(directoryName, configurationFile);
+	}
+	
+	@Test
+	public void testR2RMLTC0002b() throws Exception {
+		String directoryName = "D002-1table2columns1row";
+		String testName = "R2RMLTC0002b";
+		String configurationFile = testName + ".morph.properties";
+		R2RMLTS.runMorph(directoryName, configurationFile);
+	}
+	
+	@Test
+	public void testR2RMLTC0002c() throws Exception {
+		String directoryName = "D002-1table2columns1row";
+		String testName = "R2RMLTC0002c";
+		String configurationFile = testName + ".morph.properties";
+		R2RMLTS.runMorph(directoryName, configurationFile);
+	}
+	
+	@Test
+	public void testR2RMLTC0002d() throws Exception {
+		String directoryName = "D002-1table2columns1row";
+		String testName = "R2RMLTC0002d";
+		String configurationFile = testName + ".morph.properties";
+		R2RMLTS.runMorph(directoryName, configurationFile);
+	}
+	
+	@Test
+	public void testR2RMLTC0002e() throws Exception {
+		String directoryName = "D002-1table2columns1row";
+		String testName = "R2RMLTC0002e";
+		String configurationFile = testName + ".morph.properties";
+		R2RMLTS.runMorph(directoryName, configurationFile);
+	}
+	
+	@Test
+	public void testR2RMLTC0002f() throws Exception {
+		String directoryName = "D002-1table2columns1row";
+		String testName = "R2RMLTC0002f";
+		String configurationFile = testName + ".morph.properties";
+		R2RMLTS.runMorph(directoryName, configurationFile);
+	}
+	
+	@Test
+	public void testR2RMLTC0002g() throws Exception {
+		String directoryName = "D002-1table2columns1row";
+		String testName = "R2RMLTC0002g";
+		String configurationFile = testName + ".morph.properties";
+		R2RMLTS.runMorph(directoryName, configurationFile);
+	}
+	
+	@Test
+	public void testR2RMLTC0002h() throws Exception {
+		String directoryName = "D002-1table2columns1row";
+		String testName = "R2RMLTC0002h";
+		String configurationFile = testName + ".morph.properties";
+		R2RMLTS.runMorph(directoryName, configurationFile);
+	}
+	
+	@Test
+	public void testR2RMLTC0002i() throws Exception {
+		String directoryName = "D002-1table2columns1row";
+		String testName = "R2RMLTC0002i";
+		String configurationFile = testName + ".morph.properties";
+		R2RMLTS.runMorph(directoryName, configurationFile);
+	}
+	
+	@Test
+	public void testR2RMLTC0002j() throws Exception {
+		String directoryName = "D002-1table2columns1row";
+		String testName = "R2RMLTC0002j";
+		String configurationFile = testName + ".morph.properties";
+		R2RMLTS.runMorph(directoryName, configurationFile);
+	}
 }
