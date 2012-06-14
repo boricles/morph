@@ -412,5 +412,37 @@ public class R2RMLTS {
 		String configurationFile = testName + ".morph.properties";
 		R2RMLTS.runMorph(directoryName, configurationFile);
 	}
+
+	@Test
+	public void testR2RMLTC0014a() throws Exception {
+		String directoryName = "D014-3tables1primarykey1foreignkey";
+		String testName = "R2RMLTC0014a";
+		String configurationFile = testName + ".morph.properties";
+		R2RMLTS.runMorph(directoryName, configurationFile);
+	}
 	
+	@Test
+	public void testR2RMLTC0014b() throws Exception {
+		String directoryName = "D014-3tables1primarykey1foreignkey";
+		String testName = "R2RMLTC0014b";
+		String configurationFile = testName + ".morph.properties";
+		R2RMLTS.runMorph(directoryName, configurationFile);
+	}
+	
+	@Test
+	public void testR2RMLTC0014c() throws Exception {
+		String directoryName = "D014-3tables1primarykey1foreignkey";
+		String testName = "R2RMLTC0014c";
+		String configurationFile = testName + ".morph.properties";
+		R2RMLTS.runMorph(directoryName, configurationFile);
+	}
+	
+	@Test
+	public void testR2RMLTC0014d() throws Exception {
+		String directoryName = "D014-3tables1primarykey1foreignkey";
+		String testName = "R2RMLTC0014d";
+		String configurationFile = testName + ".morph.properties";
+		R2RMLTS.runMorph(directoryName, configurationFile);
+	}
+
 }
