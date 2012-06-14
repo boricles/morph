@@ -38,7 +38,7 @@ public class Morph
 		return ResourceFactory.createProperty( uri, local ); 
 	}
 	
-	private static Properties buildConfiguration(String path) {
+	public static Properties buildConfiguration(String path) {
 	    Properties properties = new Properties();
 	    try {
 	      properties.load(new FileInputStream(path));
@@ -51,6 +51,8 @@ public class Morph
 	  }
 	
 	public static void main(String []args) {
+		
+		
 		try {
 			if (args.length==1) {  
 				String propertiesFilePath = args[0];
