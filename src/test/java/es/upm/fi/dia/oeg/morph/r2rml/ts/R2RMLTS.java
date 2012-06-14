@@ -196,4 +196,12 @@ public class R2RMLTS {
 		String configurationFile = testName + ".morph.properties";
 		R2RMLTS.runMorph(directoryName, configurationFile);
 	}
+	
+	@Test
+	public void testR2RMLTC0006a() throws Exception {
+		String directoryName = "D006-1table1primarykey1column1row";
+		String testName = "R2RMLTC0006a";
+		String configurationFile = testName + ".morph.properties";
+		R2RMLTS.runMorph(directoryName, configurationFile);
+	}
 }
