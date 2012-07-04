@@ -83,6 +83,7 @@ public class R2RModelTest
 		assertEquals(0, tMaps.size());
 	}
 
+	/*
 	@Test
 	public void testGetPredicateObjectMapForUri() throws InvalidR2RDocumentException, InvalidR2RLocationException, URISyntaxException
 	{
@@ -107,7 +108,7 @@ public class R2RModelTest
 		R2RModel m = new R2RModel("http://localhost:8080/openrdf-workbench/repositories/owlimDemo/query");
 		m.getPredicateObjectMapForUri("http://purl.oclc.org/NET/ssnx/ssn#observedBy");
 	}
-	
+	*/
 	@Test@Ignore
 	public void testGetMappingsForQuery()
 	{

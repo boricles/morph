@@ -56,7 +56,8 @@ public class R2RProcessor extends Observable
 		Class<?> relationalClass;
 		try
 		{
-			relationalClass =  Class.forName(props.getProperty(R2R_RELATIONAL_MODEL_CLASS));
+			//relationalClass =  Class.forName(props.getProperty(R2R_RELATIONAL_MODEL_CLASS));
+			relationalClass = Class.forName("es.upm.fi.dia.oeg.morph.relational.JDBCRelationalModel");
 		} catch (ClassNotFoundException e2)
 		{
 			e2.printStackTrace();// TODO remove this

@@ -63,7 +63,6 @@ public class R2RModel
 	private Model model;
 	private Resource morphColumnOperation = null;
 	
-	
 	private Map<String,TriplesMap> triplesMap;
 	//private Property rrTermType;
 	//private Property rrGraph;
@@ -169,6 +168,29 @@ public class R2RModel
 		
 	}
 	
+	private Literal buildQuery(Literal sqlQuery, Literal table) {
+
+		if (sqlQuery!=null)
+			return parseTemplate(sqlQuery);
+		Literal query;		
+		String q = "SELECT * FROM " + table.toString();
+		//TO DO fix this - this MYSQL compliant only
+		q = q.replace("\"", "");
+		query = model.createLiteral(q);
+		return query;
+	}
+	
+	private Literal parseTemplate(Literal template) {
+		if (template==null)
+			return template;
+		Literal nTemplate;
+		String t = template.toString();
+		t = t.replace("\"", "");
+		nTemplate = model.createLiteral(t);
+		return nTemplate;
+	}
+	
+	
 	private void readTriplesMap(String triplesMapUri)
 	{
 		String tMapVar = "?tMap";
@@ -231,6 +253,10 @@ public class R2RModel
 		      Literal table = soln.getLiteral("table");
 		      Literal subjTemplate = soln.getLiteral("subjTemplate");
 		      Literal unique = soln.getLiteral("unique");
+		      
+		      //build the SQLQuery if the tableName is present and SQLQuery is null
+		      sqlQuery = buildQuery(sqlQuery,table);
+		      subjTemplate = parseTemplate(subjTemplate);
 		      
 		      TriplesMap tMap = new TriplesMap(uri);
 		      SubjectMap subjectMap = new SubjectMap();
